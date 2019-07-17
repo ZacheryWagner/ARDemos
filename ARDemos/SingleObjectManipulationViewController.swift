@@ -23,8 +23,8 @@ class SingleObjectManipulationViewController: UIViewController, ARSCNViewDelegat
     /// Display updated info on the surface tracking
     var infoLabel = UILabel()
 
-    /// Toggles whether or not scene kit
-    var toggleLightingButton = UIButton()
+    /// Toggles whether or not scene kit is lit
+    var toggleLightingButton = UILabel()
 
     var viewModel: SingleObjectManipulationViewModel
 
@@ -44,8 +44,11 @@ class SingleObjectManipulationViewController: UIViewController, ARSCNViewDelegat
         sceneView.showsStatistics = true
 
         // Setup Gesture recognizers
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(toggleMaterials))
-        sceneView.addGestureRecognizer(tapGestureRecognizer)
+        let sceneTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(toggleMaterials))
+        sceneView.addGestureRecognizer(sceneTapGestureRecognizer)
+
+        let lightingTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(toggleLighting))
+        toggleLightingButton.addGestureRecognizer(lightingTapGestureRecognizer)
 
 //        let pinchGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(resizeNode))
 //        sceneView.addGestureRecognizer(pinchGestureRecognizer)
@@ -55,7 +58,9 @@ class SingleObjectManipulationViewController: UIViewController, ARSCNViewDelegat
         infoLabel.lineBreakMode = .byWordWrapping
 
         // Setup buttons
-        //toggleLightingButton.setTitle(T##title: String?##String?, for: T##UIControl.State)
+        toggleLightingButton.text = viewModel.lightingButtonText
+        toggleLightingButton.backgroundColor = viewModel.buttonColor
+        toggleLightingButton.isUserInteractionEnabled = true
 
         initConstraints()
     }
@@ -94,6 +99,11 @@ class SingleObjectManipulationViewController: UIViewController, ARSCNViewDelegat
         view.addSubview(infoLabel)
         infoLabel.pinToSuperviewSafeAreaTop()
         infoLabel.pinToSuperviewCenterX()
+
+        toggleLightingButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(toggleLightingButton)
+        toggleLightingButton.pinToSuperviewSafeAreaBottomWithInset(24)
+        toggleLightingButton.pinToSuperviewSafeAreaTrailingWithInset(12)
     }
 
 
@@ -138,7 +148,7 @@ class SingleObjectManipulationViewController: UIViewController, ARSCNViewDelegat
     /**
      * Set the nodes materials
      */
-    @objc func toggleMaterials(recognizer: UITapGestureRecognizer) {
+    @objc private func toggleMaterials(recognizer: UITapGestureRecognizer) {
         let sceneView = recognizer.view as! ARSCNView
         let touchLocation = recognizer.location(in: sceneView)
         let hitResults = sceneView.hitTest(touchLocation, options: [:])
@@ -152,6 +162,12 @@ class SingleObjectManipulationViewController: UIViewController, ARSCNViewDelegat
             let node = hitResult.node
             node.geometry?.materials = viewModel.getTextureForCurrentIndex()
         }
+    }
+
+    @objc private func toggleLighting() {
+        viewModel.isLightingActive.toggle()
+        toggleLightingButton.text = viewModel.lightingButtonText
+        configureLightingForState(viewModel.isLightingActive)
     }
 
     /**

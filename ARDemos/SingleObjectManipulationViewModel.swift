@@ -17,7 +17,20 @@ class SingleObjectManipulationViewModel {
     var textureIndex: Int = 0
 
     /// Length of a side of the box
-    var boxDimension: CGFloat = 0.05    
+    var boxDimension: CGFloat = 0.05
+
+    var lightingButtonText: String {
+        return isLightingActive ? "Disable Lighting" : "Enable Lighting"
+    }
+
+    /// Is the scenekit lighting active
+    var isLightingActive = true
+
+    /// Size for buttons
+    var buttonSize = CGSize(width: 100, height: 50)
+
+    /// Color for buttons
+    var buttonColor = UIColor.violet?.withAlphaComponent(0.7)
 
     init() {
         buildTextures()
