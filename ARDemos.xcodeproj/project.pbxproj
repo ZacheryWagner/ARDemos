@@ -9,21 +9,25 @@
 /* Begin PBXBuildFile section */
 		A1C9783922DE14F300664B5B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C9783822DE14F300664B5B /* AppDelegate.swift */; };
 		A1C9783B22DE14F300664B5B /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = A1C9783A22DE14F300664B5B /* art.scnassets */; };
-		A1C9783D22DE14F300664B5B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C9783C22DE14F300664B5B /* ViewController.swift */; };
-		A1C9784022DE14F300664B5B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1C9783E22DE14F300664B5B /* Main.storyboard */; };
+		A1C9783D22DE14F300664B5B /* SingleNodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C9783C22DE14F300664B5B /* SingleNodeViewController.swift */; };
 		A1C9784222DE14F500664B5B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1C9784122DE14F500664B5B /* Assets.xcassets */; };
 		A1C9784522DE14F500664B5B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1C9784322DE14F500664B5B /* LaunchScreen.storyboard */; };
+		A1C9785022DE1D5A00664B5B /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C9784F22DE1D5A00664B5B /* UIView.swift */; };
+		A1C9785422DE1E6F00664B5B /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C9785322DE1E6F00664B5B /* UIColor.swift */; };
+		A1C9785622DE354500664B5B /* RealityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C9785522DE354500664B5B /* RealityView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		A1C9783522DE14F300664B5B /* ARObjectRendering.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARObjectRendering.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A1C9783522DE14F300664B5B /* ARDemos.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARDemos.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1C9783822DE14F300664B5B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A1C9783A22DE14F300664B5B /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
-		A1C9783C22DE14F300664B5B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		A1C9783F22DE14F300664B5B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		A1C9783C22DE14F300664B5B /* SingleNodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleNodeViewController.swift; sourceTree = "<group>"; };
 		A1C9784122DE14F500664B5B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A1C9784422DE14F500664B5B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A1C9784622DE14F500664B5B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A1C9784F22DE1D5A00664B5B /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
+		A1C9785322DE1E6F00664B5B /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		A1C9785522DE354500664B5B /* RealityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealityView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,7 +44,10 @@
 		A1C9782C22DE14F300664B5B = {
 			isa = PBXGroup;
 			children = (
-				A1C9783722DE14F300664B5B /* ARObjectRendering */,
+				A1C9784122DE14F500664B5B /* Assets.xcassets */,
+				A1C9784622DE14F500664B5B /* Info.plist */,
+				A1C9783722DE14F300664B5B /* ARDemos */,
+				A1C9784E22DE1D3B00664B5B /* Extensions */,
 				A1C9783622DE14F300664B5B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -48,31 +55,38 @@
 		A1C9783622DE14F300664B5B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A1C9783522DE14F300664B5B /* ARObjectRendering.app */,
+				A1C9783522DE14F300664B5B /* ARDemos.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		A1C9783722DE14F300664B5B /* ARObjectRendering */ = {
+		A1C9783722DE14F300664B5B /* ARDemos */ = {
 			isa = PBXGroup;
 			children = (
-				A1C9783822DE14F300664B5B /* AppDelegate.swift */,
 				A1C9783A22DE14F300664B5B /* art.scnassets */,
-				A1C9783C22DE14F300664B5B /* ViewController.swift */,
-				A1C9783E22DE14F300664B5B /* Main.storyboard */,
-				A1C9784122DE14F500664B5B /* Assets.xcassets */,
+				A1C9783822DE14F300664B5B /* AppDelegate.swift */,
+				A1C9783C22DE14F300664B5B /* SingleNodeViewController.swift */,
+				A1C9785522DE354500664B5B /* RealityView.swift */,
 				A1C9784322DE14F500664B5B /* LaunchScreen.storyboard */,
-				A1C9784622DE14F500664B5B /* Info.plist */,
 			);
-			path = ARObjectRendering;
+			path = ARDemos;
+			sourceTree = "<group>";
+		};
+		A1C9784E22DE1D3B00664B5B /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				A1C9784F22DE1D5A00664B5B /* UIView.swift */,
+				A1C9785322DE1E6F00664B5B /* UIColor.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A1C9783422DE14F300664B5B /* ARObjectRendering */ = {
+		A1C9783422DE14F300664B5B /* ARDemos */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A1C9784922DE14F500664B5B /* Build configuration list for PBXNativeTarget "ARObjectRendering" */;
+			buildConfigurationList = A1C9784922DE14F500664B5B /* Build configuration list for PBXNativeTarget "ARDemos" */;
 			buildPhases = (
 				A1C9783122DE14F300664B5B /* Sources */,
 				A1C9783222DE14F300664B5B /* Frameworks */,
@@ -82,9 +96,9 @@
 			);
 			dependencies = (
 			);
-			name = ARObjectRendering;
+			name = ARDemos;
 			productName = ARObjectRendering;
-			productReference = A1C9783522DE14F300664B5B /* ARObjectRendering.app */;
+			productReference = A1C9783522DE14F300664B5B /* ARDemos.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -102,7 +116,7 @@
 					};
 				};
 			};
-			buildConfigurationList = A1C9783022DE14F300664B5B /* Build configuration list for PBXProject "ARObjectRendering" */;
+			buildConfigurationList = A1C9783022DE14F300664B5B /* Build configuration list for PBXProject "ARDemos" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -115,7 +129,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A1C9783422DE14F300664B5B /* ARObjectRendering */,
+				A1C9783422DE14F300664B5B /* ARDemos */,
 			);
 		};
 /* End PBXProject section */
@@ -128,7 +142,6 @@
 				A1C9783B22DE14F300664B5B /* art.scnassets in Resources */,
 				A1C9784522DE14F500664B5B /* LaunchScreen.storyboard in Resources */,
 				A1C9784222DE14F500664B5B /* Assets.xcassets in Resources */,
-				A1C9784022DE14F300664B5B /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -139,22 +152,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A1C9783D22DE14F300664B5B /* ViewController.swift in Sources */,
+				A1C9783D22DE14F300664B5B /* SingleNodeViewController.swift in Sources */,
+				A1C9785022DE1D5A00664B5B /* UIView.swift in Sources */,
 				A1C9783922DE14F300664B5B /* AppDelegate.swift in Sources */,
+				A1C9785422DE1E6F00664B5B /* UIColor.swift in Sources */,
+				A1C9785622DE354500664B5B /* RealityView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		A1C9783E22DE14F300664B5B /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				A1C9783F22DE14F300664B5B /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		A1C9784322DE14F500664B5B /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -287,7 +295,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = ARObjectRendering/Info.plist;
+				DEVELOPMENT_TEAM = B4R6R23NH9;
+				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -304,7 +313,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = ARObjectRendering/Info.plist;
+				DEVELOPMENT_TEAM = B4R6R23NH9;
+				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -319,7 +329,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A1C9783022DE14F300664B5B /* Build configuration list for PBXProject "ARObjectRendering" */ = {
+		A1C9783022DE14F300664B5B /* Build configuration list for PBXProject "ARDemos" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A1C9784722DE14F500664B5B /* Debug */,
@@ -328,7 +338,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A1C9784922DE14F500664B5B /* Build configuration list for PBXNativeTarget "ARObjectRendering" */ = {
+		A1C9784922DE14F500664B5B /* Build configuration list for PBXNativeTarget "ARDemos" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A1C9784A22DE14F500664B5B /* Debug */,
