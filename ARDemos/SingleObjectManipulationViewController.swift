@@ -42,6 +42,9 @@ class SingleObjectManipulationViewController: UIViewController, ARSCNViewDelegat
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(toggleMaterials))
         sceneView.addGestureRecognizer(tapGestureRecognizer)
 
+        let pinchGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(resizeNode))
+        sceneView.addGestureRecognizer(pinchGestureRecognizer)
+
         // Setup label
         infoLabel.backgroundColor = UIColor.white.withAlphaComponent(0.7)
         infoLabel.lineBreakMode = .byWordWrapping
@@ -84,6 +87,45 @@ class SingleObjectManipulationViewController: UIViewController, ARSCNViewDelegat
         view.addSubview(infoLabel)
         infoLabel.pinToSuperviewSafeAreaTop()
         infoLabel.pinToSuperviewCenterX()
+    }
+
+
+    /**
+     * Resize the node to scale with pinch gesture
+     */
+    @objc func resizeNode(_ gesture: UIPinchGestureRecognizer) {
+        var originalScale = mainNode.scale
+
+        switch gesture.state {
+        case .began:
+            originalScale = mainNode.scale
+            gesture.scale = CGFloat(mainNode.scale.x)
+        case .changed:
+            var newScale = originalScale
+            if gesture.scale < 0.5 {
+                newScale = SCNVector3(x: 0.5, y: 0.5, z: 0.5)
+            } else if gesture.scale > 2 {
+                    newScale = SCNVector3(2, 2, 2)
+            } else {
+                newScale = SCNVector3(gesture.scale, gesture.scale, gesture.scale)
+            }
+
+            mainNode.scale = newScale
+        case .ended:
+            var newScale = originalScale
+            if gesture.scale < 0.5 {
+                newScale = SCNVector3(x: 0.5, y: 0.5, z: 0.5)
+            }else if gesture.scale > 2 {
+                newScale = SCNVector3(2, 2, 2)
+            }else {
+                newScale = SCNVector3(gesture.scale, gesture.scale, gesture.scale)
+            }
+
+            mainNode.scale = newScale
+            gesture.scale = CGFloat(mainNode.scale.x)
+        default:
+            gesture.scale = 1.0
+        }
     }
 
     /**
@@ -190,7 +232,6 @@ class SingleObjectManipulationViewController: UIViewController, ARSCNViewDelegat
         mainNode.simdPosition = float3(planeAnchor.center.x, planeAnchor.center.y, planeAnchor.center.z)
         sceneView.scene.rootNode.addChildNode(mainNode)
         node.addChildNode(mainNode)
-
     }
 
     func renderer(_ renderer: SCNSceneRenderer, didRemove node: SCNNode, for anchor: ARAnchor) {
