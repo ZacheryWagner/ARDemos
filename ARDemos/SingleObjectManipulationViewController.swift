@@ -18,18 +18,23 @@ class SingleObjectManipulationViewController: UIViewController, ARSCNViewDelegat
     var mainNode: SCNNode
 
     /// Cube for the ndoe
-    var box = SCNBox(width: 0.05, height: 0.05, length: 0.05, chamferRadius: 0)
+    var box: SCNBox
 
-    /// The index representing the current texture on display
-    var textureIndex: Int = 0
-
-    /// List of cube textures to toggle between
-    var nodeTextures: [[SCNMaterial]] = [[]]
-
+    /// Display updated info on the surface tracking
     var infoLabel = UILabel()
 
-    init() {
+    /// Toggles whether or not scene kit
+    var toggleLightingButton = UIButton()
+
+    var viewModel: SingleObjectManipulationViewModel
+
+    init(viewModel: SingleObjectManipulationViewModel) {
+        self.viewModel = viewModel
+
+        box = SCNBox(width: viewModel.boxDimension, height: viewModel.boxDimension, length: viewModel.boxDimension, chamferRadius: 0)
+
         mainNode = SCNNode(geometry: box)
+
         super.init(nibName: nil, bundle: nil)
 
         // Set the view's delegate
@@ -42,14 +47,16 @@ class SingleObjectManipulationViewController: UIViewController, ARSCNViewDelegat
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(toggleMaterials))
         sceneView.addGestureRecognizer(tapGestureRecognizer)
 
-        let pinchGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(resizeNode))
-        sceneView.addGestureRecognizer(pinchGestureRecognizer)
+//        let pinchGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(resizeNode))
+//        sceneView.addGestureRecognizer(pinchGestureRecognizer)
 
         // Setup label
         infoLabel.backgroundColor = UIColor.white.withAlphaComponent(0.7)
         infoLabel.lineBreakMode = .byWordWrapping
 
-        buildTextures()
+        // Setup buttons
+        //toggleLightingButton.setTitle(T##title: String?##String?, for: T##UIControl.State)
+
         initConstraints()
     }
 
@@ -140,72 +147,10 @@ class SingleObjectManipulationViewController: UIViewController, ARSCNViewDelegat
         if !hitResults.isEmpty {
             guard let hitResult = hitResults.first else { return }
 
-            if textureIndex == 5 {
-                textureIndex = 0
-            } else {
-                textureIndex += 1
-            }
+            viewModel.incrimentTextureIndex()
 
             let node = hitResult.node
-            node.geometry?.materials = nodeTextures[textureIndex]
-        }
-    }
-
-    private func buildTextures() {
-        let numFaces = 6
-        for i in 1...numFaces {
-            var faceTextures: [SCNMaterial] = []
-            let material = SCNMaterial()
-            material.diffuse.contents = UIImage(named: "valveDefault")
-            faceTextures.append(material)
-
-            if i == numFaces {
-                nodeTextures.append(faceTextures)
-            }
-        }
-
-        for i in 1...numFaces {
-            var faceTextures: [SCNMaterial] = []
-            let material = SCNMaterial()
-            material.diffuse.contents = UIImage(named: "mcDirt")
-            faceTextures.append(material)
-
-            if i == numFaces {
-                nodeTextures.append(faceTextures)
-            }
-        }
-
-        for i in 1...numFaces {
-            var faceTextures: [SCNMaterial] = []
-            let material = SCNMaterial()
-            material.diffuse.contents = UIImage(named: "zachDrund")
-            faceTextures.append(material)
-
-            if i == numFaces {
-                nodeTextures.append(faceTextures)
-            }
-        }
-
-        for i in 1...numFaces {
-            var faceTextures: [SCNMaterial] = []
-            let material = SCNMaterial()
-            material.diffuse.contents = UIColor.violet
-            faceTextures.append(material)
-
-            if i == numFaces {
-                nodeTextures.append(faceTextures)
-            }
-        }
-
-        for i in 1...numFaces {
-            var faceTextures: [SCNMaterial] = []
-            let material = SCNMaterial()
-            material.diffuse.contents = UIColor.hardRed
-            faceTextures.append(material)
-
-            if i == numFaces {
-                nodeTextures.append(faceTextures)
-            }
+            node.geometry?.materials = viewModel.getTextureForCurrentIndex()
         }
     }
 

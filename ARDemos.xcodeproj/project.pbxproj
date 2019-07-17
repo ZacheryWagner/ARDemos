@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A14F502022DEBE0E003F11A1 /* SingleObjectManipulationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14F501F22DEBE0E003F11A1 /* SingleObjectManipulationViewModel.swift */; };
 		A1C9783922DE14F300664B5B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C9783822DE14F300664B5B /* AppDelegate.swift */; };
 		A1C9783B22DE14F300664B5B /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = A1C9783A22DE14F300664B5B /* art.scnassets */; };
 		A1C9783D22DE14F300664B5B /* SingleObjectManipulationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C9783C22DE14F300664B5B /* SingleObjectManipulationViewController.swift */; };
@@ -14,10 +15,10 @@
 		A1C9784522DE14F500664B5B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1C9784322DE14F500664B5B /* LaunchScreen.storyboard */; };
 		A1C9785022DE1D5A00664B5B /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C9784F22DE1D5A00664B5B /* UIView.swift */; };
 		A1C9785422DE1E6F00664B5B /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C9785322DE1E6F00664B5B /* UIColor.swift */; };
-		A1C9785622DE354500664B5B /* RealityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C9785522DE354500664B5B /* RealityView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A14F501F22DEBE0E003F11A1 /* SingleObjectManipulationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleObjectManipulationViewModel.swift; sourceTree = "<group>"; };
 		A1C9783522DE14F300664B5B /* ARDemos.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARDemos.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1C9783822DE14F300664B5B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A1C9783A22DE14F300664B5B /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -27,7 +28,6 @@
 		A1C9784622DE14F500664B5B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A1C9784F22DE1D5A00664B5B /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		A1C9785322DE1E6F00664B5B /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
-		A1C9785522DE354500664B5B /* RealityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealityView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,7 +66,7 @@
 				A1C9783A22DE14F300664B5B /* art.scnassets */,
 				A1C9783822DE14F300664B5B /* AppDelegate.swift */,
 				A1C9783C22DE14F300664B5B /* SingleObjectManipulationViewController.swift */,
-				A1C9785522DE354500664B5B /* RealityView.swift */,
+				A14F501F22DEBE0E003F11A1 /* SingleObjectManipulationViewModel.swift */,
 				A1C9784322DE14F500664B5B /* LaunchScreen.storyboard */,
 			);
 			path = ARDemos;
@@ -154,9 +154,9 @@
 			files = (
 				A1C9783D22DE14F300664B5B /* SingleObjectManipulationViewController.swift in Sources */,
 				A1C9785022DE1D5A00664B5B /* UIView.swift in Sources */,
+				A14F502022DEBE0E003F11A1 /* SingleObjectManipulationViewModel.swift in Sources */,
 				A1C9783922DE14F300664B5B /* AppDelegate.swift in Sources */,
 				A1C9785422DE1E6F00664B5B /* UIColor.swift in Sources */,
-				A1C9785622DE354500664B5B /* RealityView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
