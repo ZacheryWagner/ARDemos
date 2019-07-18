@@ -50,6 +50,9 @@ class DemoTableViewController: UITableViewController {
         if let vm = vm as? SingleObjectManipulationViewModel {
             let vc = SingleObjectManipulationViewController(viewModel: vm)
             navigationController?.pushViewController(vc, animated: true)
+        } else if let vm = vm as? RocketLaunchViewModel {
+            let vc = RocketLaunchViewController(viewModel: vm)
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
 }
