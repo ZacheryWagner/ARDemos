@@ -41,7 +41,7 @@ class SingleObjectManipulationViewController: UIViewController, ARSCNViewDelegat
     /// For resizing the node
     var scenePinchGestureRecognizer = UIPinchGestureRecognizer(target: nil, action: nil)
 
-    var viewModel: SingleObjectManipulationViewModel
+    private var viewModel: SingleObjectManipulationViewModel
 
     init(viewModel: SingleObjectManipulationViewModel) {
         self.viewModel = viewModel
@@ -94,10 +94,6 @@ class SingleObjectManipulationViewController: UIViewController, ARSCNViewDelegat
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -34,7 +34,7 @@ class SingleObjectManipulationViewModel {
     }
 
     /// Is the scenekit lighting active
-    var isDebugActive = true
+    var isDebugActive = false
 
     /// Color for buttons
     private(set) var buttonColor = UIColor.violet?.withAlphaComponent(0.7)
