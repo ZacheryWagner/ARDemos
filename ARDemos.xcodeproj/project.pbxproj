@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		A14F502022DEBE0E003F11A1 /* SingleObjectManipulationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14F501F22DEBE0E003F11A1 /* SingleObjectManipulationViewModel.swift */; };
+		A15DEFFA22E0F38B000FCE0A /* DemoTableVIewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15DEFF922E0F38B000FCE0A /* DemoTableVIewController.swift */; };
+		A15DEFFC22E0F88E000FCE0A /* DemoTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15DEFFB22E0F88E000FCE0A /* DemoTableViewModel.swift */; };
 		A1C9783922DE14F300664B5B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C9783822DE14F300664B5B /* AppDelegate.swift */; };
 		A1C9783B22DE14F300664B5B /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = A1C9783A22DE14F300664B5B /* art.scnassets */; };
 		A1C9783D22DE14F300664B5B /* SingleObjectManipulationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C9783C22DE14F300664B5B /* SingleObjectManipulationViewController.swift */; };
@@ -19,6 +21,8 @@
 
 /* Begin PBXFileReference section */
 		A14F501F22DEBE0E003F11A1 /* SingleObjectManipulationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleObjectManipulationViewModel.swift; sourceTree = "<group>"; };
+		A15DEFF922E0F38B000FCE0A /* DemoTableVIewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoTableVIewController.swift; sourceTree = "<group>"; };
+		A15DEFFB22E0F88E000FCE0A /* DemoTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoTableViewModel.swift; sourceTree = "<group>"; };
 		A1C9783522DE14F300664B5B /* ARDemos.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARDemos.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1C9783822DE14F300664B5B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A1C9783A22DE14F300664B5B /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -41,6 +45,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A15DEFFE22E1026A000FCE0A /* Demos */ = {
+			isa = PBXGroup;
+			children = (
+				A15DEFFF22E102AE000FCE0A /* ViewControllers */,
+				A15DF00022E102C1000FCE0A /* ViewModels */,
+			);
+			path = Demos;
+			sourceTree = "<group>";
+		};
+		A15DEFFF22E102AE000FCE0A /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				A1C9783C22DE14F300664B5B /* SingleObjectManipulationViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		A15DF00022E102C1000FCE0A /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				A14F501F22DEBE0E003F11A1 /* SingleObjectManipulationViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		A1C9782C22DE14F300664B5B = {
 			isa = PBXGroup;
 			children = (
@@ -64,10 +93,11 @@
 			isa = PBXGroup;
 			children = (
 				A1C9783A22DE14F300664B5B /* art.scnassets */,
-				A1C9783822DE14F300664B5B /* AppDelegate.swift */,
-				A1C9783C22DE14F300664B5B /* SingleObjectManipulationViewController.swift */,
-				A14F501F22DEBE0E003F11A1 /* SingleObjectManipulationViewModel.swift */,
 				A1C9784322DE14F500664B5B /* LaunchScreen.storyboard */,
+				A1C9783822DE14F300664B5B /* AppDelegate.swift */,
+				A15DEFF922E0F38B000FCE0A /* DemoTableVIewController.swift */,
+				A15DEFFB22E0F88E000FCE0A /* DemoTableViewModel.swift */,
+				A15DEFFE22E1026A000FCE0A /* Demos */,
 			);
 			path = ARDemos;
 			sourceTree = "<group>";
@@ -155,7 +185,9 @@
 				A1C9783D22DE14F300664B5B /* SingleObjectManipulationViewController.swift in Sources */,
 				A1C9785022DE1D5A00664B5B /* UIView.swift in Sources */,
 				A14F502022DEBE0E003F11A1 /* SingleObjectManipulationViewModel.swift in Sources */,
+				A15DEFFC22E0F88E000FCE0A /* DemoTableViewModel.swift in Sources */,
 				A1C9783922DE14F300664B5B /* AppDelegate.swift in Sources */,
+				A15DEFFA22E0F38B000FCE0A /* DemoTableVIewController.swift in Sources */,
 				A1C9785422DE1E6F00664B5B /* UIColor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

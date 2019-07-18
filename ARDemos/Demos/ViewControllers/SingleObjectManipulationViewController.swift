@@ -308,7 +308,6 @@ class SingleObjectManipulationViewController: UIViewController, ARSCNViewDelegat
         }
     }
 
-
     // MARK: - ARSessionObserver
     
     func sessionWasInterrupted(_ session: ARSession) {
