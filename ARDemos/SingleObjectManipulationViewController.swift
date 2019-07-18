@@ -11,7 +11,7 @@ import UIKit
 import ARKit
 import SceneKit
 
-class SingleObjectManipulationViewController: UIViewController, ARSCNViewDelegate {
+class SingleObjectManipulationViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDelegate {
     var sceneView = ARSCNView()
 
     /// Node for the scene
@@ -26,32 +26,37 @@ class SingleObjectManipulationViewController: UIViewController, ARSCNViewDelegat
     /// Toggles whether or not scene kit is lit
     var toggleLightingButton = UILabel()
 
+    /// Toggles sceneView.debugOptoins
+    var toggleDebugButton = UILabel()
+
+    /// Vertical stack of buttons
+    var buttonStackView = UIStackView()
+
+    /// For swapping textures and moving the node to the tap location
+    var sceneTapGestureRecognizer = UITapGestureRecognizer(target: nil, action: nil)
+
+    /// For rotating the node
+    var scenePanGestureRecognizer = UIPanGestureRecognizer(target: nil, action: nil)
+
+    /// For resizing the node
+    var scenePinchGestureRecognizer = UIPinchGestureRecognizer(target: nil, action: nil)
+
     var viewModel: SingleObjectManipulationViewModel
 
     init(viewModel: SingleObjectManipulationViewModel) {
         self.viewModel = viewModel
 
-        box = SCNBox(width: viewModel.boxDimension, height: viewModel.boxDimension, length: viewModel.boxDimension, chamferRadius: 0)
-
+        box = SCNBox(
+            width: viewModel.boxDimension,
+            height: viewModel.boxDimension,
+            length: viewModel.boxDimension,
+            chamferRadius: 0)
         mainNode = SCNNode(geometry: box)
 
         super.init(nibName: nil, bundle: nil)
 
-        // Set the view's delegate
         sceneView.delegate = self
-
-        // Show statistics such as fps and timing information
         sceneView.showsStatistics = true
-
-        // Setup Gesture recognizers
-        let sceneTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapScene))
-        sceneView.addGestureRecognizer(sceneTapGestureRecognizer)
-
-        let lightingTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(toggleLighting))
-        toggleLightingButton.addGestureRecognizer(lightingTapGestureRecognizer)
-
-//        let pinchGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(resizeNode))
-//        sceneView.addGestureRecognizer(pinchGestureRecognizer)
 
         // Setup label
         infoLabel.backgroundColor = UIColor.white.withAlphaComponent(0.7)
@@ -62,6 +67,28 @@ class SingleObjectManipulationViewController: UIViewController, ARSCNViewDelegat
         toggleLightingButton.backgroundColor = viewModel.buttonColor
         toggleLightingButton.isUserInteractionEnabled = true
 
+        toggleDebugButton.text = viewModel.debugButtonText
+        toggleDebugButton.backgroundColor = viewModel.buttonColor
+        toggleDebugButton.isUserInteractionEnabled = true
+
+        // Setup views
+        sceneView.translatesAutoresizingMaskIntoConstraints = false
+        infoLabel.translatesAutoresizingMaskIntoConstraints = false
+        buttonStackView.translatesAutoresizingMaskIntoConstraints = false
+
+        view.addSubview(sceneView)
+        view.addSubview(infoLabel)
+        view.addSubview(buttonStackView)
+
+        buttonStackView.axis = .vertical
+        buttonStackView.spacing = 12
+
+        buttonStackView.addArrangedSubview(toggleLightingButton)
+        buttonStackView.addArrangedSubview(toggleDebugButton)
+
+        // Additionally setup
+        configureLightingForState(true)
+        setupGestureRecognizer()
         initConstraints()
     }
 
@@ -71,7 +98,6 @@ class SingleObjectManipulationViewController: UIViewController, ARSCNViewDelegat
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureLightingForState(true)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -90,27 +116,83 @@ class SingleObjectManipulationViewController: UIViewController, ARSCNViewDelegat
         sceneView.session.pause()
     }
 
+    private func setupGestureRecognizer() {
+        sceneTapGestureRecognizer.addTarget(self, action: #selector(didTapScene))
+        sceneView.addGestureRecognizer(sceneTapGestureRecognizer)
+
+        scenePanGestureRecognizer.addTarget(self, action: #selector(didPanScene))
+        sceneView.addGestureRecognizer(scenePanGestureRecognizer)
+
+        scenePinchGestureRecognizer.addTarget(self, action: #selector(didPinchScene))
+        sceneView.addGestureRecognizer(scenePinchGestureRecognizer)
+
+        sceneTapGestureRecognizer.delegate = self
+        scenePanGestureRecognizer.delegate = self
+        scenePinchGestureRecognizer.delegate = self
+
+        let lightingTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(toggleLighting))
+        toggleLightingButton.addGestureRecognizer(lightingTapGestureRecognizer)
+
+        let debugTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(toggleDebug))
+        toggleDebugButton.addGestureRecognizer(debugTapGestureRecognizer)
+    }
+
     private func initConstraints() {
-        sceneView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(sceneView)
         sceneView.pinToSuperview()
 
-        infoLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(infoLabel)
         infoLabel.pinToSuperviewSafeAreaTop()
         infoLabel.pinToSuperviewCenterX()
 
-        toggleLightingButton.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(toggleLightingButton)
-        toggleLightingButton.pinToSuperviewSafeAreaBottomWithInset(24)
-        toggleLightingButton.pinToSuperviewSafeAreaTrailingWithInset(12)
+        buttonStackView.pinToSuperviewSafeAreaBottomWithInset(24)
+        buttonStackView.pinToSuperviewSafeAreaTrailingWithInset(12)
+    }
+
+    /**
+     * Set the nodes materials
+     */
+    @objc private func didTapScene(recognizer: UITapGestureRecognizer) {
+        let sceneView = recognizer.view as! ARSCNView
+        let touchLocation = recognizer.location(in: sceneView)
+
+        // If tapped node, else if tapped space
+        if let result = sceneView.hitTest(touchLocation, options: [:]).first {
+            viewModel.incrimentTextureIndex()
+
+            let node = result.node
+            node.geometry?.materials = viewModel.getTextureForCurrentIndex()
+        } else if let result = sceneView.hitTest(touchLocation, types: .featurePoint).first {
+            // Get position in 3D Space and convert that to a 3 Coordinate vector
+            let position = result.worldTransform.columns.3
+            let float = float3(x: position.x, y: position.y, z: position.z)
+            let vector = SCNVector3Make(float.x, float.y, float.z)
+
+            mainNode.removeFromParentNode()
+            mainNode.position = vector
+            sceneView.scene.rootNode.addChildNode(mainNode)
+        }
+    }
+
+    /**
+     * Rotate the node
+     */
+    @objc private func didPanScene(recognizer: UIPanGestureRecognizer) {
+        let translation = recognizer.translation(in: recognizer.view)
+        var newAngleY = (Float)(translation.x)*(Float)(Double.pi)/180.0
+
+        newAngleY += viewModel.currentAngleY
+        mainNode.eulerAngles.y = newAngleY
+
+        if recognizer.state == .ended {
+            viewModel.currentAngleY = newAngleY
+        }
     }
 
     /**
      * Resize the node to scale with pinch gesture
      */
-    @objc func resizeNode(_ gesture: UIPinchGestureRecognizer) {
+    @objc func didPinchScene(_ gesture: UIPinchGestureRecognizer) {
         var originalScale = mainNode.scale
+        print("did pinch")
 
         switch gesture.state {
         case .began:
@@ -144,35 +226,21 @@ class SingleObjectManipulationViewController: UIViewController, ARSCNViewDelegat
         }
     }
 
-    /**
-     * Set the nodes materials
-     */
-    @objc private func didTapScene(recognizer: UITapGestureRecognizer) {
-        let sceneView = recognizer.view as! ARSCNView
-        let touchLocation = recognizer.location(in: sceneView)
-
-        // If tapped node, else if tapped space
-        if let result = sceneView.hitTest(touchLocation, options: [:]).first {
-            viewModel.incrimentTextureIndex()
-
-            let node = result.node
-            node.geometry?.materials = viewModel.getTextureForCurrentIndex()
-        } else if let result = sceneView.hitTest(touchLocation, types: .featurePoint).first {
-            // Get position in 3D Space and convert that to a 3 Coordinate vector
-            let position = result.worldTransform.columns.3
-            let float = float3(x: position.x, y: position.y, z: position.z)
-            let vector = SCNVector3Make(float.x, float.y, float.z)
-
-            mainNode.removeFromParentNode()
-            mainNode.position = vector
-            sceneView.scene.rootNode.addChildNode(mainNode)
-        }
-    }
-
     @objc private func toggleLighting() {
         viewModel.isLightingActive.toggle()
         toggleLightingButton.text = viewModel.lightingButtonText
         configureLightingForState(viewModel.isLightingActive)
+    }
+
+    @objc private func toggleDebug() {
+        viewModel.isDebugActive.toggle()
+        toggleDebugButton.text = viewModel.debugButtonText
+
+        if sceneView.debugOptions == [] {
+            sceneView.debugOptions = [.showFeaturePoints, .showBoundingBoxes]
+        } else {
+            sceneView.debugOptions = []
+        }
     }
 
     /**
@@ -181,6 +249,15 @@ class SingleObjectManipulationViewController: UIViewController, ARSCNViewDelegat
     private func configureLightingForState(_ isActive: Bool) {
         sceneView.autoenablesDefaultLighting = isActive
         sceneView.automaticallyUpdatesLighting = isActive
+    }
+
+    // MARK: - gestureRecognizer delegate
+
+    /**
+     *  Allow all gestures to happen simultaneously
+     */
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+            return true
     }
 
     // MARK: - ARSCNView delegate

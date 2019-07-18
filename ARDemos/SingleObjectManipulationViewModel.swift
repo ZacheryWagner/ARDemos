@@ -11,13 +11,16 @@ import SceneKit
 
 class SingleObjectManipulationViewModel {
     /// List of cube textures to toggle between
-    var nodeTextures: [[SCNMaterial]] = [[]]
+    private(set) var nodeTextures: [[SCNMaterial]] = [[]]
 
     /// The index representing the current texture on display
-    var textureIndex: Int = 0
+    private var textureIndex: Int = 0
 
     /// Length of a side of the box
-    var boxDimension: CGFloat = 0.05
+    private(set) var boxDimension: CGFloat = 0.05
+
+    /// The current angle of the box
+    var currentAngleY: Float = 0.0
 
     var lightingButtonText: String {
         return isLightingActive ? "Disable Lighting" : "Enable Lighting"
@@ -26,8 +29,15 @@ class SingleObjectManipulationViewModel {
     /// Is the scenekit lighting active
     var isLightingActive = true
 
+    var debugButtonText: String {
+        return isDebugActive ? "Disable Debug" : "Enable Debug"
+    }
+
+    /// Is the scenekit lighting active
+    var isDebugActive = true
+
     /// Color for buttons
-    var buttonColor = UIColor.violet?.withAlphaComponent(0.7)
+    private(set) var buttonColor = UIColor.violet?.withAlphaComponent(0.7)
 
     init() {
         buildTextures()
