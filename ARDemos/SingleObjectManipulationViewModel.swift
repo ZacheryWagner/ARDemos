@@ -26,9 +26,6 @@ class SingleObjectManipulationViewModel {
     /// Is the scenekit lighting active
     var isLightingActive = true
 
-    /// Size for buttons
-    var buttonSize = CGSize(width: 100, height: 50)
-
     /// Color for buttons
     var buttonColor = UIColor.violet?.withAlphaComponent(0.7)
 

@@ -44,7 +44,7 @@ class SingleObjectManipulationViewController: UIViewController, ARSCNViewDelegat
         sceneView.showsStatistics = true
 
         // Setup Gesture recognizers
-        let sceneTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(toggleMaterials))
+        let sceneTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapScene))
         sceneView.addGestureRecognizer(sceneTapGestureRecognizer)
 
         let lightingTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(toggleLighting))
@@ -106,7 +106,6 @@ class SingleObjectManipulationViewController: UIViewController, ARSCNViewDelegat
         toggleLightingButton.pinToSuperviewSafeAreaTrailingWithInset(12)
     }
 
-
     /**
      * Resize the node to scale with pinch gesture
      */
@@ -148,19 +147,25 @@ class SingleObjectManipulationViewController: UIViewController, ARSCNViewDelegat
     /**
      * Set the nodes materials
      */
-    @objc private func toggleMaterials(recognizer: UITapGestureRecognizer) {
+    @objc private func didTapScene(recognizer: UITapGestureRecognizer) {
         let sceneView = recognizer.view as! ARSCNView
         let touchLocation = recognizer.location(in: sceneView)
-        let hitResults = sceneView.hitTest(touchLocation, options: [:])
 
-        // If the node has been touched
-        if !hitResults.isEmpty {
-            guard let hitResult = hitResults.first else { return }
-
+        // If tapped node, else if tapped space
+        if let result = sceneView.hitTest(touchLocation, options: [:]).first {
             viewModel.incrimentTextureIndex()
 
-            let node = hitResult.node
+            let node = result.node
             node.geometry?.materials = viewModel.getTextureForCurrentIndex()
+        } else if let result = sceneView.hitTest(touchLocation, types: .featurePoint).first {
+            // Get position in 3D Space and convert that to a 3 Coordinate vector
+            let position = result.worldTransform.columns.3
+            let float = float3(x: position.x, y: position.y, z: position.z)
+            let vector = SCNVector3Make(float.x, float.y, float.z)
+
+            mainNode.removeFromParentNode()
+            mainNode.position = vector
+            sceneView.scene.rootNode.addChildNode(mainNode)
         }
     }
 
