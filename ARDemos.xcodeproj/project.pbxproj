@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A128F9F322E119CC004A5BF0 /* RocketLaunchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A128F9F222E119CC004A5BF0 /* RocketLaunchViewModel.swift */; };
 		A14F502022DEBE0E003F11A1 /* SingleObjectManipulationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14F501F22DEBE0E003F11A1 /* SingleObjectManipulationViewModel.swift */; };
 		A15DEFFA22E0F38B000FCE0A /* DemoTableVIewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15DEFF922E0F38B000FCE0A /* DemoTableVIewController.swift */; };
 		A15DEFFC22E0F88E000FCE0A /* DemoTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15DEFFB22E0F88E000FCE0A /* DemoTableViewModel.swift */; };
@@ -15,8 +14,13 @@
 		A15DF00922E10868000FCE0A /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = A15DF00722E10868000FCE0A /* spark.png */; };
 		A15DF00A22E10868000FCE0A /* rocketship.scn in Resources */ = {isa = PBXBuildFile; fileRef = A15DF00822E10868000FCE0A /* rocketship.scn */; };
 		A15DF00C22E10873000FCE0A /* reactor.scnp in Resources */ = {isa = PBXBuildFile; fileRef = A15DF00B22E10873000FCE0A /* reactor.scnp */; };
+		A1A98E3B22E21C58006C5829 /* FaceTrackingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A98E3A22E21C58006C5829 /* FaceTrackingViewController.swift */; };
+		A1A98E3D22E22BF2006C5829 /* VirtualContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A98E3C22E22BF2006C5829 /* VirtualContent.swift */; };
+		A1A98E4522E24320006C5829 /* Models.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = A1A98E4022E24320006C5829 /* Models.scnassets */; };
+		A1A98E4722E24320006C5829 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1A98E4222E24320006C5829 /* Assets.xcassets */; };
+		A1A98E4822E24320006C5829 /* VideoTexturedFace.shader in Resources */ = {isa = PBXBuildFile; fileRef = A1A98E4322E24320006C5829 /* VideoTexturedFace.shader */; };
 		A1C9783922DE14F300664B5B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C9783822DE14F300664B5B /* AppDelegate.swift */; };
-		A1C9783B22DE14F300664B5B /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = A1C9783A22DE14F300664B5B /* art.scnassets */; };
+		A1C9783B22DE14F300664B5B /* Assets.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = A1C9783A22DE14F300664B5B /* Assets.scnassets */; };
 		A1C9783D22DE14F300664B5B /* SingleObjectManipulationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C9783C22DE14F300664B5B /* SingleObjectManipulationViewController.swift */; };
 		A1C9784222DE14F500664B5B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1C9784122DE14F500664B5B /* Assets.xcassets */; };
 		A1C9784522DE14F500664B5B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1C9784322DE14F500664B5B /* LaunchScreen.storyboard */; };
@@ -25,17 +29,21 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		A128F9F222E119CC004A5BF0 /* RocketLaunchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RocketLaunchViewModel.swift; sourceTree = "<group>"; };
 		A14F501F22DEBE0E003F11A1 /* SingleObjectManipulationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleObjectManipulationViewModel.swift; sourceTree = "<group>"; };
 		A15DEFF922E0F38B000FCE0A /* DemoTableVIewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoTableVIewController.swift; sourceTree = "<group>"; };
 		A15DEFFB22E0F88E000FCE0A /* DemoTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoTableViewModel.swift; sourceTree = "<group>"; };
-		A15DF00122E10778000FCE0A /* RocketLaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RocketLaunchViewController.swift; sourceTree = "<group>"; };
+		A15DF00122E10778000FCE0A /* RocketLaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RocketLaunchViewController.swift; path = ViewControllers/RocketLaunchViewController.swift; sourceTree = "<group>"; };
 		A15DF00722E10868000FCE0A /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
 		A15DF00822E10868000FCE0A /* rocketship.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = rocketship.scn; sourceTree = "<group>"; };
 		A15DF00B22E10873000FCE0A /* reactor.scnp */ = {isa = PBXFileReference; lastKnownFileType = file.scp; path = reactor.scnp; sourceTree = "<group>"; };
+		A1A98E3A22E21C58006C5829 /* FaceTrackingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceTrackingViewController.swift; sourceTree = "<group>"; };
+		A1A98E3C22E22BF2006C5829 /* VirtualContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualContent.swift; sourceTree = "<group>"; };
+		A1A98E4022E24320006C5829 /* Models.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Models.scnassets; sourceTree = "<group>"; };
+		A1A98E4222E24320006C5829 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A1A98E4322E24320006C5829 /* VideoTexturedFace.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VideoTexturedFace.shader; sourceTree = "<group>"; };
 		A1C9783522DE14F300664B5B /* ARDemos.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARDemos.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1C9783822DE14F300664B5B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		A1C9783A22DE14F300664B5B /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
+		A1C9783A22DE14F300664B5B /* Assets.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Assets.scnassets; sourceTree = "<group>"; };
 		A1C9783C22DE14F300664B5B /* SingleObjectManipulationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleObjectManipulationViewController.swift; sourceTree = "<group>"; };
 		A1C9784122DE14F500664B5B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A1C9784422DE14F500664B5B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -55,31 +63,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A128F9F422E21831004A5BF0 /* Face Tracking */ = {
+			isa = PBXGroup;
+			children = (
+				A1A98E3F22E24320006C5829 /* Resources */,
+				A1A98E3A22E21C58006C5829 /* FaceTrackingViewController.swift */,
+				A1A98E3C22E22BF2006C5829 /* VirtualContent.swift */,
+			);
+			path = "Face Tracking";
+			sourceTree = "<group>";
+		};
 		A15DEFFE22E1026A000FCE0A /* Demos */ = {
 			isa = PBXGroup;
 			children = (
-				A15DEFFF22E102AE000FCE0A /* ViewControllers */,
-				A15DF00022E102C1000FCE0A /* ViewModels */,
+				A15DF00122E10778000FCE0A /* RocketLaunchViewController.swift */,
+				A1A98E4A22E2437A006C5829 /* Single Object Manipulation */,
+				A128F9F422E21831004A5BF0 /* Face Tracking */,
 			);
 			path = Demos;
-			sourceTree = "<group>";
-		};
-		A15DEFFF22E102AE000FCE0A /* ViewControllers */ = {
-			isa = PBXGroup;
-			children = (
-				A1C9783C22DE14F300664B5B /* SingleObjectManipulationViewController.swift */,
-				A15DF00122E10778000FCE0A /* RocketLaunchViewController.swift */,
-			);
-			path = ViewControllers;
-			sourceTree = "<group>";
-		};
-		A15DF00022E102C1000FCE0A /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-				A14F501F22DEBE0E003F11A1 /* SingleObjectManipulationViewModel.swift */,
-				A128F9F222E119CC004A5BF0 /* RocketLaunchViewModel.swift */,
-			);
-			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		A15DF00522E107CE000FCE0A /* Models */ = {
@@ -97,6 +98,27 @@
 				A15DF00722E10868000FCE0A /* spark.png */,
 			);
 			path = Particles;
+			sourceTree = "<group>";
+		};
+		A1A98E3F22E24320006C5829 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A1A98E4022E24320006C5829 /* Models.scnassets */,
+				A1A98E4222E24320006C5829 /* Assets.xcassets */,
+				A1A98E4322E24320006C5829 /* VideoTexturedFace.shader */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		A1A98E4A22E2437A006C5829 /* Single Object Manipulation */ = {
+			isa = PBXGroup;
+			children = (
+				A15DF00622E107D9000FCE0A /* Particles */,
+				A15DF00522E107CE000FCE0A /* Models */,
+				A1C9783C22DE14F300664B5B /* SingleObjectManipulationViewController.swift */,
+				A14F501F22DEBE0E003F11A1 /* SingleObjectManipulationViewModel.swift */,
+			);
+			path = "Single Object Manipulation";
 			sourceTree = "<group>";
 		};
 		A1C9782C22DE14F300664B5B = {
@@ -121,9 +143,7 @@
 		A1C9783722DE14F300664B5B /* ARDemos */ = {
 			isa = PBXGroup;
 			children = (
-				A15DF00622E107D9000FCE0A /* Particles */,
-				A15DF00522E107CE000FCE0A /* Models */,
-				A1C9783A22DE14F300664B5B /* art.scnassets */,
+				A1C9783A22DE14F300664B5B /* Assets.scnassets */,
 				A1C9784322DE14F500664B5B /* LaunchScreen.storyboard */,
 				A1C9783822DE14F300664B5B /* AppDelegate.swift */,
 				A15DEFF922E0F38B000FCE0A /* DemoTableVIewController.swift */,
@@ -200,12 +220,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1A98E4822E24320006C5829 /* VideoTexturedFace.shader in Resources */,
 				A15DF00C22E10873000FCE0A /* reactor.scnp in Resources */,
-				A1C9783B22DE14F300664B5B /* art.scnassets in Resources */,
+				A1C9783B22DE14F300664B5B /* Assets.scnassets in Resources */,
 				A15DF00922E10868000FCE0A /* spark.png in Resources */,
 				A1C9784522DE14F500664B5B /* LaunchScreen.storyboard in Resources */,
 				A1C9784222DE14F500664B5B /* Assets.xcassets in Resources */,
 				A15DF00A22E10868000FCE0A /* rocketship.scn in Resources */,
+				A1A98E4722E24320006C5829 /* Assets.xcassets in Resources */,
+				A1A98E4522E24320006C5829 /* Models.scnassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -217,12 +240,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				A1C9783D22DE14F300664B5B /* SingleObjectManipulationViewController.swift in Sources */,
+				A1A98E3D22E22BF2006C5829 /* VirtualContent.swift in Sources */,
+				A1A98E3B22E21C58006C5829 /* FaceTrackingViewController.swift in Sources */,
 				A1C9785022DE1D5A00664B5B /* UIView.swift in Sources */,
 				A15DF00222E10778000FCE0A /* RocketLaunchViewController.swift in Sources */,
 				A14F502022DEBE0E003F11A1 /* SingleObjectManipulationViewModel.swift in Sources */,
 				A15DEFFC22E0F88E000FCE0A /* DemoTableViewModel.swift in Sources */,
 				A1C9783922DE14F300664B5B /* AppDelegate.swift in Sources */,
-				A128F9F322E119CC004A5BF0 /* RocketLaunchViewModel.swift in Sources */,
 				A15DEFFA22E0F38B000FCE0A /* DemoTableVIewController.swift in Sources */,
 				A1C9785422DE1E6F00664B5B /* UIColor.swift in Sources */,
 			);
