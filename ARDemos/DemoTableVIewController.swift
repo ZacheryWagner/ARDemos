@@ -45,14 +45,15 @@ class DemoTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
 
-        let vm = viewModel.getViewModelForRowAtIndexPath(indexPath.row)
-
-        if let vm = vm as? SingleObjectManipulationViewModel {
+        if indexPath.row == 0 {
+            let vm = SingleObjectManipulationViewModel()
             let vc = SingleObjectManipulationViewController(viewModel: vm)
             navigationController?.pushViewController(vc, animated: true)
-        } else if let vm = vm as? RocketLaunchViewModel {
-            let vc = RocketLaunchViewController(viewModel: vm)
+        } else if indexPath.row == 1 {
+            let vc = RocketLaunchViewController()
             navigationController?.pushViewController(vc, animated: true)
+        } else if indexPath.row == 2 {
+            // Push it
         }
     }
 }

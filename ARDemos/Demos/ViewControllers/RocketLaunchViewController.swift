@@ -14,10 +14,9 @@ class RocketLaunchViewController: UIViewController, ARSCNViewDelegate {
 
     private var planeNodes = [SCNNode]()
 
-    private var viewModel: RocketLaunchViewModel
+    private var rocketNodeName = "rocket"
 
-    init(viewModel: RocketLaunchViewModel) {
-        self.viewModel = viewModel
+    init() {
         super.init(nibName: nil, bundle: nil)
 
         sceneView.delegate = self
@@ -27,7 +26,7 @@ class RocketLaunchViewController: UIViewController, ARSCNViewDelegate {
 
         sceneView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(sceneView)
-        sceneView.pinToSuperviewSafeArea()
+        sceneView.pinToSuperview()
 
         setupGestureRecognizers()
     }
@@ -89,7 +88,7 @@ class RocketLaunchViewController: UIViewController, ARSCNViewDelegate {
         // Attach physics body to rocketship node
         let physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
         rocketshipNode.physicsBody = physicsBody
-        rocketshipNode.name = viewModel.rocketshipNodeName
+        rocketshipNode.name = rocketNodeName
 
         sceneView.scene.rootNode.addChildNode(rocketshipNode)
 
@@ -99,12 +98,21 @@ class RocketLaunchViewController: UIViewController, ARSCNViewDelegate {
      * Apply the force to the rocketship
      */
     @objc private func didSwipeDownScene(_ recognizer: UISwipeGestureRecognizer) {
-        guard recognizer.state == .ended else { return }
-
         let swipeLocation = recognizer.location(in: sceneView)
         guard let rocketshipNode = getRocketshipNode(from: swipeLocation),
             let physicsBody = rocketshipNode.physicsBody
             else { return }
+
+//        switch recognizer.state {
+//        case .began:
+//            let startLocation =
+//        case .changed:
+//
+//        case .ended:
+//
+//        default:
+//
+//        }
 
         let direction = SCNVector3(0, 3, 0)
         physicsBody.applyForce(direction, asImpulse: true)
@@ -132,8 +140,7 @@ class RocketLaunchViewController: UIViewController, ARSCNViewDelegate {
 
         engineNode.addParticleSystem(reactorParticleSystem)
 
-        // Launch
-        let action = SCNAction.moveBy(x: 0, y: 0.3, z: 0, duration: 3)
+        let action = SCNAction.moveBy(x: 0, y: 0.3, z: 0, duration: 5)
         action.timingMode = .easeInEaseOut
         rocketshipNode.runAction(action)
     }
@@ -141,7 +148,7 @@ class RocketLaunchViewController: UIViewController, ARSCNViewDelegate {
     func getRocketshipNode(from swipeLocation: CGPoint) -> SCNNode? {
         let hitTestResults = sceneView.hitTest(swipeLocation)
         guard let parentNode = hitTestResults.first?.node.parent,
-            parentNode.name == viewModel.rocketshipNodeName
+            parentNode.name == rocketNodeName
             else { return nil }
 
         return parentNode
@@ -150,24 +157,26 @@ class RocketLaunchViewController: UIViewController, ARSCNViewDelegate {
     // MARK: - ARSCNView delegate
 
     /**
-     * Update the plane geometry, physics, position, and pitch
+     * Set the plane geometry, physics, position, and pitch
      */
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
 
-        // Get the plane and make it visable
+        // Create the the plane
         let width = CGFloat(planeAnchor.extent.x)
         let height = CGFloat(planeAnchor.extent.z)
         let plane = SCNPlane(width: width, height: height)
-        plane.materials.first?.diffuse.contents = UIColor.white.withAlphaComponent(0.7)
+        plane.materials.first?.diffuse.contents = UIColor.white.withAlphaComponent(0.3)
 
         var planeNode = SCNNode(geometry: plane)
 
-        // Set position and pitch
+        // Set position of the plane
         let x = CGFloat(planeAnchor.center.x)
         let y = CGFloat(planeAnchor.center.y)
         let z = CGFloat(planeAnchor.center.z)
         planeNode.position = SCNVector3(x,y,z)
+
+        // Make the plane parallel to the floor (flat)
         planeNode.eulerAngles.x = -.pi / 2
 
         applyGeometryAndPhysicsToNode(&planeNode, withGeometry: plane, physicsType: .static)
