@@ -53,7 +53,8 @@ class DemoTableViewController: UITableViewController {
             let vc = RocketLaunchViewController()
             navigationController?.pushViewController(vc, animated: true)
         } else if indexPath.row == 2 {
-            // Push it
+            let vc = FaceTrackingViewController()
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
 }
