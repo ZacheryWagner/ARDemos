@@ -33,7 +33,9 @@ class BlendShapeCharacter: NSObject, VirtualContentController {
         return contentNode
     }
     
-    /// - Tag: BlendShapeAnimation
+    /**
+     * Blend the robohead into the face for blinking and jaw moevement
+     */
     func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
         guard let faceAnchor = anchor as? ARFaceAnchor
             else { return }
