@@ -48,6 +48,9 @@ class FaceTrackingViewController: UIViewController, ARSessionDelegate, ARSCNView
     init() {
         super.init(nibName: nil, bundle: nil)
 
+        buildTabs()
+        tabBar.delegate = self
+
         sceneView.delegate = self
         sceneView.session.delegate = self
         sceneView.automaticallyUpdatesLighting = true
@@ -70,7 +73,7 @@ class FaceTrackingViewController: UIViewController, ARSessionDelegate, ARSCNView
 
         // Set the initial tab
         tabBar.selectedItem = tabBar.items!.first!
-        //selectedVirtualContent = VirtualContentType(rawValue: tabBar.selectedItem!.tag)
+        selectedVirtualContent = VirtualContentType(rawValue: tabBar.selectedItem!.tag)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -82,6 +85,17 @@ class FaceTrackingViewController: UIViewController, ARSessionDelegate, ARSCNView
 
         // "Reset" to run the AR session for the first time.
         resetTracking()
+    }
+
+    private func buildTabs() {
+        var tabBarItems: [UITabBarItem] = []
+        tabBarItems.append(UITabBarItem(title: "Transform", image: UIImage(named: "transform"), tag: 0))
+        tabBarItems.append(UITabBarItem(title: "Texture", image: UIImage(named: "texture"), tag: 1))
+        tabBarItems.append(UITabBarItem(title: "3D Overlay", image: UIImage(named: "geometry"), tag: 2))
+        tabBarItems.append(UITabBarItem(title: "Video Texture", image: UIImage(named: "videoTexture"), tag: 3))
+        tabBarItems.append(UITabBarItem(title: "Blend Shapes", image: UIImage(named: "blendShapes"), tag: 4))
+
+        tabBar.items = tabBarItems
     }
 
     private func initConstraints() {
@@ -160,8 +174,8 @@ class FaceTrackingViewController: UIViewController, ARSessionDelegate, ARSCNView
 
 extension FaceTrackingViewController: UITabBarDelegate {
     func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-//        guard let contentType = VirtualContentType(rawValue: item.tag)
-//            else { fatalError("unexpected virtual content tag") }
-//        selectedVirtualContent = contentType
+        guard let contentType = VirtualContentType(rawValue: item.tag)
+            else { fatalError("unexpected virtual content tag") }
+        selectedVirtualContent = contentType
     }
 }
