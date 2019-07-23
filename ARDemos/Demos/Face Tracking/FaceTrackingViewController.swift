@@ -17,6 +17,9 @@ class FaceTrackingViewController: UIViewController, ARSessionDelegate, ARSCNView
 
     var contentControllers: [VirtualContentType: VirtualContentController] = [:]
 
+    /// For dismissing the view controller
+    var edgeSwipeGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: nil, action: nil)
+
     var selectedVirtualContent: VirtualContentType! {
         didSet {
             guard oldValue != nil, oldValue != selectedVirtualContent
@@ -49,11 +52,17 @@ class FaceTrackingViewController: UIViewController, ARSessionDelegate, ARSCNView
         super.init(nibName: nil, bundle: nil)
 
         buildTabs()
+        tabBar.barStyle = .black
+        tabBar.isTranslucent = true
         tabBar.delegate = self
 
         sceneView.delegate = self
         sceneView.session.delegate = self
         sceneView.automaticallyUpdatesLighting = true
+
+        edgeSwipeGestureRecognizer.addTarget(self, action: #selector(didSwipeFromEdge))
+        edgeSwipeGestureRecognizer.edges = .left
+        sceneView.addGestureRecognizer(edgeSwipeGestureRecognizer)
 
         sceneView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(sceneView)
@@ -89,7 +98,7 @@ class FaceTrackingViewController: UIViewController, ARSessionDelegate, ARSCNView
 
     private func buildTabs() {
         var tabBarItems: [UITabBarItem] = []
-        tabBarItems.append(UITabBarItem(title: "Transform", image: UIImage(named: "transform"), tag: 0))
+        tabBarItems.append(UITabBarItem(title: "Transform", image: UIImage(named: "transforms"), tag: 0))
         tabBarItems.append(UITabBarItem(title: "Texture", image: UIImage(named: "texture"), tag: 1))
         tabBarItems.append(UITabBarItem(title: "3D Overlay", image: UIImage(named: "geometry"), tag: 2))
         tabBarItems.append(UITabBarItem(title: "Video Texture", image: UIImage(named: "videoTexture"), tag: 3))
@@ -108,6 +117,12 @@ class FaceTrackingViewController: UIViewController, ARSessionDelegate, ARSCNView
         tabBar.pinToSuperviewLeading()
         tabBar.pinToSuperviewTrailing()
         tabBar.pinToSuperviewSafeAreaBottom()
+    }
+
+    @objc private func didSwipeFromEdge(_ recognizer: UIScreenEdgePanGestureRecognizer) {
+        if recognizer.state == .ended {
+            navigationController?.popViewController(animated: true)
+        }
     }
 
     // MARK: - ARSCNViewDelegate

@@ -83,9 +83,9 @@
 				A1A98E3C22E22BF2006C5829 /* VirtualContent.swift */,
 				A1B0663222E62702004C5202 /* BlendShapeCharacter.swift */,
 				A1B0663422E62702004C5202 /* FaceOcclusionOverlay.swift */,
-				A1B0663122E62702004C5202 /* TexturedFace.swift */,
 				A1B0663322E62702004C5202 /* TransformVisualization.swift */,
 				A1B0663522E62702004C5202 /* VideoTexturedFace.swift */,
+				A1B0663122E62702004C5202 /* TexturedFace.swift */,
 			);
 			path = "Face Tracking";
 			sourceTree = "<group>";

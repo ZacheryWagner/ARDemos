@@ -41,6 +41,9 @@ class SingleObjectManipulationViewController: UIViewController, ARSCNViewDelegat
     /// For resizing the node
     var scenePinchGestureRecognizer = UIPinchGestureRecognizer(target: nil, action: nil)
 
+    /// For dismissing the view controller
+    var edgeSwipeGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: nil, action: nil)
+
     private var viewModel: SingleObjectManipulationViewModel
 
     init(viewModel: SingleObjectManipulationViewModel) {
@@ -122,9 +125,14 @@ class SingleObjectManipulationViewController: UIViewController, ARSCNViewDelegat
         scenePinchGestureRecognizer.addTarget(self, action: #selector(didPinchScene))
         sceneView.addGestureRecognizer(scenePinchGestureRecognizer)
 
+        edgeSwipeGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(didSwipeFromEdge))
+        edgeSwipeGestureRecognizer.edges = .left
+        sceneView.addGestureRecognizer(edgeSwipeGestureRecognizer)
+
         sceneTapGestureRecognizer.delegate = self
         scenePanGestureRecognizer.delegate = self
         scenePinchGestureRecognizer.delegate = self
+        edgeSwipeGestureRecognizer.delegate = self
 
         let lightingTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(toggleLighting))
         toggleLightingButton.addGestureRecognizer(lightingTapGestureRecognizer)
@@ -219,6 +227,12 @@ class SingleObjectManipulationViewController: UIViewController, ARSCNViewDelegat
             gesture.scale = CGFloat(mainNode.scale.x)
         default:
             gesture.scale = 1.0
+        }
+    }
+
+    @objc private func didSwipeFromEdge(_ recognizer: UIScreenEdgePanGestureRecognizer) {
+        if recognizer.state == .ended {
+            navigationController?.popViewController(animated: true)
         }
     }
 

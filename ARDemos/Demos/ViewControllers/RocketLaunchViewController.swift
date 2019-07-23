@@ -55,13 +55,16 @@ class RocketLaunchViewController: UIViewController, ARSCNViewDelegate {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapScene))
         let swipeDownGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(didSwipeDownScene))
         let swipeUpGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(didSwipeUpScene))
+        let edgeSwipeGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(didSwipeFromEdge))
 
         swipeDownGestureRecognizer.direction = .down
         swipeUpGestureRecognizer.direction = .up
+        edgeSwipeGestureRecognizer.edges = .left
 
         sceneView.addGestureRecognizer(tapGestureRecognizer)
         sceneView.addGestureRecognizer(swipeDownGestureRecognizer)
         sceneView.addGestureRecognizer(swipeUpGestureRecognizer)
+        sceneView.addGestureRecognizer(edgeSwipeGestureRecognizer)
     }
 
     /**
@@ -143,6 +146,12 @@ class RocketLaunchViewController: UIViewController, ARSCNViewDelegate {
         let action = SCNAction.moveBy(x: 0, y: 0.3, z: 0, duration: 5)
         action.timingMode = .easeInEaseOut
         rocketshipNode.runAction(action)
+    }
+
+    @objc private func didSwipeFromEdge(_ recognizer: UIScreenEdgePanGestureRecognizer) {
+        if recognizer.state == .ended {
+            navigationController?.popViewController(animated: true)
+        }
     }
 
     func getRocketshipNode(from swipeLocation: CGPoint) -> SCNNode? {
