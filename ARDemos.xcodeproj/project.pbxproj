@@ -32,6 +32,9 @@
 		A1C9784522DE14F500664B5B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1C9784322DE14F500664B5B /* LaunchScreen.storyboard */; };
 		A1C9785022DE1D5A00664B5B /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C9784F22DE1D5A00664B5B /* UIView.swift */; };
 		A1C9785422DE1E6F00664B5B /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C9785322DE1E6F00664B5B /* UIColor.swift */; };
+		A1E100B622EF6A9C0091AE58 /* StickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E100B522EF6A9C0091AE58 /* StickerViewController.swift */; };
+		A1F7E59322E7A434009DE89A /* PhysicsSandboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F7E59222E7A434009DE89A /* PhysicsSandboxViewController.swift */; };
+		A1F7E59522E7A47B009DE89A /* PhysicsSandboxViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F7E59422E7A47B009DE89A /* PhysicsSandboxViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +65,9 @@
 		A1C9784622DE14F500664B5B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A1C9784F22DE1D5A00664B5B /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		A1C9785322DE1E6F00664B5B /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		A1E100B522EF6A9C0091AE58 /* StickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerViewController.swift; sourceTree = "<group>"; };
+		A1F7E59222E7A434009DE89A /* PhysicsSandboxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsSandboxViewController.swift; sourceTree = "<group>"; };
+		A1F7E59422E7A47B009DE89A /* PhysicsSandboxViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsSandboxViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,7 +101,9 @@
 			children = (
 				A15DF00122E10778000FCE0A /* RocketLaunchViewController.swift */,
 				A1A98E4A22E2437A006C5829 /* Single Object Manipulation */,
+				A1F7E58F22E7A358009DE89A /* Physics Sandbox */,
 				A128F9F422E21831004A5BF0 /* Face Tracking */,
+				A1E100B322EF6A3D0091AE58 /* Stickers */,
 			);
 			path = Demos;
 			sourceTree = "<group>";
@@ -180,6 +188,23 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		A1E100B322EF6A3D0091AE58 /* Stickers */ = {
+			isa = PBXGroup;
+			children = (
+				A1E100B522EF6A9C0091AE58 /* StickerViewController.swift */,
+			);
+			path = Stickers;
+			sourceTree = "<group>";
+		};
+		A1F7E58F22E7A358009DE89A /* Physics Sandbox */ = {
+			isa = PBXGroup;
+			children = (
+				A1F7E59222E7A434009DE89A /* PhysicsSandboxViewController.swift */,
+				A1F7E59422E7A47B009DE89A /* PhysicsSandboxViewModel.swift */,
+			);
+			path = "Physics Sandbox";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -260,6 +285,7 @@
 				A1A98E3D22E22BF2006C5829 /* VirtualContent.swift in Sources */,
 				A1B0663822E62702004C5202 /* TransformVisualization.swift in Sources */,
 				A1A98E3B22E21C58006C5829 /* FaceTrackingViewController.swift in Sources */,
+				A1F7E59322E7A434009DE89A /* PhysicsSandboxViewController.swift in Sources */,
 				A1C9785022DE1D5A00664B5B /* UIView.swift in Sources */,
 				A15DF00222E10778000FCE0A /* RocketLaunchViewController.swift in Sources */,
 				A1B0663622E62702004C5202 /* TexturedFace.swift in Sources */,
@@ -268,6 +294,8 @@
 				A15DEFFC22E0F88E000FCE0A /* DemoTableViewModel.swift in Sources */,
 				A1C9783922DE14F300664B5B /* AppDelegate.swift in Sources */,
 				A1B0663A22E62702004C5202 /* VideoTexturedFace.swift in Sources */,
+				A1F7E59522E7A47B009DE89A /* PhysicsSandboxViewModel.swift in Sources */,
+				A1E100B622EF6A9C0091AE58 /* StickerViewController.swift in Sources */,
 				A15DEFFA22E0F38B000FCE0A /* DemoTableVIewController.swift in Sources */,
 				A1C9785422DE1E6F00664B5B /* UIColor.swift in Sources */,
 				A1B0663722E62702004C5202 /* BlendShapeCharacter.swift in Sources */,
