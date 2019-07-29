@@ -53,8 +53,8 @@ class RocketLaunchViewController: UIViewController, ARSCNViewDelegate {
 
     private func setupGestureRecognizers() {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapScene))
-        let swipeDownGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(didSwipeDownScene))
-        let swipeUpGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(didSwipeUpScene))
+        let swipeDownGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(applyForceToRocketship))
+        let swipeUpGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(launchRocketship))
         let edgeSwipeGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(didSwipeFromEdge))
 
         swipeDownGestureRecognizer.direction = .down
@@ -94,40 +94,30 @@ class RocketLaunchViewController: UIViewController, ARSCNViewDelegate {
         rocketshipNode.name = rocketNodeName
 
         sceneView.scene.rootNode.addChildNode(rocketshipNode)
-
     }
 
     /**
-     * Apply the force to the rocketship
+     * Swipe Up
      */
-    @objc private func didSwipeDownScene(_ recognizer: UISwipeGestureRecognizer) {
+    @objc func applyForceToRocketship(withGestureRecognizer recognizer: UIGestureRecognizer) {
+        // 1
+        guard recognizer.state == .ended else { return }
+        // 2
         let swipeLocation = recognizer.location(in: sceneView)
+        // 3
         guard let rocketshipNode = getRocketshipNode(from: swipeLocation),
             let physicsBody = rocketshipNode.physicsBody
             else { return }
-
-//        switch recognizer.state {
-//        case .began:
-//            let startLocation =
-//        case .changed:
-//
-//        case .ended:
-//
-//        default:
-//
-//        }
-
+        // 4
         let direction = SCNVector3(0, 3, 0)
         physicsBody.applyForce(direction, asImpulse: true)
     }
 
     /**
-     * Launch the rocketship
+     * Swipe Down
      */
-    @objc private func didSwipeUpScene(_ recognizer: UISwipeGestureRecognizer) {
+    @objc func launchRocketship(withGestureRecognizer recognizer: UIGestureRecognizer) {
         guard recognizer.state == .ended else { return }
-
-        // Set particles to engine of the rocketship
         let swipeLocation = recognizer.location(in: sceneView)
         guard let rocketshipNode = getRocketshipNode(from: swipeLocation),
             let physicsBody = rocketshipNode.physicsBody,
@@ -137,13 +127,9 @@ class RocketLaunchViewController: UIViewController, ARSCNViewDelegate {
 
         physicsBody.isAffectedByGravity = false
         physicsBody.damping = 0
-
-        // Make the particles collide with the plane
         reactorParticleSystem.colliderNodes = planeNodes
-
         engineNode.addParticleSystem(reactorParticleSystem)
-
-        let action = SCNAction.moveBy(x: 0, y: 0.3, z: 0, duration: 5)
+        let action = SCNAction.moveBy(x: 0, y: 0.3, z: 0, duration: 3)
         action.timingMode = .easeInEaseOut
         rocketshipNode.runAction(action)
     }

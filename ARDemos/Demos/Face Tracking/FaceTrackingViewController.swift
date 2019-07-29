@@ -36,6 +36,7 @@ class FaceTrackingViewController: UIViewController, ARSessionDelegate, ARSCNView
             }
         }
     }
+
     var selectedContentController: VirtualContentController {
         if let controller = contentControllers[selectedVirtualContent] {
             return controller
