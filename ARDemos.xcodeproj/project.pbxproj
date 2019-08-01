@@ -127,8 +127,7 @@
 				A1A98E4222E24320006C5829 /* Assets.xcassets */,
 				A1A98E4322E24320006C5829 /* VideoTexturedFace.shader */,
 			);
-			name = Resources;
-			path = "ARDemos/Demos/Face Tracking/Resources";
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		A1A98E4A22E2437A006C5829 /* Single Object Manipulation */ = {
