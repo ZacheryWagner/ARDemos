@@ -15,15 +15,16 @@ class StickerViewController: UIViewController, ARSessionDelegate, ARSCNViewDeleg
     var sceneView = ARSCNView()
 
     // The node with the face and the sticker
-    var contentNode = SCNNode()
+    var contentNode: SCNNode?
 
     /// The node with the face geometry
-    var occlusionNode = SCNNode()
+    var occlusionNode: SCNNode?
 
     // THe node for the sticker
     var stickerNode: SCNNode?
 
-    var currentFaceAnchor: ARFaceAnchor?
+    /// For swapping textures and moving the node to the tap location
+    var sceneTapGestureRecognizer = UITapGestureRecognizer(target: nil, action: nil)
 
     /// For dismissing the view controller
     var edgeSwipeGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: nil, action: nil)
@@ -34,6 +35,9 @@ class StickerViewController: UIViewController, ARSessionDelegate, ARSCNViewDeleg
         sceneView.delegate = self
         sceneView.session.delegate = self
         sceneView.automaticallyUpdatesLighting = true
+
+        sceneTapGestureRecognizer.addTarget(self, action: #selector(didTapScene))
+        sceneView.addGestureRecognizer(sceneTapGestureRecognizer)
 
         edgeSwipeGestureRecognizer.addTarget(self, action: #selector(didSwipeFromEdge))
         edgeSwipeGestureRecognizer.edges = .left
@@ -68,6 +72,29 @@ class StickerViewController: UIViewController, ARSessionDelegate, ARSCNViewDeleg
         sceneView.pinToSuperview()
     }
 
+    /**
+     *
+     */
+    @objc private func didTapScene(recognizer: UITapGestureRecognizer) {
+        guard let sceneView = recognizer.view as? ARSCNView,
+            let contentNode = contentNode
+            else { return }
+
+        let touchLocation = recognizer.location(in: sceneView)
+
+        // If tapped face, else if tapped stickers
+        if let result = sceneView.hitTest(touchLocation, options: [:]).first {
+            stickerNode = SCNReferenceNode(named: "letterD")
+            if let node = stickerNode {
+                node.position = result.localCoordinates
+                contentNode.addChildNode(node)
+            }
+        }
+    }
+
+    /**
+     * Dismiss view controller on swipe right from edge
+     */
     @objc private func didSwipeFromEdge(_ recognizer: UIScreenEdgePanGestureRecognizer) {
         if recognizer.state == .ended {
             navigationController?.popViewController(animated: true)
@@ -80,36 +107,40 @@ class StickerViewController: UIViewController, ARSessionDelegate, ARSCNViewDeleg
      * Called when any node has been added to the anchor
      */
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
-        guard let faceAnchor = anchor as? ARFaceAnchor,
+        guard anchor is ARFaceAnchor,
             let device = sceneView.device
             else { return }
 
-        currentFaceAnchor = faceAnchor
+        let faceGeometry = ARSCNFaceGeometry(device: device)
+        if let faceGeometry = faceGeometry, let material = faceGeometry.firstMaterial {
+            // Write depth but not color
+            material.colorBufferWriteMask = []
 
-        /*
-         Write depth but not color and render before other objects.
-         This causes the geometry to occlude other SceneKit content
-         while showing the camera view beneath, creating the illusion
-         that real-world objects are obscuring virtual 3D objects.
-         */
-        let faceGeometry = ARSCNFaceGeometry(device: device)!
-        faceGeometry.firstMaterial!.colorBufferWriteMask = []
-        occlusionNode = SCNNode(geometry: faceGeometry)
-        occlusionNode.renderingOrder = -1
+            // Assign texture map
+            material.diffuse.contents = SKTexture(imageNamed: "wireframeTexture")
+            material.lightingModel = .physicallyBased
 
-        // Add the occlusion node to the scene
-        contentNode = SCNNode()
-        contentNode.addChildNode(occlusionNode)
-        node.addChildNode(contentNode)
+            // Render before other objects to provide allusion of occlusion
+            occlusionNode = SCNNode(geometry: faceGeometry)
+            occlusionNode!.renderingOrder = -1
+
+            // Add the occlusion node to the scene
+            contentNode = SCNNode()
+            contentNode!.addChildNode(occlusionNode!)
+            sceneView.scene.rootNode.addChildNode(node)
+            node.addChildNode(contentNode!)
+        }
     }
 
     func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
-        guard let faceGeometry = occlusionNode.geometry as? ARSCNFaceGeometry,
+        guard let faceGeometry = occlusionNode?.geometry as? ARSCNFaceGeometry,
             let faceAnchor = anchor as? ARFaceAnchor
             else { return }
 
         faceGeometry.update(from: faceAnchor.geometry)
     }
+
+
 
     // MARK: - ARSessionDelegate
 
