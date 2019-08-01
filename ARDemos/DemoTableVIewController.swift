@@ -45,16 +45,22 @@ class DemoTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
 
-        if indexPath.row == 0 {
+        switch indexPath.row {
+        case 0:
             let vm = SingleObjectManipulationViewModel()
             let vc = SingleObjectManipulationViewController(viewModel: vm)
             navigationController?.pushViewController(vc, animated: true)
-        } else if indexPath.row == 1 {
+        case 1:
             let vc = RocketLaunchViewController()
             navigationController?.pushViewController(vc, animated: true)
-        } else if indexPath.row == 2 {
+        case 2:
             let vc = FaceTrackingViewController()
             navigationController?.pushViewController(vc, animated: true)
+        case 3:
+            let vc = StickerViewController()
+            navigationController?.pushViewController(vc, animated: true)
+        default:
+            print("There was an indexing error in the `DemoTableViewController`")
         }
     }
 }
