@@ -39,5 +39,4 @@ class TexturedFace: NSObject, VirtualContentController {
         
         faceGeometry.update(from: faceAnchor.geometry)
     }
-
 }

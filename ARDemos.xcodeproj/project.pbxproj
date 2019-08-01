@@ -28,8 +28,6 @@
 		A1B0663E22E62851004C5202 /* SCNReferenceNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B0663D22E62851004C5202 /* SCNReferenceNode.swift */; };
 		A1C9783922DE14F300664B5B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C9783822DE14F300664B5B /* AppDelegate.swift */; };
 		A1C9783D22DE14F300664B5B /* SingleObjectManipulationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C9783C22DE14F300664B5B /* SingleObjectManipulationViewController.swift */; };
-		A1C9784222DE14F500664B5B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1C9784122DE14F500664B5B /* Assets.xcassets */; };
-		A1C9784522DE14F500664B5B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1C9784322DE14F500664B5B /* LaunchScreen.storyboard */; };
 		A1C9785022DE1D5A00664B5B /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C9784F22DE1D5A00664B5B /* UIView.swift */; };
 		A1C9785422DE1E6F00664B5B /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C9785322DE1E6F00664B5B /* UIColor.swift */; };
 		A1E100B622EF6A9C0091AE58 /* StickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E100B522EF6A9C0091AE58 /* StickerViewController.swift */; };
@@ -60,8 +58,6 @@
 		A1C9783522DE14F300664B5B /* ARDemos.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARDemos.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1C9783822DE14F300664B5B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A1C9783C22DE14F300664B5B /* SingleObjectManipulationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleObjectManipulationViewController.swift; sourceTree = "<group>"; };
-		A1C9784122DE14F500664B5B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		A1C9784422DE14F500664B5B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A1C9784622DE14F500664B5B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A1C9784F22DE1D5A00664B5B /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		A1C9785322DE1E6F00664B5B /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
@@ -84,7 +80,6 @@
 		A128F9F422E21831004A5BF0 /* Face Tracking */ = {
 			isa = PBXGroup;
 			children = (
-				A1A98E3F22E24320006C5829 /* Resources */,
 				A1A98E3A22E21C58006C5829 /* FaceTrackingViewController.swift */,
 				A1A98E3C22E22BF2006C5829 /* VirtualContent.swift */,
 				A1B0663222E62702004C5202 /* BlendShapeCharacter.swift */,
@@ -132,7 +127,8 @@
 				A1A98E4222E24320006C5829 /* Assets.xcassets */,
 				A1A98E4322E24320006C5829 /* VideoTexturedFace.shader */,
 			);
-			path = Resources;
+			name = Resources;
+			path = "ARDemos/Demos/Face Tracking/Resources";
 			sourceTree = "<group>";
 		};
 		A1A98E4A22E2437A006C5829 /* Single Object Manipulation */ = {
@@ -149,9 +145,9 @@
 		A1C9782C22DE14F300664B5B = {
 			isa = PBXGroup;
 			children = (
-				A1C9784122DE14F500664B5B /* Assets.xcassets */,
 				A1C9784622DE14F500664B5B /* Info.plist */,
 				A1C9783722DE14F300664B5B /* ARDemos */,
+				A1A98E3F22E24320006C5829 /* Resources */,
 				A1C9784E22DE1D3B00664B5B /* Extensions */,
 				A1C9783622DE14F300664B5B /* Products */,
 			);
@@ -168,7 +164,6 @@
 		A1C9783722DE14F300664B5B /* ARDemos */ = {
 			isa = PBXGroup;
 			children = (
-				A1C9784322DE14F500664B5B /* LaunchScreen.storyboard */,
 				A1C9783822DE14F300664B5B /* AppDelegate.swift */,
 				A15DEFF922E0F38B000FCE0A /* DemoTableVIewController.swift */,
 				A15DEFFB22E0F88E000FCE0A /* DemoTableViewModel.swift */,
@@ -266,8 +261,6 @@
 				A1A98E4822E24320006C5829 /* VideoTexturedFace.shader in Resources */,
 				A15DF00C22E10873000FCE0A /* reactor.scnp in Resources */,
 				A15DF00922E10868000FCE0A /* spark.png in Resources */,
-				A1C9784522DE14F500664B5B /* LaunchScreen.storyboard in Resources */,
-				A1C9784222DE14F500664B5B /* Assets.xcassets in Resources */,
 				A15DF00A22E10868000FCE0A /* rocketship.scn in Resources */,
 				A1A98E4722E24320006C5829 /* Assets.xcassets in Resources */,
 				A1A98E4522E24320006C5829 /* Models.scnassets in Resources */,
@@ -305,17 +298,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		A1C9784322DE14F500664B5B /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				A1C9784422DE14F500664B5B /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		A1C9784722DE14F500664B5B /* Debug */ = {
@@ -438,6 +420,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = B4R6R23NH9;
 				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
@@ -456,6 +439,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = B4R6R23NH9;
 				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
