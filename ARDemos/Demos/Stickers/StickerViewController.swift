@@ -14,14 +14,17 @@ class StickerViewController: UIViewController, ARSessionDelegate, ARSCNViewDeleg
     /// The scene for display
     var sceneView = ARSCNView()
 
-    // The node with the face and the sticker
+    // Holds the node with the face and specific face renderers
+    var texturedFaceRenderer: TexturedFace?
+
+    // Passed to render the face
+    var currentFaceAnchor: ARFaceAnchor?
+
+    // Node with the face and sticker
     var contentNode: SCNNode?
 
-    /// The node with the face geometry
-    var occlusionNode: SCNNode?
-
-    // THe node for the sticker
-    var stickerNode: SCNNode?
+    // Node with just the sticker
+    var stickerNode: SCNReferenceNode?
 
     /// For swapping textures and moving the node to the tap location
     var sceneTapGestureRecognizer = UITapGestureRecognizer(target: nil, action: nil)
@@ -31,6 +34,8 @@ class StickerViewController: UIViewController, ARSessionDelegate, ARSCNViewDeleg
 
     init() {
         super.init(nibName: nil, bundle: nil)
+
+        texturedFaceRenderer = TexturedFace()
 
         sceneView.delegate = self
         sceneView.session.delegate = self
@@ -82,13 +87,13 @@ class StickerViewController: UIViewController, ARSessionDelegate, ARSCNViewDeleg
 
         let touchLocation = recognizer.location(in: sceneView)
 
-        // If tapped face, else if tapped stickers
+        // If tapped face
         if let result = sceneView.hitTest(touchLocation, options: [:]).first {
-            stickerNode = SCNReferenceNode(named: "letterD")
-            if let node = stickerNode {
-                node.position = result.localCoordinates
-                contentNode.addChildNode(node)
-            }
+            // Get the letter model
+
+            stickerNode = SCNReferenceNode(named: "overlayModel")
+            stickerNode?.position = result.localCoordinates
+            contentNode.addChildNode(stickerNode!)
         }
     }
 
@@ -107,40 +112,30 @@ class StickerViewController: UIViewController, ARSessionDelegate, ARSCNViewDeleg
      * Called when any node has been added to the anchor
      */
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
-        guard anchor is ARFaceAnchor,
-            let device = sceneView.device
+        guard let faceAnchor = anchor as? ARFaceAnchor,
+            let texturedFaceNode = texturedFaceRenderer
             else { return }
 
-        let faceGeometry = ARSCNFaceGeometry(device: device)
-        if let faceGeometry = faceGeometry, let material = faceGeometry.firstMaterial {
-            // Write depth but not color
-            material.colorBufferWriteMask = []
+        currentFaceAnchor = faceAnchor
 
-            // Assign texture map
-            material.diffuse.contents = SKTexture(imageNamed: "wireframeTexture")
-            material.lightingModel = .physicallyBased
-
-            // Render before other objects to provide allusion of occlusion
-            occlusionNode = SCNNode(geometry: faceGeometry)
-            occlusionNode!.renderingOrder = -1
-
-            // Add the occlusion node to the scene
+        if let faceNode = texturedFaceNode.renderer(renderer, nodeFor: faceAnchor) {
             contentNode = SCNNode()
-            contentNode!.addChildNode(occlusionNode!)
-            sceneView.scene.rootNode.addChildNode(node)
+            contentNode?.addChildNode(faceNode)
+
+            sceneView.scene.rootNode.addChildNode(contentNode!)
             node.addChildNode(contentNode!)
         }
     }
 
     func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
-        guard let faceGeometry = occlusionNode?.geometry as? ARSCNFaceGeometry,
-            let faceAnchor = anchor as? ARFaceAnchor
+        guard anchor == currentFaceAnchor,
+            let texturedFaceRenderer = texturedFaceRenderer,
+            let contentNode = texturedFaceRenderer.contentNode,
+            contentNode.parent == node
             else { return }
 
-        faceGeometry.update(from: faceAnchor.geometry)
+        texturedFaceRenderer.renderer(renderer, didUpdate: contentNode, for: anchor)
     }
-
-
 
     // MARK: - ARSessionDelegate
 

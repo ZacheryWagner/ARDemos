@@ -11,23 +11,29 @@ import SceneKit
 class TexturedFace: NSObject, VirtualContentController {
 
     var contentNode: SCNNode?
-    
+
     /// - Tag: CreateARSCNFaceGeometry
     func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
         guard let sceneView = renderer as? ARSCNView,
-            anchor is ARFaceAnchor else { return nil }
+            let device = sceneView.device,
+            anchor is ARFaceAnchor
+            else { return nil }
 
-        let faceGeometry = ARSCNFaceGeometry(device: sceneView.device!)!
-        let material = faceGeometry.firstMaterial!
+        let faceGeometry = ARSCNFaceGeometry(device: device)
+        if let faceGeometry = faceGeometry, let material = faceGeometry.firstMaterial {
+            // Assign texture map
+            material.diffuse.contents = SKTexture(imageNamed: "wireframeTexture")
+            material.lightingModel = .physicallyBased
 
+            contentNode = SCNNode(geometry: faceGeometry)
 
-        material.diffuse.contents = SKTexture(imageNamed: "wireframeTexture")
-        material.lightingModel = .physicallyBased
-        
-        contentNode = SCNNode(geometry: faceGeometry)
-        return contentNode
+            // Render before other objects to provide allusion of occlusion
+            contentNode!.renderingOrder = -1
+            return contentNode
+        }
+        return nil
     }
-    
+
     /// - Tag: ARFaceGeometryUpdate
     func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
         guard let faceGeometry = node.geometry as? ARSCNFaceGeometry,
