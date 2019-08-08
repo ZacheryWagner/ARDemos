@@ -8,7 +8,7 @@ Displays coordinate axes visualizing the tracked face pose (and eyes in iOS 12).
 import ARKit
 import SceneKit
 
-class TransformVisualization: NSObject, VirtualContentController {
+class TransformVisualization: NSObject, VirtualContentRenderer {
     
     var contentNode: SCNNode?
     

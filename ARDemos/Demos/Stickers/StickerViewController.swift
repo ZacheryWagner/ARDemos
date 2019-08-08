@@ -15,7 +15,7 @@ class StickerViewController: UIViewController, ARSessionDelegate, ARSCNViewDeleg
     var sceneView = ARSCNView()
 
     // Holds the node with the face and specific face renderers
-    var texturedFaceRenderer: TexturedFace?
+    var texturedFaceRenderer: FaceRenderer?
 
     // Passed to render the face
     var currentFaceAnchor: ARFaceAnchor?
@@ -35,7 +35,7 @@ class StickerViewController: UIViewController, ARSessionDelegate, ARSCNViewDeleg
     init() {
         super.init(nibName: nil, bundle: nil)
 
-        texturedFaceRenderer = TexturedFace()
+        texturedFaceRenderer = FaceRenderer()
 
         sceneView.delegate = self
         sceneView.session.delegate = self
@@ -91,7 +91,7 @@ class StickerViewController: UIViewController, ARSessionDelegate, ARSCNViewDeleg
         if let result = sceneView.hitTest(touchLocation, options: [:]).first {
             // Get the letter model
 
-            stickerNode = SCNReferenceNode(named: "overlayModel")
+            stickerNode = SCNReferenceNode(named: "letterD")
             stickerNode?.position = result.localCoordinates
             contentNode.addChildNode(stickerNode!)
         }

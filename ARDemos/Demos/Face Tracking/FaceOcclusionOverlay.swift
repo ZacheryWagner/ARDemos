@@ -8,7 +8,7 @@ Demonstrates how to simulate occlusion of virtual content by the real-world face
 import ARKit
 import SceneKit
 
-class FaceOcclusionOverlay: NSObject, VirtualContentController {
+class FaceOcclusionOverlay: NSObject, VirtualContentRenderer {
     
     var contentNode: SCNNode?
     

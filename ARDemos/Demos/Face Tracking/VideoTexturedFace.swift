@@ -9,7 +9,7 @@ import ARKit
 import SceneKit
 
 /// - Tag: VideoTexturedFace
-class VideoTexturedFace: TexturedFace {
+class VideoTexturedFace: FaceRenderer {
     
     override func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
         guard let sceneView = renderer as? ARSCNView,

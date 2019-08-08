@@ -15,12 +15,12 @@ class FaceTrackingViewController: UIViewController, ARSessionDelegate, ARSCNView
 
     var tabBar = UITabBar()
 
-    var contentControllers: [VirtualContentType: VirtualContentController] = [:]
+    var contentControllers: [FaceTrackingTabTypes: VirtualContentRenderer] = [:]
 
     /// For dismissing the view controller
     var edgeSwipeGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: nil, action: nil)
 
-    var selectedVirtualContent: VirtualContentType! {
+    var selectedVirtualContent: FaceTrackingTabTypes! {
         didSet {
             guard oldValue != nil, oldValue != selectedVirtualContent
                 else { return }
@@ -37,7 +37,7 @@ class FaceTrackingViewController: UIViewController, ARSessionDelegate, ARSCNView
         }
     }
 
-    var selectedContentController: VirtualContentController {
+    var selectedContentController: VirtualContentRenderer {
         if let controller = contentControllers[selectedVirtualContent] {
             return controller
         } else {
@@ -83,7 +83,7 @@ class FaceTrackingViewController: UIViewController, ARSessionDelegate, ARSCNView
 
         // Set the initial tab
         tabBar.selectedItem = tabBar.items!.first!
-        selectedVirtualContent = VirtualContentType(rawValue: tabBar.selectedItem!.tag)
+        selectedVirtualContent = FaceTrackingTabTypes(rawValue: tabBar.selectedItem!.tag)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -190,7 +190,7 @@ class FaceTrackingViewController: UIViewController, ARSessionDelegate, ARSCNView
 
 extension FaceTrackingViewController: UITabBarDelegate {
     func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-        guard let contentType = VirtualContentType(rawValue: item.tag)
+        guard let contentType = FaceTrackingTabTypes(rawValue: item.tag)
             else { fatalError("unexpected virtual content tag") }
         selectedVirtualContent = contentType
     }

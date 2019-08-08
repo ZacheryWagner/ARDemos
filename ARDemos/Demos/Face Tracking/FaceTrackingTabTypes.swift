@@ -1,5 +1,5 @@
 //
-//  VirtualContent.swift
+//  FaceTrackingTabTypes.swift
 //  ARDemos
 //
 //  Created by Zachery Wagner on 7/19/19.
@@ -9,16 +9,16 @@
 import ARKit
 import SceneKit
 
-enum VirtualContentType: Int {
+enum FaceTrackingTabTypes: Int {
     /// Each case has a rawValue which corresponds with the tabIndex
     case transforms, texture, geometry, videoTexture, blendShape
 
-    func makeController() -> VirtualContentController {
+    func makeController() -> VirtualContentRenderer {
         switch self {
         case .transforms:
             return TransformVisualization()
         case .texture:
-            return TexturedFace()
+            return FaceRenderer(displayMode: .wireframe)
         case .geometry:
             return FaceOcclusionOverlay()
         case .videoTexture:
@@ -48,14 +48,4 @@ enum VirtualContentType: Int {
             return (title: "Empty", nil)
         }
     }
-}
-
-/// For forwarding `ARSCNViewDelegate` messages to the object controlling the currently visible virtual content.
-protocol VirtualContentController: ARSCNViewDelegate {
-    /// The root node for the virtual content.
-    var contentNode: SCNNode? { get set }
-
-    func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode?
-
-    func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor)
 }

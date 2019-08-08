@@ -10,7 +10,7 @@ import SceneKit
 import ARKit
 
 /// - Tag: BlendShapeCharacter
-class BlendShapeCharacter: NSObject, VirtualContentController {
+class BlendShapeCharacter: NSObject, VirtualContentRenderer {
     
     var contentNode: SCNNode?
 

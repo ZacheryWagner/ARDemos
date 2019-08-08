@@ -7,19 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A118C40C22FC996800983F20 /* VirtualContentRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A118C40B22FC996800983F20 /* VirtualContentRenderer.swift */; };
+		A118C41122FC9BE500983F20 /* rocketship.scn in Resources */ = {isa = PBXBuildFile; fileRef = A118C41022FC9BE500983F20 /* rocketship.scn */; };
 		A14F502022DEBE0E003F11A1 /* SingleObjectManipulationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14F501F22DEBE0E003F11A1 /* SingleObjectManipulationViewModel.swift */; };
 		A15DEFFA22E0F38B000FCE0A /* DemoTableVIewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15DEFF922E0F38B000FCE0A /* DemoTableVIewController.swift */; };
 		A15DEFFC22E0F88E000FCE0A /* DemoTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15DEFFB22E0F88E000FCE0A /* DemoTableViewModel.swift */; };
 		A15DF00222E10778000FCE0A /* RocketLaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15DF00122E10778000FCE0A /* RocketLaunchViewController.swift */; };
-		A15DF00922E10868000FCE0A /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = A15DF00722E10868000FCE0A /* spark.png */; };
-		A15DF00A22E10868000FCE0A /* rocketship.scn in Resources */ = {isa = PBXBuildFile; fileRef = A15DF00822E10868000FCE0A /* rocketship.scn */; };
-		A15DF00C22E10873000FCE0A /* reactor.scnp in Resources */ = {isa = PBXBuildFile; fileRef = A15DF00B22E10873000FCE0A /* reactor.scnp */; };
 		A1A98E3B22E21C58006C5829 /* FaceTrackingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A98E3A22E21C58006C5829 /* FaceTrackingViewController.swift */; };
-		A1A98E3D22E22BF2006C5829 /* VirtualContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A98E3C22E22BF2006C5829 /* VirtualContent.swift */; };
+		A1A98E3D22E22BF2006C5829 /* FaceTrackingTabTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A98E3C22E22BF2006C5829 /* FaceTrackingTabTypes.swift */; };
 		A1A98E4522E24320006C5829 /* Models.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = A1A98E4022E24320006C5829 /* Models.scnassets */; };
 		A1A98E4722E24320006C5829 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1A98E4222E24320006C5829 /* Assets.xcassets */; };
 		A1A98E4822E24320006C5829 /* VideoTexturedFace.shader in Resources */ = {isa = PBXBuildFile; fileRef = A1A98E4322E24320006C5829 /* VideoTexturedFace.shader */; };
-		A1B0663622E62702004C5202 /* TexturedFace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B0663122E62702004C5202 /* TexturedFace.swift */; };
+		A1AF31F122FC966200960F2C /* FaceRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AF31F022FC966200960F2C /* FaceRenderer.swift */; };
 		A1B0663722E62702004C5202 /* BlendShapeCharacter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B0663222E62702004C5202 /* BlendShapeCharacter.swift */; };
 		A1B0663822E62702004C5202 /* TransformVisualization.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B0663322E62702004C5202 /* TransformVisualization.swift */; };
 		A1B0663922E62702004C5202 /* FaceOcclusionOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B0663422E62702004C5202 /* FaceOcclusionOverlay.swift */; };
@@ -36,19 +35,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A118C40B22FC996800983F20 /* VirtualContentRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualContentRenderer.swift; sourceTree = "<group>"; };
+		A118C40E22FC9B8F00983F20 /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
+		A118C40F22FC9B8F00983F20 /* reactor.scnp */ = {isa = PBXFileReference; lastKnownFileType = file.scp; path = reactor.scnp; sourceTree = "<group>"; };
+		A118C41022FC9BE500983F20 /* rocketship.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = rocketship.scn; sourceTree = "<group>"; };
 		A14F501F22DEBE0E003F11A1 /* SingleObjectManipulationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleObjectManipulationViewModel.swift; sourceTree = "<group>"; };
 		A15DEFF922E0F38B000FCE0A /* DemoTableVIewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoTableVIewController.swift; sourceTree = "<group>"; };
 		A15DEFFB22E0F88E000FCE0A /* DemoTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoTableViewModel.swift; sourceTree = "<group>"; };
-		A15DF00122E10778000FCE0A /* RocketLaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RocketLaunchViewController.swift; path = ViewControllers/RocketLaunchViewController.swift; sourceTree = "<group>"; };
-		A15DF00722E10868000FCE0A /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
-		A15DF00822E10868000FCE0A /* rocketship.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = rocketship.scn; sourceTree = "<group>"; };
-		A15DF00B22E10873000FCE0A /* reactor.scnp */ = {isa = PBXFileReference; lastKnownFileType = file.scp; path = reactor.scnp; sourceTree = "<group>"; };
+		A15DF00122E10778000FCE0A /* RocketLaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RocketLaunchViewController.swift; sourceTree = "<group>"; };
 		A1A98E3A22E21C58006C5829 /* FaceTrackingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceTrackingViewController.swift; sourceTree = "<group>"; };
-		A1A98E3C22E22BF2006C5829 /* VirtualContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualContent.swift; sourceTree = "<group>"; };
+		A1A98E3C22E22BF2006C5829 /* FaceTrackingTabTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceTrackingTabTypes.swift; sourceTree = "<group>"; };
 		A1A98E4022E24320006C5829 /* Models.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Models.scnassets; sourceTree = "<group>"; };
 		A1A98E4222E24320006C5829 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A1A98E4322E24320006C5829 /* VideoTexturedFace.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VideoTexturedFace.shader; sourceTree = "<group>"; };
-		A1B0663122E62702004C5202 /* TexturedFace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TexturedFace.swift; sourceTree = "<group>"; };
+		A1AF31F022FC966200960F2C /* FaceRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceRenderer.swift; sourceTree = "<group>"; };
 		A1B0663222E62702004C5202 /* BlendShapeCharacter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlendShapeCharacter.swift; sourceTree = "<group>"; };
 		A1B0663322E62702004C5202 /* TransformVisualization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformVisualization.swift; sourceTree = "<group>"; };
 		A1B0663422E62702004C5202 /* FaceOcclusionOverlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceOcclusionOverlay.swift; sourceTree = "<group>"; };
@@ -77,16 +77,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A118C40D22FC9B7300983F20 /* Rocket Launch */ = {
+			isa = PBXGroup;
+			children = (
+				A118C41022FC9BE500983F20 /* rocketship.scn */,
+				A15DF00122E10778000FCE0A /* RocketLaunchViewController.swift */,
+				A118C40F22FC9B8F00983F20 /* reactor.scnp */,
+				A118C40E22FC9B8F00983F20 /* spark.png */,
+			);
+			path = "Rocket Launch";
+			sourceTree = "<group>";
+		};
 		A128F9F422E21831004A5BF0 /* Face Tracking */ = {
 			isa = PBXGroup;
 			children = (
 				A1A98E3A22E21C58006C5829 /* FaceTrackingViewController.swift */,
-				A1A98E3C22E22BF2006C5829 /* VirtualContent.swift */,
+				A1A98E3C22E22BF2006C5829 /* FaceTrackingTabTypes.swift */,
 				A1B0663222E62702004C5202 /* BlendShapeCharacter.swift */,
 				A1B0663422E62702004C5202 /* FaceOcclusionOverlay.swift */,
 				A1B0663322E62702004C5202 /* TransformVisualization.swift */,
 				A1B0663522E62702004C5202 /* VideoTexturedFace.swift */,
-				A1B0663122E62702004C5202 /* TexturedFace.swift */,
 			);
 			path = "Face Tracking";
 			sourceTree = "<group>";
@@ -94,30 +104,13 @@
 		A15DEFFE22E1026A000FCE0A /* Demos */ = {
 			isa = PBXGroup;
 			children = (
-				A15DF00122E10778000FCE0A /* RocketLaunchViewController.swift */,
+				A118C40D22FC9B7300983F20 /* Rocket Launch */,
 				A1A98E4A22E2437A006C5829 /* Single Object Manipulation */,
 				A1F7E58F22E7A358009DE89A /* Physics Sandbox */,
 				A128F9F422E21831004A5BF0 /* Face Tracking */,
 				A1E100B322EF6A3D0091AE58 /* Stickers */,
 			);
 			path = Demos;
-			sourceTree = "<group>";
-		};
-		A15DF00522E107CE000FCE0A /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				A15DF00B22E10873000FCE0A /* reactor.scnp */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		A15DF00622E107D9000FCE0A /* Particles */ = {
-			isa = PBXGroup;
-			children = (
-				A15DF00822E10868000FCE0A /* rocketship.scn */,
-				A15DF00722E10868000FCE0A /* spark.png */,
-			);
-			path = Particles;
 			sourceTree = "<group>";
 		};
 		A1A98E3F22E24320006C5829 /* Resources */ = {
@@ -133,8 +126,6 @@
 		A1A98E4A22E2437A006C5829 /* Single Object Manipulation */ = {
 			isa = PBXGroup;
 			children = (
-				A15DF00622E107D9000FCE0A /* Particles */,
-				A15DF00522E107CE000FCE0A /* Models */,
 				A1C9783C22DE14F300664B5B /* SingleObjectManipulationViewController.swift */,
 				A14F501F22DEBE0E003F11A1 /* SingleObjectManipulationViewModel.swift */,
 			);
@@ -166,6 +157,8 @@
 				A1C9783822DE14F300664B5B /* AppDelegate.swift */,
 				A15DEFF922E0F38B000FCE0A /* DemoTableVIewController.swift */,
 				A15DEFFB22E0F88E000FCE0A /* DemoTableViewModel.swift */,
+				A118C40B22FC996800983F20 /* VirtualContentRenderer.swift */,
+				A1AF31F022FC966200960F2C /* FaceRenderer.swift */,
 				A15DEFFE22E1026A000FCE0A /* Demos */,
 			);
 			path = ARDemos;
@@ -257,10 +250,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A118C41122FC9BE500983F20 /* rocketship.scn in Resources */,
 				A1A98E4822E24320006C5829 /* VideoTexturedFace.shader in Resources */,
-				A15DF00C22E10873000FCE0A /* reactor.scnp in Resources */,
-				A15DF00922E10868000FCE0A /* spark.png in Resources */,
-				A15DF00A22E10868000FCE0A /* rocketship.scn in Resources */,
 				A1A98E4722E24320006C5829 /* Assets.xcassets in Resources */,
 				A1A98E4522E24320006C5829 /* Models.scnassets in Resources */,
 			);
@@ -274,13 +265,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				A1C9783D22DE14F300664B5B /* SingleObjectManipulationViewController.swift in Sources */,
-				A1A98E3D22E22BF2006C5829 /* VirtualContent.swift in Sources */,
+				A1A98E3D22E22BF2006C5829 /* FaceTrackingTabTypes.swift in Sources */,
 				A1B0663822E62702004C5202 /* TransformVisualization.swift in Sources */,
 				A1A98E3B22E21C58006C5829 /* FaceTrackingViewController.swift in Sources */,
 				A1F7E59322E7A434009DE89A /* PhysicsSandboxViewController.swift in Sources */,
 				A1C9785022DE1D5A00664B5B /* UIView.swift in Sources */,
 				A15DF00222E10778000FCE0A /* RocketLaunchViewController.swift in Sources */,
-				A1B0663622E62702004C5202 /* TexturedFace.swift in Sources */,
 				A14F502022DEBE0E003F11A1 /* SingleObjectManipulationViewModel.swift in Sources */,
 				A1B0663C22E62815004C5202 /* SCNMatrix4.swift in Sources */,
 				A15DEFFC22E0F88E000FCE0A /* DemoTableViewModel.swift in Sources */,
@@ -289,10 +279,12 @@
 				A1F7E59522E7A47B009DE89A /* PhysicsSandboxViewModel.swift in Sources */,
 				A1E100B622EF6A9C0091AE58 /* StickerViewController.swift in Sources */,
 				A15DEFFA22E0F38B000FCE0A /* DemoTableVIewController.swift in Sources */,
+				A1AF31F122FC966200960F2C /* FaceRenderer.swift in Sources */,
 				A1C9785422DE1E6F00664B5B /* UIColor.swift in Sources */,
 				A1B0663722E62702004C5202 /* BlendShapeCharacter.swift in Sources */,
 				A1B0663922E62702004C5202 /* FaceOcclusionOverlay.swift in Sources */,
 				A1B0663E22E62851004C5202 /* SCNReferenceNode.swift in Sources */,
+				A118C40C22FC996800983F20 /* VirtualContentRenderer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
