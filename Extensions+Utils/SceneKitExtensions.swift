@@ -33,3 +33,16 @@ extension SCNMatrix4 {
         m44 = 1
     }
 }
+
+extension SCNReferenceNode {
+    /**
+     * Create a reference node from a scene resource name
+     */
+    convenience init(named resourceName: String, loadImmediately: Bool = true) {
+        let url = Bundle.main.url(forResource: resourceName, withExtension: "scn", subdirectory: "Models.scnassets")!
+        self.init(url: url)!
+        if loadImmediately {
+            self.load()
+        }
+    }
+}

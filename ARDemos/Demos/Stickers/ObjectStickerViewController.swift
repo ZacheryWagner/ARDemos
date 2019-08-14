@@ -1,5 +1,5 @@
 //
-//  StickerViewController.swift
+//  ObjectStickerViewController.swift
 //  ARDemos
 //
 //  Created by Zachery Wagner on 7/29/19.
@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import ARKit
 
-class StickerViewController: UIViewController, ARSessionDelegate, ARSCNViewDelegate {
+class ObjectStickerViewController: UIViewController, ARSessionDelegate, ARSCNViewDelegate {
     /// The scene for display
     var sceneView = ARSCNView()
 
@@ -89,11 +89,19 @@ class StickerViewController: UIViewController, ARSessionDelegate, ARSCNViewDeleg
 
         // If tapped face
         if let result = sceneView.hitTest(touchLocation, options: [:]).first {
-            // Get the letter model
-
             stickerNode = SCNReferenceNode(named: "letterD")
-            stickerNode?.position = result.localCoordinates
-            contentNode.addChildNode(stickerNode!)
+
+            guard let stickerNode = stickerNode else { return }
+
+            let theta = MathUtils.getAngleBetweenTwo3DPoints(
+                pointA: SCNVector3(0, 0, 0.08),
+                pointB: result.localCoordinates
+                ).toRadians()
+
+            stickerNode.position = result.localCoordinates
+            stickerNode.eulerAngles.y = theta
+
+            contentNode.addChildNode(stickerNode)
         }
     }
 
