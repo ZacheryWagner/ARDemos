@@ -10,7 +10,11 @@ import SceneKit
 
 class FaceRenderer: NSObject, VirtualContentRenderer {
     enum DisplayMode {
-        case transparent, wireframe
+        case transparent
+        case wireframe
+        case drund
+        case zach
+        case clown
     }
 
     var displayMode: DisplayMode
@@ -32,16 +36,29 @@ class FaceRenderer: NSObject, VirtualContentRenderer {
 
         let faceGeometry = ARSCNFaceGeometry(device: device)
         if let faceGeometry = faceGeometry {
-            if displayMode == .wireframe, let material = faceGeometry.firstMaterial {
-                // Assign texture map
-                material.diffuse.contents = SKTexture(imageNamed: "wireframeTexture")
-                material.lightingModel = .physicallyBased
+            if let material = faceGeometry.firstMaterial {
+                switch displayMode {
+                    case .transparent:
+                        material.colorBufferWriteMask = []
+                    case .wireframe:
+                        material.diffuse.contents = SKTexture(imageNamed: "wireframeTexture")
+                        material.lightingModel = .physicallyBased
+                    case .drund:
+                        material.diffuse.contents = SKTexture(imageNamed: "drundTexture")
+                        material.lightingModel = .physicallyBased
+                    case .zach:
+                        material.diffuse.contents = SKTexture(imageNamed: "zachTexture")
+                        material.lightingModel = .physicallyBased
+                    case .clown:
+                        material.diffuse.contents = SKTexture(imageNamed: "clownTexture")
+                        material.lightingModel = .physicallyBased
+                }
             }
 
             contentNode = SCNNode(geometry: faceGeometry)
 
             // Render before other objects to provide allusion of occlusion
-            contentNode!.renderingOrder = -1
+            contentNode?.renderingOrder = -1
             return contentNode
         }
         return nil
