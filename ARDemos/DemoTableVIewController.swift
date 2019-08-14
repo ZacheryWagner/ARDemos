@@ -15,8 +15,6 @@ class DemoTableViewController: UITableViewController {
     init(viewModel: DemoTableViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-
-        title = "Demo Examples"
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -57,7 +55,10 @@ class DemoTableViewController: UITableViewController {
             let vc = FaceTrackingViewController()
             navigationController?.pushViewController(vc, animated: true)
         case 3:
-            let vc = StickerViewController()
+            let vc = ObjectStickerViewController()
+            navigationController?.pushViewController(vc, animated: true)
+        case 4:
+            let vc = FaceTextureViewController()
             navigationController?.pushViewController(vc, animated: true)
         default:
             print("There was an indexing error in the `DemoTableViewController`")

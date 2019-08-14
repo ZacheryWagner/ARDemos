@@ -14,7 +14,8 @@ class DemoTableViewModel {
         return ["Single Object Manipulation",
                 "Rocket Launch",
                 "Iphone X Face Tracking",
-                "3D Stickers"
+                "3D Stickers",
+                "Face Mesh Stickers"
         ]
     }
 
