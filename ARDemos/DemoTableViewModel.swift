@@ -11,9 +11,10 @@ import UIKit
 
 class DemoTableViewModel {
     private var titles: [String] {
-        return ["Single Object Manipulation",
+        return ["Object Manipulation",
+                "Object Showcase",
                 "Rocket Launch",
-                "Iphone X Face Tracking",
+                "Face Tracking",
                 "3D Stickers",
                 "Face Mesh Stickers"
         ]

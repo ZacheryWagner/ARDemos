@@ -45,19 +45,22 @@ class DemoTableViewController: UITableViewController {
 
         switch indexPath.row {
         case 0:
-            let vm = SingleObjectManipulationViewModel()
-            let vc = SingleObjectManipulationViewController(viewModel: vm)
+            let vm = ObjectManipulationViewModel()
+            let vc = ObjectManipulationViewController(viewModel: vm)
             navigationController?.pushViewController(vc, animated: true)
         case 1:
-            let vc = RocketLaunchViewController()
+            let vc = ObjectShowcaseViewController()
             navigationController?.pushViewController(vc, animated: true)
         case 2:
-            let vc = FaceTrackingViewController()
+            let vc = RocketLaunchViewController()
             navigationController?.pushViewController(vc, animated: true)
         case 3:
-            let vc = ObjectStickerViewController()
+            let vc = FaceTextureViewController()
             navigationController?.pushViewController(vc, animated: true)
         case 4:
+            let vc = ObjectStickerViewController()
+            navigationController?.pushViewController(vc, animated: true)
+        case 5:
             let vc = FaceTextureViewController()
             navigationController?.pushViewController(vc, animated: true)
         default:
