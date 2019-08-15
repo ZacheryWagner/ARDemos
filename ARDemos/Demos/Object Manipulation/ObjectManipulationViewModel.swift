@@ -1,5 +1,5 @@
 //
-//  SingleObjectManipulationViewModel.swift
+//  ObjectManipulationViewModel.swift
 //  ARDemos
 //
 //  Created by Zachery Wagner on 7/16/19.
@@ -9,7 +9,7 @@
 import Foundation
 import SceneKit
 
-class SingleObjectManipulationViewModel {
+class ObjectManipulationViewModel {
     /// List of cube textures to toggle between
     private(set) var nodeTextures: [[SCNMaterial]] = [[]]
 

@@ -1,5 +1,5 @@
 //
-//  SingleObjectManipulationViewController.swift
+//  ObjectManipulationViewController.swift
 //  ARObjectRendering
 //
 //  Created by Zachery Wagner on 7/16/19.
@@ -11,7 +11,7 @@ import UIKit
 import ARKit
 import SceneKit
 
-class SingleObjectManipulationViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDelegate {
+class ObjectManipulationViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDelegate {
     var sceneView = ARSCNView()
 
     /// Node for the scene
@@ -44,9 +44,9 @@ class SingleObjectManipulationViewController: UIViewController, ARSCNViewDelegat
     /// For dismissing the view controller
     var edgeSwipeGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: nil, action: nil)
 
-    private var viewModel: SingleObjectManipulationViewModel
+    private var viewModel: ObjectManipulationViewModel
 
-    init(viewModel: SingleObjectManipulationViewModel) {
+    init(viewModel: ObjectManipulationViewModel) {
         self.viewModel = viewModel
 
         box = SCNBox(

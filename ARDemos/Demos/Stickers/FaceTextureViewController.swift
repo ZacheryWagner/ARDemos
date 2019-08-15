@@ -102,6 +102,8 @@ class FaceTextureViewController: UIViewController, ARSessionDelegate, ARSCNViewD
         tabBarItems.append(UITabBarItem(title: "Drund", image: nil, tag: 0))
         tabBarItems.append(UITabBarItem(title: "Zach", image: nil, tag: 1))
         tabBarItems.append(UITabBarItem(title: "Clown", image: nil, tag: 2))
+        tabBarItems.append(UITabBarItem(title: "Wing", image: nil, tag: 3))
+        tabBarItems.append(UITabBarItem(title: "Facepaint", image: nil, tag: 4))
 
         tabBar.items = tabBarItems
     }

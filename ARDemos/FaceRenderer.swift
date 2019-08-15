@@ -15,6 +15,8 @@ class FaceRenderer: NSObject, VirtualContentRenderer {
         case drund
         case zach
         case clown
+        case liverpoolWing
+        case facepaint
     }
 
     var displayMode: DisplayMode
@@ -38,20 +40,26 @@ class FaceRenderer: NSObject, VirtualContentRenderer {
         if let faceGeometry = faceGeometry {
             if let material = faceGeometry.firstMaterial {
                 switch displayMode {
-                    case .transparent:
-                        material.colorBufferWriteMask = []
-                    case .wireframe:
-                        material.diffuse.contents = SKTexture(imageNamed: "wireframeTexture")
-                        material.lightingModel = .physicallyBased
-                    case .drund:
-                        material.diffuse.contents = SKTexture(imageNamed: "drundTexture")
-                        material.lightingModel = .physicallyBased
-                    case .zach:
-                        material.diffuse.contents = SKTexture(imageNamed: "zachTexture")
-                        material.lightingModel = .physicallyBased
-                    case .clown:
-                        material.diffuse.contents = SKTexture(imageNamed: "clownTexture")
-                        material.lightingModel = .physicallyBased
+                case .transparent:
+                    material.colorBufferWriteMask = []
+                case .wireframe:
+                    material.diffuse.contents = SKTexture(imageNamed: "wireframeTexture")
+                    material.lightingModel = .physicallyBased
+                case .drund:
+                    material.diffuse.contents = SKTexture(imageNamed: "drundTexture")
+                    material.lightingModel = .physicallyBased
+                case .zach:
+                    material.diffuse.contents = SKTexture(imageNamed: "zachTexture")
+                    material.lightingModel = .physicallyBased
+                case .clown:
+                    material.diffuse.contents = SKTexture(imageNamed: "clownTexture")
+                    material.lightingModel = .physicallyBased
+                case .liverpoolWing:
+                    material.diffuse.contents = SKTexture(imageNamed: "liverpoolWingTexture")
+                    material.lightingModel = .physicallyBased
+                case .facepaint:
+                    material.diffuse.contents = SKTexture(imageNamed: "facepaintTexture")
+                    material.lightingModel = .physicallyBased
                 }
             }
 

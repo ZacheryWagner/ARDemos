@@ -10,7 +10,7 @@ import UIKit
 
 enum FaceTextureTabTypes: Int {
     /// Each case has a rawValue which corresponds with the tabIndex
-    case drund, zach, clown
+    case drund, zach, clown, liverpoolWing, facepaint
 
     func makeRenderer() -> FaceRenderer {
         switch self {
@@ -20,6 +20,10 @@ enum FaceTextureTabTypes: Int {
             return FaceRenderer(displayMode: .zach)
         case .clown:
             return FaceRenderer(displayMode: .clown)
+        case .liverpoolWing:
+            return FaceRenderer(displayMode: .liverpoolWing)
+        case .facepaint:
+            return FaceRenderer(displayMode: .facepaint)
         }
     }
 }
