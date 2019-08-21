@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -16,11 +16,12 @@
 		A15DEFFA22E0F38B000FCE0A /* DemoTableVIewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15DEFF922E0F38B000FCE0A /* DemoTableVIewController.swift */; };
 		A15DEFFC22E0F88E000FCE0A /* DemoTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15DEFFB22E0F88E000FCE0A /* DemoTableViewModel.swift */; };
 		A15DF00222E10778000FCE0A /* RocketLaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15DF00122E10778000FCE0A /* RocketLaunchViewController.swift */; };
+		A173D90B230B229400F1C31F /* ObjectShowcaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A173D90A230B229400F1C31F /* ObjectShowcaseViewController.swift */; };
+		A173D90D230B22FE00F1C31F /* ModelRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A173D90C230B22FE00F1C31F /* ModelRenderer.swift */; };
 		A175938B230320F1005DE1AD /* FaceTextureTabBarButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A175938A230320F1005DE1AD /* FaceTextureTabBarButtonView.swift */; };
-		A17693D9230484FF00B5B467 /* FaceTextureTabTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17693D8230484FF00B5B467 /* FaceTextureTabTypes.swift */; };
-		A17693DB2304A3BE00B5B467 /* ObjectShowcaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17693DA2304A3BE00B5B467 /* ObjectShowcaseViewController.swift */; };
+		A1A3C1842309BDBA007F79E4 /* AppUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A3C1832309BDBA007F79E4 /* AppUtils.swift */; };
 		A1A98E3B22E21C58006C5829 /* FaceTrackingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A98E3A22E21C58006C5829 /* FaceTrackingViewController.swift */; };
-		A1A98E3D22E22BF2006C5829 /* FaceTrackingTabTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A98E3C22E22BF2006C5829 /* FaceTrackingTabTypes.swift */; };
+		A1A98E3D22E22BF2006C5829 /* TabTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A98E3C22E22BF2006C5829 /* TabTypes.swift */; };
 		A1A98E4522E24320006C5829 /* Models.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = A1A98E4022E24320006C5829 /* Models.scnassets */; };
 		A1A98E4722E24320006C5829 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1A98E4222E24320006C5829 /* Assets.xcassets */; };
 		A1A98E4822E24320006C5829 /* VideoTexturedFace.shader in Resources */ = {isa = PBXBuildFile; fileRef = A1A98E4322E24320006C5829 /* VideoTexturedFace.shader */; };
@@ -34,6 +35,7 @@
 		A1C9783D22DE14F300664B5B /* ObjectManipulationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C9783C22DE14F300664B5B /* ObjectManipulationViewController.swift */; };
 		A1C9785022DE1D5A00664B5B /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C9784F22DE1D5A00664B5B /* UIView.swift */; };
 		A1C9785422DE1E6F00664B5B /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C9785322DE1E6F00664B5B /* UIColor.swift */; };
+		A1D46D492306FE6E00F0014E /* Recordable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D46D482306FE6E00F0014E /* Recordable.swift */; };
 		A1F7E59322E7A434009DE89A /* PhysicsSandboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F7E59222E7A434009DE89A /* PhysicsSandboxViewController.swift */; };
 		A1F7E59522E7A47B009DE89A /* PhysicsSandboxViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F7E59422E7A47B009DE89A /* PhysicsSandboxViewModel.swift */; };
 		FC78BB549157C53177B1C6B0 /* Pods_ARDemos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83F5C5E2B20B17B7723A4E9A /* Pods_ARDemos.framework */; };
@@ -53,11 +55,12 @@
 		A15DEFF922E0F38B000FCE0A /* DemoTableVIewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoTableVIewController.swift; sourceTree = "<group>"; };
 		A15DEFFB22E0F88E000FCE0A /* DemoTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoTableViewModel.swift; sourceTree = "<group>"; };
 		A15DF00122E10778000FCE0A /* RocketLaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RocketLaunchViewController.swift; sourceTree = "<group>"; };
+		A173D90A230B229400F1C31F /* ObjectShowcaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectShowcaseViewController.swift; sourceTree = "<group>"; };
+		A173D90C230B22FE00F1C31F /* ModelRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelRenderer.swift; sourceTree = "<group>"; };
 		A175938A230320F1005DE1AD /* FaceTextureTabBarButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceTextureTabBarButtonView.swift; sourceTree = "<group>"; };
-		A17693D8230484FF00B5B467 /* FaceTextureTabTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceTextureTabTypes.swift; sourceTree = "<group>"; };
-		A17693DA2304A3BE00B5B467 /* ObjectShowcaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectShowcaseViewController.swift; sourceTree = "<group>"; };
+		A1A3C1832309BDBA007F79E4 /* AppUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUtils.swift; sourceTree = "<group>"; };
 		A1A98E3A22E21C58006C5829 /* FaceTrackingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceTrackingViewController.swift; sourceTree = "<group>"; };
-		A1A98E3C22E22BF2006C5829 /* FaceTrackingTabTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceTrackingTabTypes.swift; sourceTree = "<group>"; };
+		A1A98E3C22E22BF2006C5829 /* TabTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabTypes.swift; sourceTree = "<group>"; };
 		A1A98E4022E24320006C5829 /* Models.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Models.scnassets; sourceTree = "<group>"; };
 		A1A98E4222E24320006C5829 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A1A98E4322E24320006C5829 /* VideoTexturedFace.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VideoTexturedFace.shader; sourceTree = "<group>"; };
@@ -73,6 +76,7 @@
 		A1C9784622DE14F500664B5B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A1C9784F22DE1D5A00664B5B /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		A1C9785322DE1E6F00664B5B /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		A1D46D482306FE6E00F0014E /* Recordable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recordable.swift; sourceTree = "<group>"; };
 		A1F7E59222E7A434009DE89A /* PhysicsSandboxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsSandboxViewController.swift; sourceTree = "<group>"; };
 		A1F7E59422E7A47B009DE89A /* PhysicsSandboxViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsSandboxViewModel.swift; sourceTree = "<group>"; };
 		FFECAC739A69FA178FD23B04 /* Pods-ARDemos.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ARDemos.release.xcconfig"; path = "Target Support Files/Pods-ARDemos/Pods-ARDemos.release.xcconfig"; sourceTree = "<group>"; };
@@ -96,7 +100,6 @@
 				0439972BD32F8DE484554D94 /* Pods-ARDemos.debug.xcconfig */,
 				FFECAC739A69FA178FD23B04 /* Pods-ARDemos.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -123,7 +126,6 @@
 			isa = PBXGroup;
 			children = (
 				A1A98E3A22E21C58006C5829 /* FaceTrackingViewController.swift */,
-				A1A98E3C22E22BF2006C5829 /* FaceTrackingTabTypes.swift */,
 				A1B0663222E62702004C5202 /* BlendShapeCharacter.swift */,
 				A1B0663422E62702004C5202 /* FaceOcclusionOverlay.swift */,
 				A1B0663322E62702004C5202 /* TransformVisualization.swift */,
@@ -140,7 +142,6 @@
 				A1F7E58F22E7A358009DE89A /* Physics Sandbox */,
 				A128F9F422E21831004A5BF0 /* Face Tracking */,
 				A1E100B322EF6A3D0091AE58 /* Stickers */,
-				A17693DA2304A3BE00B5B467 /* ObjectShowcaseViewController.swift */,
 			);
 			path = Demos;
 			sourceTree = "<group>";
@@ -152,6 +153,7 @@
 				A1B0663B22E62815004C5202 /* SceneKitExtensions.swift */,
 				A1C9784F22DE1D5A00664B5B /* UIView.swift */,
 				A1C9785322DE1E6F00664B5B /* UIColor.swift */,
+				A1A3C1832309BDBA007F79E4 /* AppUtils.swift */,
 			);
 			path = "Extensions+Utils";
 			sourceTree = "<group>";
@@ -171,6 +173,7 @@
 			children = (
 				A1C9783C22DE14F300664B5B /* ObjectManipulationViewController.swift */,
 				A14F501F22DEBE0E003F11A1 /* ObjectManipulationViewModel.swift */,
+				A173D90A230B229400F1C31F /* ObjectShowcaseViewController.swift */,
 			);
 			path = "Object Manipulation";
 			sourceTree = "<group>";
@@ -203,7 +206,10 @@
 				A15DEFF922E0F38B000FCE0A /* DemoTableVIewController.swift */,
 				A15DEFFB22E0F88E000FCE0A /* DemoTableViewModel.swift */,
 				A118C40B22FC996800983F20 /* VirtualContentRenderer.swift */,
+				A1A98E3C22E22BF2006C5829 /* TabTypes.swift */,
+				A173D90C230B22FE00F1C31F /* ModelRenderer.swift */,
 				A1AF31F022FC966200960F2C /* FaceRenderer.swift */,
+				A1D46D482306FE6E00F0014E /* Recordable.swift */,
 				A15DEFFE22E1026A000FCE0A /* Demos */,
 			);
 			path = ARDemos;
@@ -215,7 +221,6 @@
 				A103C51C2302564F00F35D20 /* ObjectStickerViewController.swift */,
 				A103C5202302583900F35D20 /* FaceTextureViewController.swift */,
 				A175938A230320F1005DE1AD /* FaceTextureTabBarButtonView.swift */,
-				A17693D8230484FF00B5B467 /* FaceTextureTabTypes.swift */,
 			);
 			path = Stickers;
 			sourceTree = "<group>";
@@ -346,19 +351,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				A1C9783D22DE14F300664B5B /* ObjectManipulationViewController.swift in Sources */,
-				A1A98E3D22E22BF2006C5829 /* FaceTrackingTabTypes.swift in Sources */,
+				A1A98E3D22E22BF2006C5829 /* TabTypes.swift in Sources */,
 				A1B0663822E62702004C5202 /* TransformVisualization.swift in Sources */,
 				A1A98E3B22E21C58006C5829 /* FaceTrackingViewController.swift in Sources */,
 				A1F7E59322E7A434009DE89A /* PhysicsSandboxViewController.swift in Sources */,
 				A1C9785022DE1D5A00664B5B /* UIView.swift in Sources */,
+				A173D90B230B229400F1C31F /* ObjectShowcaseViewController.swift in Sources */,
 				A15DF00222E10778000FCE0A /* RocketLaunchViewController.swift in Sources */,
 				A14F502022DEBE0E003F11A1 /* ObjectManipulationViewModel.swift in Sources */,
 				A1B0663C22E62815004C5202 /* SceneKitExtensions.swift in Sources */,
+				A173D90D230B22FE00F1C31F /* ModelRenderer.swift in Sources */,
+				A1A3C1842309BDBA007F79E4 /* AppUtils.swift in Sources */,
 				A118C41522FCC37F00983F20 /* MathUtils.swift in Sources */,
 				A15DEFFC22E0F88E000FCE0A /* DemoTableViewModel.swift in Sources */,
 				A1C9783922DE14F300664B5B /* AppDelegate.swift in Sources */,
 				A1B0663A22E62702004C5202 /* VideoTexturedFace.swift in Sources */,
-				A17693DB2304A3BE00B5B467 /* ObjectShowcaseViewController.swift in Sources */,
 				A103C5212302583900F35D20 /* FaceTextureViewController.swift in Sources */,
 				A1F7E59522E7A47B009DE89A /* PhysicsSandboxViewModel.swift in Sources */,
 				A175938B230320F1005DE1AD /* FaceTextureTabBarButtonView.swift in Sources */,
@@ -367,9 +374,9 @@
 				A1C9785422DE1E6F00664B5B /* UIColor.swift in Sources */,
 				A1B0663722E62702004C5202 /* BlendShapeCharacter.swift in Sources */,
 				A103C51D2302564F00F35D20 /* ObjectStickerViewController.swift in Sources */,
+				A1D46D492306FE6E00F0014E /* Recordable.swift in Sources */,
 				A1B0663922E62702004C5202 /* FaceOcclusionOverlay.swift in Sources */,
 				A118C40C22FC996800983F20 /* VirtualContentRenderer.swift in Sources */,
-				A17693D9230484FF00B5B467 /* FaceTextureTabTypes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,14 +10,27 @@ import Foundation
 import UIKit
 import ARKit
 import SceneKit
+import ARVideoKit
 
-class ObjectManipulationViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDelegate {
+class ObjectManipulationViewController: UIViewController, ARSCNViewDelegate, UIGestureRecognizerDelegate, Recordable {
     var sceneView = ARSCNView()
+
+    // MARK: - Recordable
+
+    var recorder: RecordAR?
+
+    var longPressGestureRecognizer: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: nil, action: nil)
+
+    var recordingDot: UIView = UIView()
+
+    var recordingStrobeTimer: Timer?
+
+    var recordingStrobeInterval: Double = 2.5
 
     /// Node for the scene
     var mainNode: SCNNode
 
-    /// Cube for the ndoe
+    /// Cube for the node
     var box: SCNBox
 
     /// Display updated info on the surface tracking
@@ -56,6 +69,8 @@ class ObjectManipulationViewController: UIViewController, ARSCNViewDelegate, UIG
             chamferRadius: 0)
         mainNode = SCNNode(geometry: box)
 
+        longPressGestureRecognizer = UILongPressGestureRecognizer(target: nil, action: nil)
+
         super.init(nibName: nil, bundle: nil)
 
         sceneView.delegate = self
@@ -78,10 +93,17 @@ class ObjectManipulationViewController: UIViewController, ARSCNViewDelegate, UIG
         sceneView.translatesAutoresizingMaskIntoConstraints = false
         infoLabel.translatesAutoresizingMaskIntoConstraints = false
         buttonStackView.translatesAutoresizingMaskIntoConstraints = false
+        recordingDot.translatesAutoresizingMaskIntoConstraints = false
 
         view.addSubview(sceneView)
         view.addSubview(infoLabel)
         view.addSubview(buttonStackView)
+        view.addSubview(recordingDot)
+
+        recordingDot.isHidden = true
+        recordingDot.backgroundColor = .red
+        recordingDot.layer.cornerRadius = 6
+        recordingDot.clipsToBounds = true
 
         buttonStackView.axis = .vertical
         buttonStackView.spacing = 12
@@ -98,24 +120,39 @@ class ObjectManipulationViewController: UIViewController, ARSCNViewDelegate, UIG
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        // Initialize the recorder
+        recorder = RecordAR(ARSceneKit: sceneView)
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // Create and run a session configuration
+        // Create the session configuration
         let configuration = ARWorldTrackingConfiguration()
         configuration.planeDetection = .horizontal
+
+        // Prepare the recorder
+        recorder?.prepare(configuration)
+
         sceneView.session.run(configuration)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
-        // Pause the view's session
+
+        recorder?.rest()
         sceneView.session.pause()
     }
 
     private func setupGestureRecognizer() {
+        longPressGestureRecognizer.addTarget(self, action: #selector(didLongPress(_:)))
+        longPressGestureRecognizer.minimumPressDuration = 1.0
+        sceneView.addGestureRecognizer(longPressGestureRecognizer)
+
         sceneTapGestureRecognizer.addTarget(self, action: #selector(didTapScene))
         sceneView.addGestureRecognizer(sceneTapGestureRecognizer)
 
@@ -129,6 +166,7 @@ class ObjectManipulationViewController: UIViewController, ARSCNViewDelegate, UIG
         edgeSwipeGestureRecognizer.edges = .left
         sceneView.addGestureRecognizer(edgeSwipeGestureRecognizer)
 
+        longPressGestureRecognizer.delegate = self
         sceneTapGestureRecognizer.delegate = self
         scenePanGestureRecognizer.delegate = self
         scenePinchGestureRecognizer.delegate = self
@@ -146,6 +184,11 @@ class ObjectManipulationViewController: UIViewController, ARSCNViewDelegate, UIG
 
         infoLabel.pinToSuperviewSafeAreaTop()
         infoLabel.pinToSuperviewCenterX()
+
+        recordingDot.pinToSuperviewSafeAreaTop()
+        recordingDot.pinToSuperviewLeadingWithInset(12)
+        recordingDot.widthAnchor.constraint(equalToConstant: 12).isActive = true
+        recordingDot.heightAnchor.constraint(equalToConstant: 12).isActive = true
 
         buttonStackView.pinToSuperviewSafeAreaBottomWithInset(24)
         buttonStackView.pinToSuperviewSafeAreaTrailingWithInset(12)
@@ -196,7 +239,6 @@ class ObjectManipulationViewController: UIViewController, ARSCNViewDelegate, UIG
      */
     @objc func didPinchScene(_ gesture: UIPinchGestureRecognizer) {
         var originalScale = mainNode.scale
-        print("did pinch")
 
         switch gesture.state {
         case .began:
@@ -217,9 +259,9 @@ class ObjectManipulationViewController: UIViewController, ARSCNViewDelegate, UIG
             var newScale = originalScale
             if gesture.scale < 0.5 {
                 newScale = SCNVector3(x: 0.5, y: 0.5, z: 0.5)
-            }else if gesture.scale > 2 {
+            } else if gesture.scale > 2 {
                 newScale = SCNVector3(2, 2, 2)
-            }else {
+            } else {
                 newScale = SCNVector3(gesture.scale, gesture.scale, gesture.scale)
             }
 
@@ -259,6 +301,51 @@ class ObjectManipulationViewController: UIViewController, ARSCNViewDelegate, UIG
     private func configureLightingForState(_ isActive: Bool) {
         sceneView.autoenablesDefaultLighting = isActive
         sceneView.automaticallyUpdatesLighting = isActive
+    }
+
+    // MARK: - Recordable
+
+    @objc private func didLongPress(_ recognizer: UILongPressGestureRecognizer) {
+        AppUtils.checkCameraAndMicAccess(onAuthorized: {
+            if recognizer.state == .began {
+                self.recorder?.record()
+                self.recordingDot.isHidden = false
+                self.startRecordStrobe()
+            } else if recognizer.state == .ended {
+                AppUtils.checkPhotoAccess(onAuthorized: {
+                    self.recorder?.stopAndExport()
+                    self.recordingDot.isHidden = true
+                    self.stopRecordStrobe()
+                })
+            }
+        })
+    }
+
+    /**
+     * Tick event for the timer strobe
+     */
+    @objc private func animateStrobe() {
+        DispatchQueue.main.async {
+            let halfDuration = self.recordingStrobeInterval / 2.0
+            UIView.animate(withDuration: halfDuration, animations: {
+                self.recordingDot.alpha = 0.1
+            }) { _ in
+                UIView.animate(withDuration: halfDuration, animations: {
+                    self.recordingDot.alpha = 1
+                })
+            }
+        }
+    }
+
+    func startRecordStrobe() {
+        guard recordingStrobeTimer == nil else { return }
+        recordingStrobeTimer = Timer.scheduledTimer(timeInterval: recordingStrobeInterval, target: self, selector: #selector(animateStrobe), userInfo: nil, repeats: true)
+    }
+
+    func stopRecordStrobe() {
+        guard recordingStrobeTimer != nil else { return }
+        recordingStrobeTimer?.invalidate()
+        recordingStrobeTimer = nil
     }
 
     // MARK: - gestureRecognizer delegate
@@ -337,6 +424,9 @@ class ObjectManipulationViewController: UIViewController, ARSCNViewDelegate, UIG
     func resetTracking() {
         let configuration = ARWorldTrackingConfiguration()
         configuration.planeDetection = .horizontal
+
+        recorder?.prepare(configuration)
+
         sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
     }
 }

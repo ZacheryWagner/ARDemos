@@ -9,10 +9,23 @@
 import Foundation
 import UIKit
 import ARKit
+import ARVideoKit
 
-class ObjectStickerViewController: UIViewController, ARSessionDelegate, ARSCNViewDelegate {
+class ObjectStickerViewController: UIViewController, ARSessionDelegate, ARSCNViewDelegate, Recordable {
     /// The scene for display
     var sceneView = ARSCNView()
+
+    // MARK: - Recordable
+
+    var recorder: RecordAR?
+
+    var longPressGestureRecognizer: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: nil, action: nil)
+
+    var recordingDot: UIView = UIView()
+
+    var recordingStrobeTimer: Timer?
+
+    var recordingStrobeInterval: Double = 2.5
 
     // Holds the node with the face and specific face renderers
     var texturedFaceRenderer: FaceRenderer?
@@ -33,6 +46,8 @@ class ObjectStickerViewController: UIViewController, ARSessionDelegate, ARSCNVie
     var edgeSwipeGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: nil, action: nil)
 
     init() {
+        longPressGestureRecognizer = UILongPressGestureRecognizer(target: nil, action: nil)
+
         super.init(nibName: nil, bundle: nil)
 
         texturedFaceRenderer = FaceRenderer()
@@ -48,8 +63,15 @@ class ObjectStickerViewController: UIViewController, ARSessionDelegate, ARSCNVie
         edgeSwipeGestureRecognizer.edges = .left
         sceneView.addGestureRecognizer(edgeSwipeGestureRecognizer)
 
+        longPressGestureRecognizer.addTarget(self, action: #selector(didLongPress(_:)))
+        longPressGestureRecognizer.minimumPressDuration = 1.0
+        sceneView.addGestureRecognizer(longPressGestureRecognizer)
+
         sceneView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(sceneView)
+
+        recordingDot.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(recordingDot)
 
         initConstraints()
     }
@@ -60,6 +82,9 @@ class ObjectStickerViewController: UIViewController, ARSessionDelegate, ARSCNVie
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        // Initialize the recorder
+        recorder = RecordAR(ARSceneKit: sceneView)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -73,8 +98,20 @@ class ObjectStickerViewController: UIViewController, ARSessionDelegate, ARSCNVie
         resetTracking()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        recorder?.rest()
+        sceneView.session.pause()
+    }
+
     private func initConstraints() {
         sceneView.pinToSuperview()
+
+        recordingDot.pinToSuperviewSafeAreaTop()
+        recordingDot.pinToSuperviewLeadingWithInset(12)
+        recordingDot.widthAnchor.constraint(equalToConstant: 12).isActive = true
+        recordingDot.heightAnchor.constraint(equalToConstant: 12).isActive = true
     }
 
     /**
@@ -112,6 +149,51 @@ class ObjectStickerViewController: UIViewController, ARSessionDelegate, ARSCNVie
         if recognizer.state == .ended {
             navigationController?.popViewController(animated: true)
         }
+    }
+
+    // MARK: - Recordable
+
+    @objc private func didLongPress(_ recognizer: UILongPressGestureRecognizer) {
+        AppUtils.checkCameraAndMicAccess(onAuthorized: {
+            if recognizer.state == .began {
+                self.recorder?.record()
+                self.recordingDot.isHidden = false
+                self.startRecordStrobe()
+            } else if recognizer.state == .ended {
+                AppUtils.checkPhotoAccess(onAuthorized: {
+                    self.recorder?.stopAndExport()
+                    self.recordingDot.isHidden = true
+                    self.stopRecordStrobe()
+                })
+            }
+        })
+    }
+
+    /**
+     * Tick event for the timer strobe
+     */
+    @objc private func animateStrobe() {
+        DispatchQueue.main.async {
+            let halfDuration = self.recordingStrobeInterval / 2.0
+            UIView.animate(withDuration: halfDuration, animations: {
+                self.recordingDot.alpha = 0.1
+            }) { _ in
+                UIView.animate(withDuration: halfDuration, animations: {
+                    self.recordingDot.alpha = 1
+                })
+            }
+        }
+    }
+
+    func startRecordStrobe() {
+        guard recordingStrobeTimer == nil else { return }
+        recordingStrobeTimer = Timer.scheduledTimer(timeInterval: recordingStrobeInterval, target: self, selector: #selector(animateStrobe), userInfo: nil, repeats: true)
+    }
+
+    func stopRecordStrobe() {
+        guard recordingStrobeTimer != nil else { return }
+        recordingStrobeTimer?.invalidate()
+        recordingStrobeTimer = nil
     }
 
     // MARK: - ARSCNViewDelegate
@@ -180,6 +262,9 @@ class ObjectStickerViewController: UIViewController, ARSessionDelegate, ARSCNVie
         guard ARFaceTrackingConfiguration.isSupported else { return }
         let configuration = ARFaceTrackingConfiguration()
         configuration.isLightEstimationEnabled = true
+
+        recorder?.prepare(configuration)
+
         sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
     }
 }

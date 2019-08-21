@@ -9,9 +9,22 @@
 import Foundation
 import ARKit
 import SceneKit
+import ARVideoKit
 
-class FaceTextureViewController: UIViewController, ARSessionDelegate, ARSCNViewDelegate {
+class FaceTextureViewController: UIViewController, ARSessionDelegate, ARSCNViewDelegate, Recordable {
     var sceneView = ARSCNView()
+
+    // MARK: - Recordable
+
+    var recorder: RecordAR?
+
+    var longPressGestureRecognizer: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: nil, action: nil)
+
+    var recordingDot: UIView = UIView()
+
+    var recordingStrobeTimer: Timer?
+
+    var recordingStrobeInterval: Double = 2.5
 
     var tabBar = UITabBar()
 
@@ -50,23 +63,37 @@ class FaceTextureViewController: UIViewController, ARSessionDelegate, ARSCNViewD
     var currentFaceAnchor: ARFaceAnchor?
 
     init() {
+        longPressGestureRecognizer = UILongPressGestureRecognizer(target: nil, action: nil)
+
         super.init(nibName: nil, bundle: nil)
 
         sceneView.delegate = self
         sceneView.session.delegate = self
-        sceneView.automaticallyUpdatesLighting = true
+        //sceneView.automaticallyUpdatesLighting = true
 
         buildTabs()
         tabBar.barStyle = .black
         tabBar.isTranslucent = true
         tabBar.delegate = self
 
+        recordingDot.isHidden = true
+        recordingDot.backgroundColor = .red
+        recordingDot.layer.cornerRadius = 6
+        recordingDot.clipsToBounds = true
+
         edgeSwipeGestureRecognizer.addTarget(self, action: #selector(didSwipeFromEdge))
         edgeSwipeGestureRecognizer.edges = .left
         sceneView.addGestureRecognizer(edgeSwipeGestureRecognizer)
 
+        longPressGestureRecognizer.addTarget(self, action: #selector(didLongPress(_:)))
+        longPressGestureRecognizer.minimumPressDuration = 1.0
+        sceneView.addGestureRecognizer(longPressGestureRecognizer)
+
         sceneView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(sceneView)
+
+        recordingDot.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(recordingDot)
 
         tabBar.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tabBar)
@@ -84,6 +111,9 @@ class FaceTextureViewController: UIViewController, ARSessionDelegate, ARSCNViewD
         // Set the initial tab
         tabBar.selectedItem = tabBar.items!.first!
         selectedVirtualContent = FaceTextureTabTypes(rawValue: tabBar.selectedItem!.tag)
+
+        // Initialize the recorder
+        recorder = RecordAR(ARSceneKit: sceneView)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -97,13 +127,22 @@ class FaceTextureViewController: UIViewController, ARSessionDelegate, ARSCNViewD
         resetTracking()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        recorder?.rest()
+        sceneView.session.pause()
+    }
+
     private func buildTabs() {
         var tabBarItems: [UITabBarItem] = []
-        tabBarItems.append(UITabBarItem(title: "Drund", image: nil, tag: 0))
-        tabBarItems.append(UITabBarItem(title: "Zach", image: nil, tag: 1))
-        tabBarItems.append(UITabBarItem(title: "Clown", image: nil, tag: 2))
-        tabBarItems.append(UITabBarItem(title: "Wing", image: nil, tag: 3))
-        tabBarItems.append(UITabBarItem(title: "Facepaint", image: nil, tag: 4))
+        tabBarItems.append(UITabBarItem(title: "Bird", image: nil, tag: 0))
+        tabBarItems.append(UITabBarItem(title: "Bird White", image: nil, tag: 1))
+        tabBarItems.append(UITabBarItem(title: "Half", image: nil, tag: 2))
+        tabBarItems.append(UITabBarItem(title: "Half Eyes", image: nil, tag: 3))
+        tabBarItems.append(UITabBarItem(title: "Wing", image: nil, tag: 4))
+        tabBarItems.append(UITabBarItem(title: "Crest", image: nil, tag: 5))
+        tabBarItems.append(UITabBarItem(title: "Football Club", image: nil, tag: 6))
 
         tabBar.items = tabBarItems
     }
@@ -113,6 +152,11 @@ class FaceTextureViewController: UIViewController, ARSessionDelegate, ARSCNViewD
         sceneView.pinToSuperviewLeading()
         sceneView.pinToSuperviewTrailing()
         sceneView.pinBottomToAnchor(tabBar.topAnchor)
+
+        recordingDot.pinToSuperviewSafeAreaTop()
+        recordingDot.pinToSuperviewLeadingWithInset(12)
+        recordingDot.widthAnchor.constraint(equalToConstant: 12).isActive = true
+        recordingDot.heightAnchor.constraint(equalToConstant: 12).isActive = true
 
         tabBar.pinTopToAnchor(sceneView.bottomAnchor)
         tabBar.pinToSuperviewLeading()
@@ -124,6 +168,51 @@ class FaceTextureViewController: UIViewController, ARSessionDelegate, ARSCNViewD
         if recognizer.state == .ended {
             navigationController?.popViewController(animated: true)
         }
+    }
+
+    // MARK: - Recordable
+
+    @objc private func didLongPress(_ recognizer: UILongPressGestureRecognizer) {
+        AppUtils.checkCameraAndMicAccess(onAuthorized: {
+            if recognizer.state == .began {
+                self.recorder?.record()
+                self.recordingDot.isHidden = false
+                self.startRecordStrobe()
+            } else if recognizer.state == .ended {
+                AppUtils.checkPhotoAccess(onAuthorized: {
+                    self.recorder?.stopAndExport()
+                    self.recordingDot.isHidden = true
+                    self.stopRecordStrobe()
+                })
+            }
+        })
+    }
+
+    /**
+     * Tick event for the timer strobe
+     */
+    @objc private func animateStrobe() {
+        DispatchQueue.main.async {
+            let halfDuration = self.recordingStrobeInterval / 2.0
+            UIView.animate(withDuration: halfDuration, animations: {
+                self.recordingDot.alpha = 0.1
+            }) { _ in
+                UIView.animate(withDuration: halfDuration, animations: {
+                    self.recordingDot.alpha = 1
+                })
+            }
+        }
+    }
+
+    func startRecordStrobe() {
+        guard recordingStrobeTimer == nil else { return }
+        recordingStrobeTimer = Timer.scheduledTimer(timeInterval: recordingStrobeInterval, target: self, selector: #selector(animateStrobe), userInfo: nil, repeats: true)
+    }
+
+    func stopRecordStrobe() {
+        guard recordingStrobeTimer != nil else { return }
+        recordingStrobeTimer?.invalidate()
+        recordingStrobeTimer = nil
     }
 
     // MARK: - ARSCNViewDelegate
@@ -182,7 +271,10 @@ class FaceTextureViewController: UIViewController, ARSessionDelegate, ARSCNViewD
     func resetTracking() {
         guard ARFaceTrackingConfiguration.isSupported else { return }
         let configuration = ARFaceTrackingConfiguration()
-        configuration.isLightEstimationEnabled = true
+        //configuration.isLightEstimationEnabled = true
+
+        recorder?.prepare(configuration)
+
         sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
     }
 

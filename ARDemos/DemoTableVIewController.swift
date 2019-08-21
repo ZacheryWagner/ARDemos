@@ -55,7 +55,7 @@ class DemoTableViewController: UITableViewController {
             let vc = RocketLaunchViewController()
             navigationController?.pushViewController(vc, animated: true)
         case 3:
-            let vc = FaceTextureViewController()
+            let vc = FaceTrackingViewController()
             navigationController?.pushViewController(vc, animated: true)
         case 4:
             let vc = ObjectStickerViewController()

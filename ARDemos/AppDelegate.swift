@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ARVideoKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -27,6 +28,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
 
         return true
+    }
+
+    /**
+     *  Allows ARVideoKit to detect the device orientation
+     */
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        return ViewAR.orientation
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
