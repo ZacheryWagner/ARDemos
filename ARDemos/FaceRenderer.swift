@@ -12,11 +12,13 @@ class FaceRenderer: NSObject, VirtualContentRenderer {
     enum DisplayMode {
         case transparent
         case wireframe
-        case drund
-        case zach
-        case clown
-        case liverpoolWing
-        case facepaint
+        case liverpoolBirdTexture
+        case liverpoolBirdWhiteTexture
+        case liverpoolHalf_halfTexture
+        case liverpoolHalf_halfEyesTexture
+        case liverpoolWingTexture
+        case liverpoolCrestStickerTexture
+        case liverpoolFootballClubStickerTexture
     }
 
     var displayMode: DisplayMode
@@ -43,22 +45,28 @@ class FaceRenderer: NSObject, VirtualContentRenderer {
                 case .transparent:
                     material.colorBufferWriteMask = []
                 case .wireframe:
-                    material.diffuse.contents = SKTexture(imageNamed: "wireframeTexture")
+                    material.diffuse.contents = SKTexture(imageNamed: "wireframe")
                     material.lightingModel = .physicallyBased
-                case .drund:
-                    material.diffuse.contents = SKTexture(imageNamed: "drundTexture")
+                case .liverpoolBirdTexture:
+                    material.diffuse.contents = SKTexture(imageNamed: "liverpoolBirdTexture")
                     material.lightingModel = .physicallyBased
-                case .zach:
-                    material.diffuse.contents = SKTexture(imageNamed: "zachTexture")
+                case .liverpoolBirdWhiteTexture:
+                    material.diffuse.contents = SKTexture(imageNamed: "liverpoolBirdWhiteTexture")
                     material.lightingModel = .physicallyBased
-                case .clown:
-                    material.diffuse.contents = SKTexture(imageNamed: "clownTexture")
+                case .liverpoolHalf_halfTexture:
+                    material.diffuse.contents = SKTexture(imageNamed: "liverpoolHalf_halfTexture")
                     material.lightingModel = .physicallyBased
-                case .liverpoolWing:
+                case .liverpoolHalf_halfEyesTexture:
+                    material.diffuse.contents = SKTexture(imageNamed: "liverpoolHalf_halfEyesTexture")
+                    material.lightingModel = .physicallyBased
+                case .liverpoolWingTexture:
                     material.diffuse.contents = SKTexture(imageNamed: "liverpoolWingTexture")
                     material.lightingModel = .physicallyBased
-                case .facepaint:
-                    material.diffuse.contents = SKTexture(imageNamed: "facepaintTexture")
+                case .liverpoolCrestStickerTexture:
+                    material.diffuse.contents = SKTexture(imageNamed: "liverpoolCrestStickerTexture")
+                    material.lightingModel = .physicallyBased
+                case .liverpoolFootballClubStickerTexture:
+                    material.diffuse.contents = SKTexture(imageNamed: "liverpoolFootballClubStickerTexture")
                     material.lightingModel = .physicallyBased
                 }
             }
