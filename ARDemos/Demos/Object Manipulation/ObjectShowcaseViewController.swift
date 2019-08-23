@@ -11,14 +11,23 @@ import ARKit
 import SceneKit
 import ARVideoKit
 
-class ObjectShowcaseViewController: UIViewController, ARSessionDelegate, ARSCNViewDelegate, Recordable {
+class ObjectShowcaseViewController: UIViewController, ARSessionDelegate, ARSCNViewDelegate, UIGestureRecognizerDelegate, Recordable {
     var sceneView = ARSCNView()
+
+    /// The current angle of the object for panning
+    var currentAngleY: Float = 0
+
+    /// For rotating the node
+    var scenePanGestureRecognizer = UIPanGestureRecognizer(target: nil, action: nil)
+
+    /// For resizing the node
+    var scenePinchGestureRecognizer = UIPinchGestureRecognizer(target: nil, action: nil)
+
+    /// For adding objects on tap
+    var sceneTapGestureRecognizer = UITapGestureRecognizer(target: nil, action: nil)
 
     /// For dismissing the view controller
     var edgeSwipeGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: nil, action: nil)
-
-    /// For adding objects on tap
-    var tapGestureRecognizer = UITapGestureRecognizer(target: nil, action: nil)
 
     // MARK: - Recordable
 
@@ -85,17 +94,6 @@ class ObjectShowcaseViewController: UIViewController, ARSessionDelegate, ARSCNVi
         recordingDot.layer.cornerRadius = 6
         recordingDot.clipsToBounds = true
 
-        tapGestureRecognizer.addTarget(self, action: #selector(didTapScene))
-        sceneView.addGestureRecognizer(tapGestureRecognizer)
-
-        edgeSwipeGestureRecognizer.addTarget(self, action: #selector(didSwipeFromEdge))
-        edgeSwipeGestureRecognizer.edges = .left
-        sceneView.addGestureRecognizer(edgeSwipeGestureRecognizer)
-
-        longPressGestureRecognizer.addTarget(self, action: #selector(didLongPress(_:)))
-        longPressGestureRecognizer.minimumPressDuration = 1.0
-        sceneView.addGestureRecognizer(longPressGestureRecognizer)
-
         sceneView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(sceneView)
 
@@ -105,6 +103,7 @@ class ObjectShowcaseViewController: UIViewController, ARSessionDelegate, ARSCNVi
         tabBar.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tabBar)
 
+        setupGestureRecognizers()
         initConstraints()
     }
 
@@ -139,6 +138,31 @@ class ObjectShowcaseViewController: UIViewController, ARSessionDelegate, ARSCNVi
 
         recorder?.rest()
         sceneView.session.pause()
+    }
+
+    private func setupGestureRecognizers() {
+        longPressGestureRecognizer.addTarget(self, action: #selector(didLongPress(_:)))
+        longPressGestureRecognizer.minimumPressDuration = 1.0
+        sceneView.addGestureRecognizer(longPressGestureRecognizer)
+
+        sceneTapGestureRecognizer.addTarget(self, action: #selector(didTapScene))
+        sceneView.addGestureRecognizer(sceneTapGestureRecognizer)
+
+        scenePanGestureRecognizer.addTarget(self, action: #selector(didPanScene))
+        sceneView.addGestureRecognizer(scenePanGestureRecognizer)
+
+        scenePinchGestureRecognizer.addTarget(self, action: #selector(didPinchScene))
+        sceneView.addGestureRecognizer(scenePinchGestureRecognizer)
+
+        edgeSwipeGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(didSwipeFromEdge))
+        edgeSwipeGestureRecognizer.edges = .left
+        sceneView.addGestureRecognizer(edgeSwipeGestureRecognizer)
+
+        longPressGestureRecognizer.delegate = self
+        sceneTapGestureRecognizer.delegate = self
+        scenePanGestureRecognizer.delegate = self
+        scenePinchGestureRecognizer.delegate = self
+        edgeSwipeGestureRecognizer.delegate = self
     }
 
     private func buildTabs() {
@@ -196,6 +220,63 @@ class ObjectShowcaseViewController: UIViewController, ARSessionDelegate, ARSCNVi
                     node.addChildNode(objectNode!)
                 }
             }
+        }
+    }
+
+    /**
+     * Rotate the node
+     */
+    @objc private func didPanScene(recognizer: UIPanGestureRecognizer) {
+        guard let objectNode = objectNode else { return }
+
+        let translation = recognizer.translation(in: recognizer.view)
+        var newAngleY = (Float)(translation.x)*(Float)(Double.pi)/180.0
+
+        newAngleY += currentAngleY
+        objectNode.eulerAngles.y = newAngleY
+
+        if recognizer.state == .ended {
+            currentAngleY = newAngleY
+        }
+    }
+
+    /**
+     * Resize the node to scale with pinch gesture
+     */
+    @objc func didPinchScene(_ gesture: UIPinchGestureRecognizer) {
+        guard let objectNode = objectNode else { return }
+
+        var originalScale = objectNode.scale
+
+        switch gesture.state {
+        case .began:
+            originalScale = objectNode.scale
+            gesture.scale = CGFloat(objectNode.scale.x)
+        case .changed:
+            var newScale = originalScale
+            if gesture.scale < 0.5 {
+                newScale = SCNVector3(x: 0.5, y: 0.5, z: 0.5)
+            } else if gesture.scale > 2 {
+                newScale = SCNVector3(2, 2, 2)
+            } else {
+                newScale = SCNVector3(gesture.scale, gesture.scale, gesture.scale)
+            }
+
+            objectNode.scale = newScale
+        case .ended:
+            var newScale = originalScale
+            if gesture.scale < 0.5 {
+                newScale = SCNVector3(x: 0.5, y: 0.5, z: 0.5)
+            } else if gesture.scale > 2 {
+                newScale = SCNVector3(2, 2, 2)
+            } else {
+                newScale = SCNVector3(gesture.scale, gesture.scale, gesture.scale)
+            }
+
+            objectNode.scale = newScale
+            gesture.scale = CGFloat(objectNode.scale.x)
+        default:
+            gesture.scale = 1.0
         }
     }
 
@@ -332,6 +413,15 @@ class ObjectShowcaseViewController: UIViewController, ARSessionDelegate, ARSCNVi
         }
         alertController.addAction(restartAction)
         present(alertController, animated: true, completion: nil)
+    }
+
+    // MARK: - gestureRecognizer delegate
+
+    /**
+     *  Allow all gestures to happen simultaneously
+     */
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
     }
 
     func resetTracking() {

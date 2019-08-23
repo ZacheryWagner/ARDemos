@@ -113,7 +113,7 @@ class ObjectManipulationViewController: UIViewController, ARSCNViewDelegate, UIG
 
         // Additionally setup
         configureLightingForState(true)
-        setupGestureRecognizer()
+        setupGestureRecognizers()
         initConstraints()
     }
 
@@ -148,7 +148,7 @@ class ObjectManipulationViewController: UIViewController, ARSCNViewDelegate, UIG
         sceneView.session.pause()
     }
 
-    private func setupGestureRecognizer() {
+    private func setupGestureRecognizers() {
         longPressGestureRecognizer.addTarget(self, action: #selector(didLongPress(_:)))
         longPressGestureRecognizer.minimumPressDuration = 1.0
         sceneView.addGestureRecognizer(longPressGestureRecognizer)
