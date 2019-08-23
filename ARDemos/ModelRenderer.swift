@@ -23,34 +23,17 @@ class ModelRenderer: NSObject, VirtualContentRenderer {
         super.init()
 
     }
-
     /// - Tag: CreateARSCNFaceGeometry
     func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
-        guard let sceneView = renderer as? ARSCNView,
-            let device = sceneView.device,
-            anchor is ARPlaneAnchor
-            else { return nil }
+        guard anchor is ARPlaneAnchor else { return nil }
 
-        let faceGeometry = ARSCNFaceGeometry(device: device)
-        if let faceGeometry = faceGeometry {
-            if let material = faceGeometry.firstMaterial {
-                switch displayMode {
-                case .trophy:
-                    material.diffuse.contents = SKTexture(imageNamed: "wireframeTexture")
-                    material.lightingModel = .physicallyBased
-                case .well:
-                    material.diffuse.contents = SKTexture(imageNamed: "wireframeTexture")
-                    material.lightingModel = .physicallyBased
-                }
-            }
-
-            contentNode = SCNNode(geometry: faceGeometry)
-
-            // Render before other objects to provide allusion of occlusion
-            contentNode?.renderingOrder = -1
-            return contentNode
+        switch displayMode {
+        case .trophy:
+            contentNode = SCNReferenceNode(named: "champions_league_trophy")
+        case .well:
+            contentNode = SCNReferenceNode(named: "well")
         }
-        return nil
+        return contentNode
     }
 
     /// - Tag: ARFaceGeometryUpdate

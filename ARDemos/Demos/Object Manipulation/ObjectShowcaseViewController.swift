@@ -14,6 +14,12 @@ import ARVideoKit
 class ObjectShowcaseViewController: UIViewController, ARSessionDelegate, ARSCNViewDelegate, Recordable {
     var sceneView = ARSCNView()
 
+    /// For dismissing the view controller
+    var edgeSwipeGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: nil, action: nil)
+
+    /// For adding objects on tap
+    var tapGestureRecognizer = UITapGestureRecognizer(target: nil, action: nil)
+
     // MARK: - Recordable
 
     var recorder: RecordAR?
@@ -28,11 +34,11 @@ class ObjectShowcaseViewController: UIViewController, ARSessionDelegate, ARSCNVi
 
     var tabBar = UITabBar()
 
+    // - MARK: Rendering Properties
+
     var contentControllers: [ObjectShowcaseTabTypes: ModelRenderer] = [:]
 
-    /// For dismissing the view controller
-    var edgeSwipeGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: nil, action: nil)
-
+    /// Set in viewDidLoad initially and then changed with tab switching
     var selectedVirtualContent: ObjectShowcaseTabTypes! {
         didSet {
             guard oldValue != nil, oldValue != selectedVirtualContent
@@ -40,16 +46,10 @@ class ObjectShowcaseViewController: UIViewController, ARSessionDelegate, ARSCNVi
 
             // Remove existing content when switching types.
             contentControllers[oldValue]?.contentNode?.removeFromParentNode()
-
-            // If there's an anchor already (switching content), get the content controller to place initial content.
-            // Otherwise, the content controller will place it in `renderer(_:didAdd:for:)`.
-            if let anchor = currentPlaneAnchor, let node = sceneView.node(for: anchor),
-                let newContent = selectedContentController.renderer(sceneView, nodeFor: anchor) {
-                node.addChildNode(newContent)
-            }
         }
     }
 
+    /// Create the initial content or show the stored content
     var selectedContentController: VirtualContentRenderer {
         if let controller = contentControllers[selectedVirtualContent] {
             return controller
@@ -60,9 +60,11 @@ class ObjectShowcaseViewController: UIViewController, ARSessionDelegate, ARSCNVi
         }
     }
 
+    /// Tied to the object
     var currentPlaneAnchor: ARPlaneAnchor?
+    var planeNodes = [SCNNode]()
 
-    var objectNode: SCNReferenceNode?
+    var objectNode: SCNNode?
 
     init() {
         longPressGestureRecognizer = UILongPressGestureRecognizer(target: nil, action: nil)
@@ -82,6 +84,9 @@ class ObjectShowcaseViewController: UIViewController, ARSessionDelegate, ARSCNVi
         recordingDot.backgroundColor = .red
         recordingDot.layer.cornerRadius = 6
         recordingDot.clipsToBounds = true
+
+        tapGestureRecognizer.addTarget(self, action: #selector(didTapScene))
+        sceneView.addGestureRecognizer(tapGestureRecognizer)
 
         edgeSwipeGestureRecognizer.addTarget(self, action: #selector(didSwipeFromEdge))
         edgeSwipeGestureRecognizer.edges = .left
@@ -161,6 +166,39 @@ class ObjectShowcaseViewController: UIViewController, ARSessionDelegate, ARSCNVi
         tabBar.pinToSuperviewSafeAreaBottom()
     }
 
+    @objc private func didTapScene(_ recognizer: UITapGestureRecognizer) {
+        guard let sceneView = recognizer.view as? ARSCNView,
+            let anchor = currentPlaneAnchor,
+            let node = sceneView.node(for: anchor)
+            else { return }
+
+        let touchLocation = recognizer.location(in: sceneView)
+
+        // Ensure tap location exists
+        if let result = sceneView.hitTest(touchLocation, types: .existingPlaneUsingExtent).first {
+            if let newContent = selectedContentController.renderer(sceneView, nodeFor: anchor) {
+                let objectHeight = newContent.boundingBox.max.y - newContent.boundingBox.min.y
+
+                // Get position in 3D Space and convert that to a 3 Coordinate vector
+                let position = result.worldTransform.columns.3
+                let float = float3(x: position.x, y: position.y + objectHeight, z: position.z)
+                let vector = SCNVector3Make(float.x, float.y + 0.1, float.z)
+
+                objectNode = newContent
+                objectNode!.position = vector
+
+                if node.childNodes.count > planeNodes.count {
+                    node.replaceChildNode(
+                        node.childNodes[node.childNodes.count - 1],
+                        with: objectNode!
+                    )
+                } else {
+                    node.addChildNode(objectNode!)
+                }
+            }
+        }
+    }
+
     @objc private func didSwipeFromEdge(_ recognizer: UIScreenEdgePanGestureRecognizer) {
         if recognizer.state == .ended {
             navigationController?.popViewController(animated: true)
@@ -218,20 +256,51 @@ class ObjectShowcaseViewController: UIViewController, ARSessionDelegate, ARSCNVi
         guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
         currentPlaneAnchor = planeAnchor
 
-        // If this is the first time with this anchor, get the controller to create content.
-        // Otherwise (switching content), will change content when setting `selectedVirtualContent`.
-        if node.childNodes.isEmpty, let contentNode = selectedContentController.renderer(renderer, nodeFor: planeAnchor) {
-            node.addChildNode(contentNode)
-        }
+        // Create the the plane
+        let width = CGFloat(planeAnchor.extent.x)
+        let height = CGFloat(planeAnchor.extent.z)
+        let plane = SCNPlane(width: width, height: height)
+        plane.materials.first?.diffuse.contents = UIColor.white.withAlphaComponent(0.3)
+
+        let planeNode = SCNNode(geometry: plane)
+
+        // Set position of the plane
+        let x = CGFloat(planeAnchor.center.x)
+        let y = CGFloat(planeAnchor.center.y)
+        let z = CGFloat(planeAnchor.center.z)
+        planeNode.position = SCNVector3(x,y,z)
+
+        // Make the plane parallel to the floor
+        planeNode.eulerAngles.x = -.pi / 2
+
+        node.addChildNode(planeNode)
+
+        planeNodes.append(planeNode)
+    }
+
+    func renderer(_ renderer: SCNSceneRenderer, didRemove node: SCNNode, for anchor: ARAnchor) {
+        guard anchor is ARPlaneAnchor,
+            let planeNode = node.childNodes.first
+            else { return }
+        planeNodes = planeNodes.filter { $0 != planeNode }
     }
 
     func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
-        guard anchor == currentPlaneAnchor,
-            let contentNode = selectedContentController.contentNode,
-            contentNode.parent == node
+        guard let planeAnchor = anchor as?  ARPlaneAnchor,
+            let planeNode = node.childNodes.first,
+            let plane = planeNode.geometry as? SCNPlane
             else { return }
 
-        selectedContentController.renderer(renderer, didUpdate: contentNode, for: anchor)
+        let width = CGFloat(planeAnchor.extent.x)
+        let height = CGFloat(planeAnchor.extent.z)
+        plane.width = width
+        plane.height = height
+
+        let x = CGFloat(planeAnchor.center.x)
+        let y = CGFloat(planeAnchor.center.y)
+        let z = CGFloat(planeAnchor.center.z)
+
+        planeNode.position = SCNVector3(x, y, z)
     }
 
     // MARK: - ARSessionDelegate
@@ -268,13 +337,13 @@ class ObjectShowcaseViewController: UIViewController, ARSessionDelegate, ARSCNVi
     func resetTracking() {
         guard ARWorldTrackingConfiguration.isSupported else { return }
         let configuration = ARWorldTrackingConfiguration()
+        configuration.planeDetection = .horizontal
         configuration.isLightEstimationEnabled = true
 
         recorder?.prepare(configuration)
 
         sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
     }
-
 }
 
 extension ObjectShowcaseViewController: UITabBarDelegate {
