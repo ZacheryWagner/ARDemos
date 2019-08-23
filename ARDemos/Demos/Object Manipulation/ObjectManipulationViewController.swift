@@ -198,7 +198,8 @@ class ObjectManipulationViewController: UIViewController, ARSCNViewDelegate, UIG
      * Set the nodes materials
      */
     @objc private func didTapScene(recognizer: UITapGestureRecognizer) {
-        let sceneView = recognizer.view as! ARSCNView
+        guard let sceneView = recognizer.view as? ARSCNView else { return }
+
         let touchLocation = recognizer.location(in: sceneView)
 
         // If tapped node, else if tapped space

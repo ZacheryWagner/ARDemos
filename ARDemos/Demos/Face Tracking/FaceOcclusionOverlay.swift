@@ -19,9 +19,6 @@ class FaceOcclusionOverlay: NSObject, VirtualContentRenderer {
         guard let sceneView = renderer as? ARSCNView,
             anchor is ARFaceAnchor else { return nil }
 
-        #if targetEnvironment(simulator)
-        #error("ARKit is not supported in iOS Simulator. Connect a physical iOS device and select it as your Xcode run destination, or select Generic iOS Device as a build-only destination.")
-        #else
         /*
          Write depth but not color and render before other objects.
          This causes the geometry to occlude other SceneKit content
@@ -39,7 +36,7 @@ class FaceOcclusionOverlay: NSObject, VirtualContentRenderer {
         contentNode = SCNNode()
         contentNode!.addChildNode(occlusionNode)
         contentNode!.addChildNode(faceOverlayContent)
-        #endif
+
         return contentNode
     }
     

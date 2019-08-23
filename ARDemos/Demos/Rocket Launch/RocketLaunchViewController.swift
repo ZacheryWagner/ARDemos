@@ -97,6 +97,7 @@ class RocketLaunchViewController: UIViewController, ARSCNViewDelegate, Recordabl
 
     private func setupGestureRecognizers() {
         longPressGestureRecognizer.addTarget(self, action: #selector(didLongPress(_:)))
+
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapScene))
         let swipeDownGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(applyForceToRocketship))
         let swipeUpGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(launchRocketship))
@@ -118,7 +119,8 @@ class RocketLaunchViewController: UIViewController, ARSCNViewDelegate, Recordabl
      * Add the rocket ship to the scene
      */
     @objc private func didTapScene(_ recognizer: UITapGestureRecognizer) {
-        let sceneView = recognizer.view as! ARSCNView
+        guard let sceneView = recognizer.view as? ARSCNView else { return }
+        
         let touchLocation = recognizer.location(in: sceneView)
 
         // Ensure tap location exists
