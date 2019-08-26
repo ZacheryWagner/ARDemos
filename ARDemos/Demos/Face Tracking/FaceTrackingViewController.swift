@@ -9,29 +9,16 @@
 import Foundation
 import UIKit
 import ARKit
-import ARVideoKit
 
-class FaceTrackingViewController: UIViewController, ARSessionDelegate, ARSCNViewDelegate, Recordable {
-    var sceneView = ARSCNView()
+class FaceTrackingViewController: BaseARViewController, UITabBarDelegate {
+    // The anchor for the face passed between content renderers
+    var currentFaceAnchor: ARFaceAnchor?
 
-    // MARK: - Recordable
+    // MARK - Tabbable
 
-    var recorder: RecordAR?
-
-    var longPressGestureRecognizer: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: nil, action: nil)
-
-    var recordingDot: UIView = UIView()
-
-    var recordingStrobeTimer: Timer?
-
-    var recordingStrobeInterval: Double = 2.5
-
-    var tabBar = UITabBar()
+    var tabBar: UITabBar = UITabBar()
 
     var contentControllers: [FaceTrackingTabTypes: VirtualContentRenderer] = [:]
-
-    /// For dismissing the view controller
-    var edgeSwipeGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: nil, action: nil)
 
     var selectedVirtualContent: FaceTrackingTabTypes! {
         didSet {
@@ -60,12 +47,8 @@ class FaceTrackingViewController: UIViewController, ARSessionDelegate, ARSCNView
         }
     }
 
-    var currentFaceAnchor: ARFaceAnchor?
-
     init() {
-        longPressGestureRecognizer = UILongPressGestureRecognizer(target: nil, action: nil)
-
-        super.init(nibName: nil, bundle: nil)
+        super.init(realityConfiguration: .face)
 
         buildTabs()
         tabBar.barStyle = .black
@@ -76,14 +59,6 @@ class FaceTrackingViewController: UIViewController, ARSessionDelegate, ARSCNView
         sceneView.session.delegate = self
         sceneView.automaticallyUpdatesLighting = true
 
-        edgeSwipeGestureRecognizer.addTarget(self, action: #selector(didSwipeFromEdge))
-        edgeSwipeGestureRecognizer.edges = .left
-        sceneView.addGestureRecognizer(edgeSwipeGestureRecognizer)
-
-        longPressGestureRecognizer.addTarget(self, action: #selector(didLongPress(_:)))
-        longPressGestureRecognizer.minimumPressDuration = 1.0
-        sceneView.addGestureRecognizer(longPressGestureRecognizer)
-
         sceneView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(sceneView)
 
@@ -93,11 +68,6 @@ class FaceTrackingViewController: UIViewController, ARSessionDelegate, ARSCNView
         recordingDot.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(recordingDot)
 
-        recordingDot.isHidden = true
-        recordingDot.backgroundColor = .red
-        recordingDot.layer.cornerRadius = 6
-        recordingDot.clipsToBounds = true
-
         initConstraints()
     }
 
@@ -105,32 +75,19 @@ class FaceTrackingViewController: UIViewController, ARSessionDelegate, ARSCNView
         fatalError("init(coder:) has not been implemented")
     }
 
+    /**
+     * Initialize the first tab and render its content
+     */
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Set the initial tab
         tabBar.selectedItem = tabBar.items!.first!
         selectedVirtualContent = FaceTrackingTabTypes(rawValue: tabBar.selectedItem!.tag)
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        // AR experiences typically involve moving the device without
-        // touch input for some time, so prevent auto screen dimming.
-        UIApplication.shared.isIdleTimerDisabled = true
-
-        // "Reset" to run the AR session for the first time.
-        resetTracking()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        recorder?.rest()
-        sceneView.session.pause()
-    }
-
+    /**
+     * Build a tab for each texture
+     */
     private func buildTabs() {
         var tabBarItems: [UITabBarItem] = []
         tabBarItems.append(UITabBarItem(title: "Transform", image: UIImage(named: "transforms"), tag: 0))
@@ -159,57 +116,6 @@ class FaceTrackingViewController: UIViewController, ARSessionDelegate, ARSCNView
         recordingDot.heightAnchor.constraint(equalToConstant: 12).isActive = true
     }
 
-    @objc private func didSwipeFromEdge(_ recognizer: UIScreenEdgePanGestureRecognizer) {
-        if recognizer.state == .ended {
-            navigationController?.popViewController(animated: true)
-        }
-    }
-
-    // MARK: - Recordable
-
-    @objc private func didLongPress(_ recognizer: UILongPressGestureRecognizer) {
-        AppUtils.checkCameraAndMicAccess(onAuthorized: {
-            if recognizer.state == .began {
-                self.recorder?.record()
-                self.recordingDot.isHidden = false
-                self.startRecordStrobe()
-            } else if recognizer.state == .ended {
-                AppUtils.checkPhotoAccess(onAuthorized: {
-                    self.recorder?.stopAndExport()
-                    self.recordingDot.isHidden = true
-                    self.stopRecordStrobe()
-                })
-            }
-        })
-    }
-
-    /**
-     * Tick event for the timer strobe
-     */
-    @objc private func animateStrobe() {
-        DispatchQueue.main.async {
-            let halfDuration = self.recordingStrobeInterval / 2.0
-            UIView.animate(withDuration: halfDuration, animations: {
-                self.recordingDot.alpha = 0.1
-            }) { _ in
-                UIView.animate(withDuration: halfDuration, animations: {
-                    self.recordingDot.alpha = 1
-                })
-            }
-        }
-    }
-
-    func startRecordStrobe() {
-        guard recordingStrobeTimer == nil else { return }
-        recordingStrobeTimer = Timer.scheduledTimer(timeInterval: recordingStrobeInterval, target: self, selector: #selector(animateStrobe), userInfo: nil, repeats: true)
-    }
-
-    func stopRecordStrobe() {
-        guard recordingStrobeTimer != nil else { return }
-        recordingStrobeTimer?.invalidate()
-        recordingStrobeTimer = nil
-    }
-
     // MARK: - ARSCNViewDelegate
 
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
@@ -232,50 +138,8 @@ class FaceTrackingViewController: UIViewController, ARSessionDelegate, ARSCNView
         selectedContentController.renderer(renderer, didUpdate: contentNode, for: anchor)
     }
 
-    // MARK: - ARSessionDelegate
+    /// MARK - Tabbable (UITabBarDelegate)
 
-    func session(_ session: ARSession, didFailWithError error: Error) {
-        guard error is ARError else { return }
-
-        let errorWithInfo = error as NSError
-        let messages = [
-            errorWithInfo.localizedDescription,
-            errorWithInfo.localizedFailureReason,
-            errorWithInfo.localizedRecoverySuggestion
-        ]
-        let errorMessage = messages.compactMap({ $0 }).joined(separator: "\n")
-
-        DispatchQueue.main.async {
-            self.displayErrorMessage(title: "The AR session failed.", message: errorMessage)
-        }
-    }
-
-    // MARK: - Error handling
-
-    func displayErrorMessage(title: String, message: String) {
-        // Present an alert informing about the error that has occurred.
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let restartAction = UIAlertAction(title: "Restart Session", style: .default) { _ in
-            alertController.dismiss(animated: true, completion: nil)
-            self.resetTracking()
-        }
-        alertController.addAction(restartAction)
-        present(alertController, animated: true, completion: nil)
-    }
-
-    func resetTracking() {
-        guard ARFaceTrackingConfiguration.isSupported else { return }
-        let configuration = ARFaceTrackingConfiguration()
-        configuration.isLightEstimationEnabled = true
-
-        recorder?.prepare(configuration)
-
-        sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
-    }
-
-}
-
-extension FaceTrackingViewController: UITabBarDelegate {
     func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
         guard let contentType = FaceTrackingTabTypes(rawValue: item.tag)
             else { fatalError("unexpected virtual content tag") }

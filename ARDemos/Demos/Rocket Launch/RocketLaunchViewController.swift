@@ -7,33 +7,17 @@
 //
 
 import Foundation
+import UIKit
 import ARKit
-import ARVideoKit
 
-class RocketLaunchViewController: UIViewController, ARSCNViewDelegate, Recordable {
-    private var sceneView = ARSCNView()
-
-    // MARK: - Recordable
-
-    var recorder: RecordAR?
-
-    var longPressGestureRecognizer: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: nil, action: nil)
-
-    var recordingDot: UIView = UIView()
-
-    var recordingStrobeTimer: Timer?
-
-    var recordingStrobeInterval: Double = 2.5
-
+class RocketLaunchViewController: BaseARViewController {
     /// The horizontal word plane
     private var planeNodes = [SCNNode]()
 
     private var rocketNodeName = "rocket"
 
     init() {
-        longPressGestureRecognizer = UILongPressGestureRecognizer(target: nil, action: nil)
-
-        super.init(nibName: nil, bundle: nil)
+        super.init(realityConfiguration: .world)
 
         sceneView.delegate = self
 
@@ -46,44 +30,12 @@ class RocketLaunchViewController: UIViewController, ARSCNViewDelegate, Recordabl
         recordingDot.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(recordingDot)
 
-        recordingDot.isHidden = true
-        recordingDot.backgroundColor = .red
-        recordingDot.layer.cornerRadius = 6
-        recordingDot.clipsToBounds = true
-
-        initConstraints()
         setupGestureRecognizers()
+        initConstraints()
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Initialize the recorder
-        recorder = RecordAR(ARSceneKit: sceneView)
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        // Create the session configuration
-        let configuration = ARWorldTrackingConfiguration()
-        configuration.planeDetection = .horizontal
-
-        // Prepare the recorder
-        recorder?.prepare(configuration)
-
-        sceneView.session.run(configuration)
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        recorder?.rest()
-        sceneView.session.pause()
     }
 
     private func initConstraints() {
@@ -95,24 +47,23 @@ class RocketLaunchViewController: UIViewController, ARSCNViewDelegate, Recordabl
         recordingDot.heightAnchor.constraint(equalToConstant: 12).isActive = true
     }
 
+    /**
+     * Setup the tap and swipe gestures
+     */
     private func setupGestureRecognizers() {
-        longPressGestureRecognizer.addTarget(self, action: #selector(didLongPress(_:)))
-
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapScene))
         let swipeDownGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(applyForceToRocketship))
         let swipeUpGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(launchRocketship))
-        let edgeSwipeGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(didSwipeFromEdge))
 
-        longPressGestureRecognizer.minimumPressDuration = 1.0
         swipeDownGestureRecognizer.direction = .down
         swipeUpGestureRecognizer.direction = .up
-        edgeSwipeGestureRecognizer.edges = .left
 
-        sceneView.addGestureRecognizer(longPressGestureRecognizer)
+        swipeDownGestureRecognizer.delegate = self
+        swipeUpGestureRecognizer.delegate = self
+
         sceneView.addGestureRecognizer(tapGestureRecognizer)
         sceneView.addGestureRecognizer(swipeDownGestureRecognizer)
         sceneView.addGestureRecognizer(swipeUpGestureRecognizer)
-        sceneView.addGestureRecognizer(edgeSwipeGestureRecognizer)
     }
 
     /**
@@ -183,12 +134,6 @@ class RocketLaunchViewController: UIViewController, ARSCNViewDelegate, Recordabl
         rocketshipNode.runAction(action)
     }
 
-    @objc private func didSwipeFromEdge(_ recognizer: UIScreenEdgePanGestureRecognizer) {
-        if recognizer.state == .ended {
-            navigationController?.popViewController(animated: true)
-        }
-    }
-
     func getRocketshipNode(from swipeLocation: CGPoint) -> SCNNode? {
         let hitTestResults = sceneView.hitTest(swipeLocation)
         guard let parentNode = hitTestResults.first?.node.parent,
@@ -196,51 +141,6 @@ class RocketLaunchViewController: UIViewController, ARSCNViewDelegate, Recordabl
             else { return nil }
 
         return parentNode
-    }
-
-    // MARK: - Recordable
-
-    @objc private func didLongPress(_ recognizer: UILongPressGestureRecognizer) {
-        AppUtils.checkCameraAndMicAccess(onAuthorized: {
-            if recognizer.state == .began {
-                self.recorder?.record()
-                self.recordingDot.isHidden = false
-                self.startRecordStrobe()
-            } else if recognizer.state == .ended {
-                AppUtils.checkPhotoAccess(onAuthorized: {
-                    self.recorder?.stopAndExport()
-                    self.recordingDot.isHidden = true
-                    self.stopRecordStrobe()
-                })
-            }
-        })
-    }
-
-    /**
-     * Tick event for the timer strobe
-     */
-    @objc private func animateStrobe() {
-        DispatchQueue.main.async {
-            let halfDuration = self.recordingStrobeInterval / 2.0
-            UIView.animate(withDuration: halfDuration, animations: {
-                self.recordingDot.alpha = 0.1
-            }) { _ in
-                UIView.animate(withDuration: halfDuration, animations: {
-                    self.recordingDot.alpha = 1
-                })
-            }
-        }
-    }
-
-    func startRecordStrobe() {
-        guard recordingStrobeTimer == nil else { return }
-        recordingStrobeTimer = Timer.scheduledTimer(timeInterval: recordingStrobeInterval, target: self, selector: #selector(animateStrobe), userInfo: nil, repeats: true)
-    }
-
-    func stopRecordStrobe() {
-        guard recordingStrobeTimer != nil else { return }
-        recordingStrobeTimer?.invalidate()
-        recordingStrobeTimer = nil
     }
 
     // MARK: - ARSCNView delegate

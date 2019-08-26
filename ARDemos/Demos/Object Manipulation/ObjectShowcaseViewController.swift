@@ -7,43 +7,23 @@
 //
 
 import Foundation
+import UIKit
 import ARKit
-import SceneKit
-import ARVideoKit
 
-class ObjectShowcaseViewController: UIViewController, ARSessionDelegate, ARSCNViewDelegate, UIGestureRecognizerDelegate, Recordable {
-    var sceneView = ARSCNView()
+class ObjectShowcaseViewController: BaseARViewController, UITabBarDelegate {
+    /// The anchor for the plane passed between content renderers
+    var currentPlaneAnchor: ARPlaneAnchor?
+
+    var planeNodes = [SCNNode]()
+
+    var objectNode: SCNNode?
 
     /// The current angle of the object for panning
     var currentAngleY: Float = 0
 
-    /// For rotating the node
-    var scenePanGestureRecognizer = UIPanGestureRecognizer(target: nil, action: nil)
-
-    /// For resizing the node
-    var scenePinchGestureRecognizer = UIPinchGestureRecognizer(target: nil, action: nil)
-
-    /// For adding objects on tap
-    var sceneTapGestureRecognizer = UITapGestureRecognizer(target: nil, action: nil)
-
-    /// For dismissing the view controller
-    var edgeSwipeGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: nil, action: nil)
-
-    // MARK: - Recordable
-
-    var recorder: RecordAR?
-
-    var longPressGestureRecognizer: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: nil, action: nil)
-
-    var recordingDot: UIView = UIView()
-
-    var recordingStrobeTimer: Timer?
-
-    var recordingStrobeInterval: Double = 2.5
+    // MARK - Tabbable
 
     var tabBar = UITabBar()
-
-    // - MARK: Rendering Properties
 
     var contentControllers: [ObjectShowcaseTabTypes: ModelRenderer] = [:]
 
@@ -69,16 +49,8 @@ class ObjectShowcaseViewController: UIViewController, ARSessionDelegate, ARSCNVi
         }
     }
 
-    /// Tied to the object
-    var currentPlaneAnchor: ARPlaneAnchor?
-    var planeNodes = [SCNNode]()
-
-    var objectNode: SCNNode?
-
     init() {
-        longPressGestureRecognizer = UILongPressGestureRecognizer(target: nil, action: nil)
-
-        super.init(nibName: nil, bundle: nil)
+        super.init(realityConfiguration: .world)
 
         sceneView.delegate = self
         sceneView.session.delegate = self
@@ -111,60 +83,31 @@ class ObjectShowcaseViewController: UIViewController, ARSessionDelegate, ARSCNVi
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Set the initial tab
-        tabBar.selectedItem = tabBar.items!.first!
-        selectedVirtualContent = ObjectShowcaseTabTypes(rawValue: tabBar.selectedItem!.tag)
-
-        // Initialize the recorder
-        recorder = RecordAR(ARSceneKit: sceneView)
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        // AR experiences typically involve moving the device without
-        // touch input for some time, so prevent auto screen dimming.
-        UIApplication.shared.isIdleTimerDisabled = true
-
-        // "Reset" to run the AR session for the first time.
-        resetTracking()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        recorder?.rest()
-        sceneView.session.pause()
-    }
-
+    /**
+     * Setup the object manipulation gestures
+     */
     private func setupGestureRecognizers() {
-        longPressGestureRecognizer.addTarget(self, action: #selector(didLongPress(_:)))
-        longPressGestureRecognizer.minimumPressDuration = 1.0
-        sceneView.addGestureRecognizer(longPressGestureRecognizer)
+        /// For adding objects on tap
+        let sceneTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapScene))
 
-        sceneTapGestureRecognizer.addTarget(self, action: #selector(didTapScene))
+        /// For rotating the node
+        let scenePanGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(didPanScene))
+
+        /// For resizing the node
+        let scenePinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(didPinchScene))
+
         sceneView.addGestureRecognizer(sceneTapGestureRecognizer)
-
-        scenePanGestureRecognizer.addTarget(self, action: #selector(didPanScene))
         sceneView.addGestureRecognizer(scenePanGestureRecognizer)
-
-        scenePinchGestureRecognizer.addTarget(self, action: #selector(didPinchScene))
         sceneView.addGestureRecognizer(scenePinchGestureRecognizer)
 
-        edgeSwipeGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(didSwipeFromEdge))
-        edgeSwipeGestureRecognizer.edges = .left
-        sceneView.addGestureRecognizer(edgeSwipeGestureRecognizer)
-
-        longPressGestureRecognizer.delegate = self
         sceneTapGestureRecognizer.delegate = self
         scenePanGestureRecognizer.delegate = self
         scenePinchGestureRecognizer.delegate = self
-        edgeSwipeGestureRecognizer.delegate = self
     }
 
+    /**
+     * Build a tab for each model
+     */
     private func buildTabs() {
         var tabBarItems: [UITabBarItem] = []
         tabBarItems.append(UITabBarItem(title: "Trophy", image: nil, tag: 0))
@@ -190,6 +133,9 @@ class ObjectShowcaseViewController: UIViewController, ARSessionDelegate, ARSCNVi
         tabBar.pinToSuperviewSafeAreaBottom()
     }
 
+    /**
+     * Place an object at the location and remove the object of it exists
+     */
     @objc private func didTapScene(_ recognizer: UITapGestureRecognizer) {
         guard let sceneView = recognizer.view as? ARSCNView,
             let anchor = currentPlaneAnchor,
@@ -201,7 +147,7 @@ class ObjectShowcaseViewController: UIViewController, ARSessionDelegate, ARSCNVi
         // Ensure tap location exists
         if let result = sceneView.hitTest(touchLocation, types: .existingPlaneUsingExtent).first {
             if let newContent = selectedContentController.renderer(sceneView, nodeFor: anchor) {
-                let objectHeight = newContent.boundingBox.max.y - newContent.boundingBox.min.y
+                //let objectHeight = newContent.boundingBox.max.y - newContent.boundingBox.min.y
 
                 // Get position in 3D Space and convert that to a 3 Coordinate vector
                 let position = result.worldTransform.columns.3
@@ -280,59 +226,11 @@ class ObjectShowcaseViewController: UIViewController, ARSessionDelegate, ARSCNVi
         }
     }
 
-    @objc private func didSwipeFromEdge(_ recognizer: UIScreenEdgePanGestureRecognizer) {
-        if recognizer.state == .ended {
-            navigationController?.popViewController(animated: true)
-        }
-    }
-
-    // MARK: - Recordable
-
-    @objc private func didLongPress(_ recognizer: UILongPressGestureRecognizer) {
-        AppUtils.checkCameraAndMicAccess(onAuthorized: {
-            if recognizer.state == .began {
-                self.recorder?.record()
-                self.recordingDot.isHidden = false
-                self.startRecordStrobe()
-            } else if recognizer.state == .ended {
-                AppUtils.checkPhotoAccess(onAuthorized: {
-                    self.recorder?.stopAndExport()
-                    self.recordingDot.isHidden = true
-                    self.stopRecordStrobe()
-                })
-            }
-        })
-    }
-
-    /**
-     * Tick event for the timer strobe
-     */
-    @objc private func animateStrobe() {
-        DispatchQueue.main.async {
-            let halfDuration = self.recordingStrobeInterval / 2.0
-            UIView.animate(withDuration: halfDuration, animations: {
-                self.recordingDot.alpha = 0.1
-            }) { _ in
-                UIView.animate(withDuration: halfDuration, animations: {
-                    self.recordingDot.alpha = 1
-                })
-            }
-        }
-    }
-
-    func startRecordStrobe() {
-        guard recordingStrobeTimer == nil else { return }
-        recordingStrobeTimer = Timer.scheduledTimer(timeInterval: recordingStrobeInterval, target: self, selector: #selector(animateStrobe), userInfo: nil, repeats: true)
-    }
-
-    func stopRecordStrobe() {
-        guard recordingStrobeTimer != nil else { return }
-        recordingStrobeTimer?.invalidate()
-        recordingStrobeTimer = nil
-    }
-
     // MARK: - ARSCNViewDelegate
 
+    /**
+     * Set the plane anchor and add plane nodes
+     */
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
         currentPlaneAnchor = planeAnchor
@@ -359,6 +257,9 @@ class ObjectShowcaseViewController: UIViewController, ARSessionDelegate, ARSCNVi
         planeNodes.append(planeNode)
     }
 
+    /**
+     * Remove plane nodes
+     */
     func renderer(_ renderer: SCNSceneRenderer, didRemove node: SCNNode, for anchor: ARAnchor) {
         guard anchor is ARPlaneAnchor,
             let planeNode = node.childNodes.first
@@ -366,6 +267,9 @@ class ObjectShowcaseViewController: UIViewController, ARSessionDelegate, ARSCNVi
         planeNodes = planeNodes.filter { $0 != planeNode }
     }
 
+    /**
+     * Update plane nodes
+     */
     func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
         guard let planeAnchor = anchor as?  ARPlaneAnchor,
             let planeNode = node.childNodes.first,
@@ -384,59 +288,8 @@ class ObjectShowcaseViewController: UIViewController, ARSessionDelegate, ARSCNVi
         planeNode.position = SCNVector3(x, y, z)
     }
 
-    // MARK: - ARSessionDelegate
+    /// MARK - Tabbable (UITabBarDelegate)
 
-    func session(_ session: ARSession, didFailWithError error: Error) {
-        guard error is ARError else { return }
-
-        let errorWithInfo = error as NSError
-        let messages = [
-            errorWithInfo.localizedDescription,
-            errorWithInfo.localizedFailureReason,
-            errorWithInfo.localizedRecoverySuggestion
-        ]
-        let errorMessage = messages.compactMap({ $0 }).joined(separator: "\n")
-
-        DispatchQueue.main.async {
-            self.displayErrorMessage(title: "The AR session failed.", message: errorMessage)
-        }
-    }
-
-    // MARK: - Error handling
-
-    func displayErrorMessage(title: String, message: String) {
-        // Present an alert informing about the error that has occurred.
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let restartAction = UIAlertAction(title: "Restart Session", style: .default) { _ in
-            alertController.dismiss(animated: true, completion: nil)
-            self.resetTracking()
-        }
-        alertController.addAction(restartAction)
-        present(alertController, animated: true, completion: nil)
-    }
-
-    // MARK: - gestureRecognizer delegate
-
-    /**
-     *  Allow all gestures to happen simultaneously
-     */
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
-    }
-
-    func resetTracking() {
-        guard ARWorldTrackingConfiguration.isSupported else { return }
-        let configuration = ARWorldTrackingConfiguration()
-        configuration.planeDetection = .horizontal
-        configuration.isLightEstimationEnabled = true
-
-        recorder?.prepare(configuration)
-
-        sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
-    }
-}
-
-extension ObjectShowcaseViewController: UITabBarDelegate {
     func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
         guard let contentType = ObjectShowcaseTabTypes(rawValue: item.tag)
             else { fatalError("unexpected virtual content tag") }

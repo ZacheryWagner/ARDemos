@@ -12,13 +12,14 @@
 		A118C40C22FC996800983F20 /* VirtualContentRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A118C40B22FC996800983F20 /* VirtualContentRenderer.swift */; };
 		A118C41122FC9BE500983F20 /* rocketship.scn in Resources */ = {isa = PBXBuildFile; fileRef = A118C41022FC9BE500983F20 /* rocketship.scn */; };
 		A118C41522FCC37F00983F20 /* MathUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A118C41422FCC37F00983F20 /* MathUtils.swift */; };
+		A120F42C23148F270041F02E /* Tabbable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A120F42B23148F270041F02E /* Tabbable.swift */; };
 		A14F502022DEBE0E003F11A1 /* ObjectManipulationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14F501F22DEBE0E003F11A1 /* ObjectManipulationViewModel.swift */; };
 		A15DEFFA22E0F38B000FCE0A /* DemoTableVIewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15DEFF922E0F38B000FCE0A /* DemoTableVIewController.swift */; };
 		A15DEFFC22E0F88E000FCE0A /* DemoTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15DEFFB22E0F88E000FCE0A /* DemoTableViewModel.swift */; };
 		A15DF00222E10778000FCE0A /* RocketLaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15DF00122E10778000FCE0A /* RocketLaunchViewController.swift */; };
 		A173D90B230B229400F1C31F /* ObjectShowcaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A173D90A230B229400F1C31F /* ObjectShowcaseViewController.swift */; };
 		A173D90D230B22FE00F1C31F /* ModelRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A173D90C230B22FE00F1C31F /* ModelRenderer.swift */; };
-		A175938B230320F1005DE1AD /* FaceTextureTabBarButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A175938A230320F1005DE1AD /* FaceTextureTabBarButtonView.swift */; };
+		A178627C231467AE000CC8B7 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A178627B231467AE000CC8B7 /* BaseViewController.swift */; };
 		A1A3C1842309BDBA007F79E4 /* AppUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A3C1832309BDBA007F79E4 /* AppUtils.swift */; };
 		A1A98E3B22E21C58006C5829 /* FaceTrackingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A98E3A22E21C58006C5829 /* FaceTrackingViewController.swift */; };
 		A1A98E3D22E22BF2006C5829 /* TabTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A98E3C22E22BF2006C5829 /* TabTypes.swift */; };
@@ -36,8 +37,6 @@
 		A1C9785022DE1D5A00664B5B /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C9784F22DE1D5A00664B5B /* UIView.swift */; };
 		A1C9785422DE1E6F00664B5B /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C9785322DE1E6F00664B5B /* UIColor.swift */; };
 		A1D46D492306FE6E00F0014E /* Recordable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D46D482306FE6E00F0014E /* Recordable.swift */; };
-		A1F7E59322E7A434009DE89A /* PhysicsSandboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F7E59222E7A434009DE89A /* PhysicsSandboxViewController.swift */; };
-		A1F7E59522E7A47B009DE89A /* PhysicsSandboxViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F7E59422E7A47B009DE89A /* PhysicsSandboxViewModel.swift */; };
 		FC78BB549157C53177B1C6B0 /* Pods_ARDemos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83F5C5E2B20B17B7723A4E9A /* Pods_ARDemos.framework */; };
 /* End PBXBuildFile section */
 
@@ -51,13 +50,14 @@
 		A118C40F22FC9B8F00983F20 /* reactor.scnp */ = {isa = PBXFileReference; lastKnownFileType = file.scp; path = reactor.scnp; sourceTree = "<group>"; };
 		A118C41022FC9BE500983F20 /* rocketship.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = rocketship.scn; sourceTree = "<group>"; };
 		A118C41422FCC37F00983F20 /* MathUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathUtils.swift; sourceTree = "<group>"; };
+		A120F42B23148F270041F02E /* Tabbable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tabbable.swift; sourceTree = "<group>"; };
 		A14F501F22DEBE0E003F11A1 /* ObjectManipulationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectManipulationViewModel.swift; sourceTree = "<group>"; };
 		A15DEFF922E0F38B000FCE0A /* DemoTableVIewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoTableVIewController.swift; sourceTree = "<group>"; };
 		A15DEFFB22E0F88E000FCE0A /* DemoTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoTableViewModel.swift; sourceTree = "<group>"; };
 		A15DF00122E10778000FCE0A /* RocketLaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RocketLaunchViewController.swift; sourceTree = "<group>"; };
 		A173D90A230B229400F1C31F /* ObjectShowcaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectShowcaseViewController.swift; sourceTree = "<group>"; };
 		A173D90C230B22FE00F1C31F /* ModelRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelRenderer.swift; sourceTree = "<group>"; };
-		A175938A230320F1005DE1AD /* FaceTextureTabBarButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceTextureTabBarButtonView.swift; sourceTree = "<group>"; };
+		A178627B231467AE000CC8B7 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		A1A3C1832309BDBA007F79E4 /* AppUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUtils.swift; sourceTree = "<group>"; };
 		A1A98E3A22E21C58006C5829 /* FaceTrackingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceTrackingViewController.swift; sourceTree = "<group>"; };
 		A1A98E3C22E22BF2006C5829 /* TabTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabTypes.swift; sourceTree = "<group>"; };
@@ -77,8 +77,6 @@
 		A1C9784F22DE1D5A00664B5B /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		A1C9785322DE1E6F00664B5B /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		A1D46D482306FE6E00F0014E /* Recordable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recordable.swift; sourceTree = "<group>"; };
-		A1F7E59222E7A434009DE89A /* PhysicsSandboxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsSandboxViewController.swift; sourceTree = "<group>"; };
-		A1F7E59422E7A47B009DE89A /* PhysicsSandboxViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsSandboxViewModel.swift; sourceTree = "<group>"; };
 		FFECAC739A69FA178FD23B04 /* Pods-ARDemos.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ARDemos.release.xcconfig"; path = "Target Support Files/Pods-ARDemos/Pods-ARDemos.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -122,6 +120,18 @@
 			path = "Rocket Launch";
 			sourceTree = "<group>";
 		};
+		A120F42A23148ED00041F02E /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				A178627B231467AE000CC8B7 /* BaseViewController.swift */,
+				A118C40B22FC996800983F20 /* VirtualContentRenderer.swift */,
+				A1A98E3C22E22BF2006C5829 /* TabTypes.swift */,
+				A1D46D482306FE6E00F0014E /* Recordable.swift */,
+				A120F42B23148F270041F02E /* Tabbable.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
 		A128F9F422E21831004A5BF0 /* Face Tracking */ = {
 			isa = PBXGroup;
 			children = (
@@ -139,7 +149,6 @@
 			children = (
 				A118C40D22FC9B7300983F20 /* Rocket Launch */,
 				A1A98E4A22E2437A006C5829 /* Object Manipulation */,
-				A1F7E58F22E7A358009DE89A /* Physics Sandbox */,
 				A128F9F422E21831004A5BF0 /* Face Tracking */,
 				A1E100B322EF6A3D0091AE58 /* Stickers */,
 			);
@@ -205,11 +214,9 @@
 				A1C9783822DE14F300664B5B /* AppDelegate.swift */,
 				A15DEFF922E0F38B000FCE0A /* DemoTableVIewController.swift */,
 				A15DEFFB22E0F88E000FCE0A /* DemoTableViewModel.swift */,
-				A118C40B22FC996800983F20 /* VirtualContentRenderer.swift */,
-				A1A98E3C22E22BF2006C5829 /* TabTypes.swift */,
 				A173D90C230B22FE00F1C31F /* ModelRenderer.swift */,
 				A1AF31F022FC966200960F2C /* FaceRenderer.swift */,
-				A1D46D482306FE6E00F0014E /* Recordable.swift */,
+				A120F42A23148ED00041F02E /* Base */,
 				A15DEFFE22E1026A000FCE0A /* Demos */,
 			);
 			path = ARDemos;
@@ -220,18 +227,8 @@
 			children = (
 				A103C51C2302564F00F35D20 /* ObjectStickerViewController.swift */,
 				A103C5202302583900F35D20 /* FaceTextureViewController.swift */,
-				A175938A230320F1005DE1AD /* FaceTextureTabBarButtonView.swift */,
 			);
 			path = Stickers;
-			sourceTree = "<group>";
-		};
-		A1F7E58F22E7A358009DE89A /* Physics Sandbox */ = {
-			isa = PBXGroup;
-			children = (
-				A1F7E59222E7A434009DE89A /* PhysicsSandboxViewController.swift */,
-				A1F7E59422E7A47B009DE89A /* PhysicsSandboxViewModel.swift */,
-			);
-			path = "Physics Sandbox";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -350,11 +347,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A120F42C23148F270041F02E /* Tabbable.swift in Sources */,
 				A1C9783D22DE14F300664B5B /* ObjectManipulationViewController.swift in Sources */,
 				A1A98E3D22E22BF2006C5829 /* TabTypes.swift in Sources */,
 				A1B0663822E62702004C5202 /* TransformVisualization.swift in Sources */,
 				A1A98E3B22E21C58006C5829 /* FaceTrackingViewController.swift in Sources */,
-				A1F7E59322E7A434009DE89A /* PhysicsSandboxViewController.swift in Sources */,
+				A178627C231467AE000CC8B7 /* BaseViewController.swift in Sources */,
 				A1C9785022DE1D5A00664B5B /* UIView.swift in Sources */,
 				A173D90B230B229400F1C31F /* ObjectShowcaseViewController.swift in Sources */,
 				A15DF00222E10778000FCE0A /* RocketLaunchViewController.swift in Sources */,
@@ -367,8 +365,6 @@
 				A1C9783922DE14F300664B5B /* AppDelegate.swift in Sources */,
 				A1B0663A22E62702004C5202 /* VideoTexturedFace.swift in Sources */,
 				A103C5212302583900F35D20 /* FaceTextureViewController.swift in Sources */,
-				A1F7E59522E7A47B009DE89A /* PhysicsSandboxViewModel.swift in Sources */,
-				A175938B230320F1005DE1AD /* FaceTextureTabBarButtonView.swift in Sources */,
 				A15DEFFA22E0F38B000FCE0A /* DemoTableVIewController.swift in Sources */,
 				A1AF31F122FC966200960F2C /* FaceRenderer.swift in Sources */,
 				A1C9785422DE1E6F00664B5B /* UIColor.swift in Sources */,

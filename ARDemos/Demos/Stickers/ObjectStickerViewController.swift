@@ -9,24 +9,8 @@
 import Foundation
 import UIKit
 import ARKit
-import ARVideoKit
 
-class ObjectStickerViewController: UIViewController, ARSessionDelegate, ARSCNViewDelegate, Recordable {
-    /// The scene for display
-    var sceneView = ARSCNView()
-
-    // MARK: - Recordable
-
-    var recorder: RecordAR?
-
-    var longPressGestureRecognizer: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: nil, action: nil)
-
-    var recordingDot: UIView = UIView()
-
-    var recordingStrobeTimer: Timer?
-
-    var recordingStrobeInterval: Double = 2.5
-
+class ObjectStickerViewController: BaseARViewController {
     // Holds the node with the face and specific face renderers
     var texturedFaceRenderer: FaceRenderer?
 
@@ -39,16 +23,8 @@ class ObjectStickerViewController: UIViewController, ARSessionDelegate, ARSCNVie
     // Node with just the sticker
     var stickerNode: SCNReferenceNode?
 
-    /// For swapping textures and moving the node to the tap location
-    var sceneTapGestureRecognizer = UITapGestureRecognizer(target: nil, action: nil)
-
-    /// For dismissing the view controller
-    var edgeSwipeGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: nil, action: nil)
-
     init() {
-        longPressGestureRecognizer = UILongPressGestureRecognizer(target: nil, action: nil)
-
-        super.init(nibName: nil, bundle: nil)
+        super.init(realityConfiguration: .face)
 
         texturedFaceRenderer = FaceRenderer()
 
@@ -56,16 +32,9 @@ class ObjectStickerViewController: UIViewController, ARSessionDelegate, ARSCNVie
         sceneView.session.delegate = self
         sceneView.automaticallyUpdatesLighting = true
 
-        sceneTapGestureRecognizer.addTarget(self, action: #selector(didTapScene))
+        // Setup tap gesture
+        let sceneTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapScene))
         sceneView.addGestureRecognizer(sceneTapGestureRecognizer)
-
-        edgeSwipeGestureRecognizer.addTarget(self, action: #selector(didSwipeFromEdge))
-        edgeSwipeGestureRecognizer.edges = .left
-        sceneView.addGestureRecognizer(edgeSwipeGestureRecognizer)
-
-        longPressGestureRecognizer.addTarget(self, action: #selector(didLongPress(_:)))
-        longPressGestureRecognizer.minimumPressDuration = 1.0
-        sceneView.addGestureRecognizer(longPressGestureRecognizer)
 
         sceneView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(sceneView)
@@ -80,31 +49,6 @@ class ObjectStickerViewController: UIViewController, ARSessionDelegate, ARSCNVie
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Initialize the recorder
-        recorder = RecordAR(ARSceneKit: sceneView)
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        // AR experiences typically involve moving the device without
-        // touch input for some time, so prevent auto screen dimming.
-        UIApplication.shared.isIdleTimerDisabled = true
-
-        // "Reset" to run the AR session for the first time.
-        resetTracking()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        recorder?.rest()
-        sceneView.session.pause()
-    }
-
     private func initConstraints() {
         sceneView.pinToSuperview()
 
@@ -115,7 +59,7 @@ class ObjectStickerViewController: UIViewController, ARSessionDelegate, ARSCNVie
     }
 
     /**
-     *
+     * Attach sticker object to tap location with propper angle and position
      */
     @objc private func didTapScene(recognizer: UITapGestureRecognizer) {
         guard let sceneView = recognizer.view as? ARSCNView,
@@ -131,7 +75,7 @@ class ObjectStickerViewController: UIViewController, ARSessionDelegate, ARSCNVie
             guard let stickerNode = stickerNode else { return }
 
             // An estimation of the nose
-            let nosePoint = SCNVector3(0, 0, 0.6)
+            let nosePoint = SCNVector3(0, 0, 0.7)
 
             // Get the angle of the sticker to match the facial feature
             var theta = MathUtils.getAngleBetweenTwo3DPoints(
@@ -163,60 +107,6 @@ class ObjectStickerViewController: UIViewController, ARSessionDelegate, ARSCNVie
         }
     }
 
-    /**
-     * Dismiss view controller on swipe right from edge
-     */
-    @objc private func didSwipeFromEdge(_ recognizer: UIScreenEdgePanGestureRecognizer) {
-        if recognizer.state == .ended {
-            navigationController?.popViewController(animated: true)
-        }
-    }
-
-    // MARK: - Recordable
-
-    @objc private func didLongPress(_ recognizer: UILongPressGestureRecognizer) {
-        AppUtils.checkCameraAndMicAccess(onAuthorized: {
-            if recognizer.state == .began {
-                self.recorder?.record()
-                self.recordingDot.isHidden = false
-                self.startRecordStrobe()
-            } else if recognizer.state == .ended {
-                AppUtils.checkPhotoAccess(onAuthorized: {
-                    self.recorder?.stopAndExport()
-                    self.recordingDot.isHidden = true
-                    self.stopRecordStrobe()
-                })
-            }
-        })
-    }
-
-    /**
-     * Tick event for the timer strobe
-     */
-    @objc private func animateStrobe() {
-        DispatchQueue.main.async {
-            let halfDuration = self.recordingStrobeInterval / 2.0
-            UIView.animate(withDuration: halfDuration, animations: {
-                self.recordingDot.alpha = 0.1
-            }) { _ in
-                UIView.animate(withDuration: halfDuration, animations: {
-                    self.recordingDot.alpha = 1
-                })
-            }
-        }
-    }
-
-    func startRecordStrobe() {
-        guard recordingStrobeTimer == nil else { return }
-        recordingStrobeTimer = Timer.scheduledTimer(timeInterval: recordingStrobeInterval, target: self, selector: #selector(animateStrobe), userInfo: nil, repeats: true)
-    }
-
-    func stopRecordStrobe() {
-        guard recordingStrobeTimer != nil else { return }
-        recordingStrobeTimer?.invalidate()
-        recordingStrobeTimer = nil
-    }
-
     // MARK: - ARSCNViewDelegate
 
     /**
@@ -246,46 +136,5 @@ class ObjectStickerViewController: UIViewController, ARSessionDelegate, ARSCNVie
             else { return }
 
         texturedFaceRenderer.renderer(renderer, didUpdate: contentNode, for: anchor)
-    }
-
-    // MARK: - ARSessionDelegate
-
-    func session(_ session: ARSession, didFailWithError error: Error) {
-        guard error is ARError else { return }
-
-        let errorWithInfo = error as NSError
-        let messages = [
-            errorWithInfo.localizedDescription,
-            errorWithInfo.localizedFailureReason,
-            errorWithInfo.localizedRecoverySuggestion
-        ]
-        let errorMessage = messages.compactMap({ $0 }).joined(separator: "\n")
-
-        DispatchQueue.main.async {
-            self.displayErrorMessage(title: "The AR session failed.", message: errorMessage)
-        }
-    }
-
-    // MARK: - Error handling
-
-    func displayErrorMessage(title: String, message: String) {
-        // Present an alert informing about the error that has occurred.
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let restartAction = UIAlertAction(title: "Restart Session", style: .default) { _ in
-            alertController.dismiss(animated: true, completion: nil)
-            self.resetTracking()
-        }
-        alertController.addAction(restartAction)
-        present(alertController, animated: true, completion: nil)
-    }
-
-    func resetTracking() {
-        guard ARFaceTrackingConfiguration.isSupported else { return }
-        let configuration = ARFaceTrackingConfiguration()
-        configuration.isLightEstimationEnabled = true
-
-        recorder?.prepare(configuration)
-
-        sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
     }
 }
