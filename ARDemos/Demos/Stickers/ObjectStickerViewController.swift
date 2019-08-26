@@ -130,13 +130,34 @@ class ObjectStickerViewController: UIViewController, ARSessionDelegate, ARSCNVie
 
             guard let stickerNode = stickerNode else { return }
 
-            let theta = MathUtils.getAngleBetweenTwo3DPoints(
-                pointA: SCNVector3(0, 0, 0.08),
+            // An estimation of the nose
+            let nosePoint = SCNVector3(0, 0, 0.6)
+
+            // Get the angle of the sticker to match the facial feature
+            var theta = MathUtils.getAngleBetweenTwo3DPoints(
+                pointA: nosePoint,
                 pointB: result.localCoordinates
-                ).toRadians()
+                )
+
+            // Account for negative values of a graphing coordiantes
+            if result.localCoordinates.x < 0 {
+                theta.negate()
+            }
+
+            // This stop any awkward face geometry from yielding unexpected result
+            if abs(theta) < 80 {
+                stickerNode.eulerAngles.y = theta.toRadians()
+
+            }
+
+//            // The length of the object that has now been push behind the face
+//            let distanceRotated = ((nosePoint.z + result.localCoordinates.z) / 2) - result.localCoordinates.z
+//            print("Point B: ", result.localCoordinates.z)
+//            print("Point C: ", (nosePoint.z + result.localCoordinates.z) / 2)
+//            print("Distance Rotated: ", distanceRotated)
 
             stickerNode.position = result.localCoordinates
-            stickerNode.eulerAngles.y = theta
+            //stickerNode.position.z = result.localCoordinates.z + distanceRotated
 
             contentNode.addChildNode(stickerNode)
         }

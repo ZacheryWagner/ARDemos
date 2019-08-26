@@ -205,7 +205,7 @@ class ObjectShowcaseViewController: UIViewController, ARSessionDelegate, ARSCNVi
 
                 // Get position in 3D Space and convert that to a 3 Coordinate vector
                 let position = result.worldTransform.columns.3
-                let float = float3(x: position.x, y: position.y + objectHeight, z: position.z)
+                let float = float3(x: position.x, y: position.y, z: position.z)
                 let vector = SCNVector3Make(float.x, float.y + 0.1, float.z)
 
                 objectNode = newContent
@@ -341,7 +341,7 @@ class ObjectShowcaseViewController: UIViewController, ARSessionDelegate, ARSCNVi
         let width = CGFloat(planeAnchor.extent.x)
         let height = CGFloat(planeAnchor.extent.z)
         let plane = SCNPlane(width: width, height: height)
-        plane.materials.first?.diffuse.contents = UIColor.white.withAlphaComponent(0.3)
+        plane.materials.first?.diffuse.contents = UIColor.white.withAlphaComponent(0)
 
         let planeNode = SCNNode(geometry: plane)
 

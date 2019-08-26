@@ -18,6 +18,7 @@ enum Axis: Int {
 }
 
 struct MathUtils {
+
     /**
      * Finds the angle between two points in 3D space
      * - Returns the angle between two 3 Dimensional points in space in degrees
@@ -58,6 +59,8 @@ struct MathUtils {
         // The magnitude of vector BC
         let magBC: Float =
             sqrtf(powf(vectBC.x, 2) + powf(vectBC.y, 2) + powf(vectBC.z, 2))
+
+        print(magBC)
 
         return acos(dotProduct/(magBA * magBC)) * 100
     }
