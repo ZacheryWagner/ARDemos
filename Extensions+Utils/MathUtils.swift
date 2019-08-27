@@ -7,6 +7,7 @@
 //
 
 import SceneKit
+import ARKit
 
 /**
  * The axis for 3x3 vectors
@@ -225,5 +226,30 @@ extension vector_float3 {
      */
     func toSceneVector() -> SCNVector3 {
         return SCNVector3(x: self.x, y: self.y, z: self.z)
+    }
+}
+
+// MARK: - float4x4 extensions
+
+extension float4x4 {
+    init(translation vector: float3) {
+        self.init(float4(1, 0, 0, 0),
+                  float4(0, 1, 0, 0),
+                  float4(0, 0, 1, 0),
+                  float4(vector.x, vector.y, vector.z, 1))
+    }
+
+    var translation: float3 {
+        let translation = columns.3
+        return float3(translation.x, translation.y, translation.z)
+    }
+}
+
+// MARK: - CGPoint extensions
+
+extension CGPoint {
+    /// Extracts the screen space point from a vector returned by SCNView.projectPoint(_:).
+    init(_ vector: SCNVector3) {
+        self.init(x: CGFloat(vector.x), y: CGFloat(vector.y))
     }
 }

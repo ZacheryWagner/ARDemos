@@ -1,12 +1,14 @@
 //
-//  SCNMatrix4.swift
+//  SceneKitExtensions.swift
 //  ARDemos
 //
-//  Created by Zachery Wagner on 7/22/19.
+//  Created by Zachery Wagner on 8/27/19.
 //  Copyright © 2019 Zachery Wagner. All rights reserved.
 //
 
+import Foundation
 import SceneKit
+import ARKit
 
 extension SCNMatrix4 {
     /**
@@ -34,6 +36,13 @@ extension SCNMatrix4 {
     }
 }
 
+extension SCNNode {
+    var extents: float3 {
+        let (min, max) = boundingBox
+        return float3(max) - float3(min)
+    }
+}
+
 extension SCNReferenceNode {
     /**
      * Create a reference node from a scene resource name
@@ -46,3 +55,30 @@ extension SCNReferenceNode {
         }
     }
 }
+
+// MARK: - ARSCNView extensions
+
+extension ARSCNView {
+
+    func smartHitTest(_ point: CGPoint) -> ARHitTestResult? {
+
+        // Perform the hit test.
+        let results = hitTest(point, types: [.existingPlaneUsingGeometry])
+
+        // 1. Check for a result on an existing plane using geometry.
+        if let existingPlaneUsingGeometryResult = results.first(where: { $0.type == .existingPlaneUsingGeometry }) {
+            return existingPlaneUsingGeometryResult
+        }
+
+        // 2. Check for a result on an existing plane, assuming its dimensions are infinite.
+        let infinitePlaneResults = hitTest(point, types: .existingPlane)
+
+        if let infinitePlaneResult = infinitePlaneResults.first {
+            return infinitePlaneResult
+        }
+
+        // 3. As a final fallback, check for a result on estimated planes.
+        return results.first(where: { $0.type == .estimatedHorizontalPlane })
+    }
+}
+
