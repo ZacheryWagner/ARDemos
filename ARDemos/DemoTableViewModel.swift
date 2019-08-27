@@ -13,6 +13,7 @@ class DemoTableViewModel {
     private var titles: [String] {
         return ["Object Manipulation",
                 "Object Showcase",
+                "Environmental Texturing",
                 "Rocket Launch",
                 "Face Tracking",
                 "3D Stickers",

@@ -28,20 +28,6 @@ enum FaceTrackingTabTypes: Int {
     }
 }
 
-enum ObjectShowcaseTabTypes: Int {
-    /// Each case has a rawValue which corresponds with the tabIndex
-    case trophy, well
-
-    func makeRenderer() -> ModelRenderer {
-        switch self {
-        case .trophy:
-            return ModelRenderer(displayMode: .trophy)
-        case .well:
-            return ModelRenderer(displayMode: .well)
-        }
-    }
-}
-
 enum FaceTextureTabTypes: Int {
     /// Each case has a rawValue which corresponds with the tabIndex
     case liverpoolBirdTexture
@@ -69,6 +55,20 @@ enum FaceTextureTabTypes: Int {
         case .liverpoolFootballClubStickerTexture:
             return FaceRenderer(displayMode: .liverpoolFootballClubStickerTexture)
 
+        }
+    }
+}
+
+enum ObjectShowcaseTabTypes: Int {
+    /// Each case has a rawValue which corresponds with the tabIndex
+    case trophy, well
+
+    func makeRenderer() -> ModelRenderer {
+        switch self {
+        case .trophy:
+            return ModelRenderer(displayMode: .trophy)
+        case .well:
+            return ModelRenderer(displayMode: .well)
         }
     }
 }

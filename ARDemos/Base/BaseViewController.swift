@@ -89,7 +89,7 @@ class BaseARViewController: UIViewController, ARSessionDelegate, ARSCNViewDelega
         super.viewDidLoad()
 
         // Initialize the recorder
-        recorder = RecordAR(ARSceneKit: sceneView)
+        //recorder = RecordAR(ARSceneKit: sceneView)
     }
 
     /**
@@ -112,7 +112,7 @@ class BaseARViewController: UIViewController, ARSessionDelegate, ARSCNViewDelega
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        recorder?.rest()
+        //recorder?.rest()
         sceneView.session.pause()
     }
 

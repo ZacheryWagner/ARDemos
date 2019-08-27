@@ -31,7 +31,8 @@
 		A1B0663822E62702004C5202 /* TransformVisualization.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B0663322E62702004C5202 /* TransformVisualization.swift */; };
 		A1B0663922E62702004C5202 /* FaceOcclusionOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B0663422E62702004C5202 /* FaceOcclusionOverlay.swift */; };
 		A1B0663A22E62702004C5202 /* VideoTexturedFace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B0663522E62702004C5202 /* VideoTexturedFace.swift */; };
-		A1B0663C22E62815004C5202 /* SceneKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B0663B22E62815004C5202 /* SceneKitExtensions.swift */; };
+		A1C4D02B23157A370072701E /* SceneKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C4D02A23157A370072701E /* SceneKitExtensions.swift */; };
+		A1C4D02D23157ACF0072701E /* EnvironmentalTexturingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C4D02C23157ACF0072701E /* EnvironmentalTexturingViewController.swift */; };
 		A1C9783922DE14F300664B5B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C9783822DE14F300664B5B /* AppDelegate.swift */; };
 		A1C9783D22DE14F300664B5B /* ObjectManipulationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C9783C22DE14F300664B5B /* ObjectManipulationViewController.swift */; };
 		A1C9785022DE1D5A00664B5B /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C9784F22DE1D5A00664B5B /* UIView.swift */; };
@@ -69,7 +70,8 @@
 		A1B0663322E62702004C5202 /* TransformVisualization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformVisualization.swift; sourceTree = "<group>"; };
 		A1B0663422E62702004C5202 /* FaceOcclusionOverlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceOcclusionOverlay.swift; sourceTree = "<group>"; };
 		A1B0663522E62702004C5202 /* VideoTexturedFace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoTexturedFace.swift; sourceTree = "<group>"; };
-		A1B0663B22E62815004C5202 /* SceneKitExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneKitExtensions.swift; sourceTree = "<group>"; };
+		A1C4D02A23157A370072701E /* SceneKitExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneKitExtensions.swift; sourceTree = "<group>"; };
+		A1C4D02C23157ACF0072701E /* EnvironmentalTexturingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentalTexturingViewController.swift; sourceTree = "<group>"; };
 		A1C9783522DE14F300664B5B /* ARDemos.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARDemos.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1C9783822DE14F300664B5B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A1C9783C22DE14F300664B5B /* ObjectManipulationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectManipulationViewController.swift; sourceTree = "<group>"; };
@@ -159,7 +161,7 @@
 			isa = PBXGroup;
 			children = (
 				A118C41422FCC37F00983F20 /* MathUtils.swift */,
-				A1B0663B22E62815004C5202 /* SceneKitExtensions.swift */,
+				A1C4D02A23157A370072701E /* SceneKitExtensions.swift */,
 				A1C9784F22DE1D5A00664B5B /* UIView.swift */,
 				A1C9785322DE1E6F00664B5B /* UIColor.swift */,
 				A1A3C1832309BDBA007F79E4 /* AppUtils.swift */,
@@ -183,6 +185,7 @@
 				A1C9783C22DE14F300664B5B /* ObjectManipulationViewController.swift */,
 				A14F501F22DEBE0E003F11A1 /* ObjectManipulationViewModel.swift */,
 				A173D90A230B229400F1C31F /* ObjectShowcaseViewController.swift */,
+				A1C4D02C23157ACF0072701E /* EnvironmentalTexturingViewController.swift */,
 			);
 			path = "Object Manipulation";
 			sourceTree = "<group>";
@@ -357,7 +360,6 @@
 				A173D90B230B229400F1C31F /* ObjectShowcaseViewController.swift in Sources */,
 				A15DF00222E10778000FCE0A /* RocketLaunchViewController.swift in Sources */,
 				A14F502022DEBE0E003F11A1 /* ObjectManipulationViewModel.swift in Sources */,
-				A1B0663C22E62815004C5202 /* SceneKitExtensions.swift in Sources */,
 				A173D90D230B22FE00F1C31F /* ModelRenderer.swift in Sources */,
 				A1A3C1842309BDBA007F79E4 /* AppUtils.swift in Sources */,
 				A118C41522FCC37F00983F20 /* MathUtils.swift in Sources */,
@@ -365,6 +367,8 @@
 				A1C9783922DE14F300664B5B /* AppDelegate.swift in Sources */,
 				A1B0663A22E62702004C5202 /* VideoTexturedFace.swift in Sources */,
 				A103C5212302583900F35D20 /* FaceTextureViewController.swift in Sources */,
+				A1C4D02B23157A370072701E /* SceneKitExtensions.swift in Sources */,
+				A1C4D02D23157ACF0072701E /* EnvironmentalTexturingViewController.swift in Sources */,
 				A15DEFFA22E0F38B000FCE0A /* DemoTableVIewController.swift in Sources */,
 				A1AF31F122FC966200960F2C /* FaceRenderer.swift in Sources */,
 				A1C9785422DE1E6F00664B5B /* UIColor.swift in Sources */,

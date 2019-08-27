@@ -52,15 +52,18 @@ class DemoTableViewController: UITableViewController {
             let vc = ObjectShowcaseViewController()
             navigationController?.pushViewController(vc, animated: true)
         case 2:
-            let vc = RocketLaunchViewController()
+            let vc = EnvironmentalTexturingViewController()
             navigationController?.pushViewController(vc, animated: true)
         case 3:
-            let vc = FaceTrackingViewController()
+            let vc = RocketLaunchViewController()
             navigationController?.pushViewController(vc, animated: true)
         case 4:
-            let vc = ObjectStickerViewController()
+            let vc = FaceTrackingViewController()
             navigationController?.pushViewController(vc, animated: true)
         case 5:
+            let vc = ObjectStickerViewController()
+            navigationController?.pushViewController(vc, animated: true)
+        case 6:
             let vc = FaceTextureViewController()
             navigationController?.pushViewController(vc, animated: true)
         default:
