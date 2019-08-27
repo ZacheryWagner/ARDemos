@@ -10,8 +10,7 @@ import ARKit
 import SceneKit
 import UIKit
 
-class EnvironmentalTexturingViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
-
+class EnvironmentalTexturingViewController: BaseARViewController {
     struct ManualProbe {
         // An environment probe for shading the virtual object.
         var objectProbeAnchor: AREnvironmentProbeAnchor?
@@ -23,10 +22,6 @@ class EnvironmentalTexturingViewController: UIViewController, ARSCNViewDelegate,
         var lastUpdateTime: TimeInterval = 0
     }
 
-    // MARK: IBOutlets
-
-    /// The scene for displaying content
-    var sceneView = ARSCNView()
     //    @IBOutlet weak var textureModeSelectionControl: UISegmentedControl
 
     // MARK: - ARKit Configuration Properties
@@ -70,7 +65,7 @@ class EnvironmentalTexturingViewController: UIViewController, ARSCNViewDelegate,
     // MARK: - View Controller Life Cycle
 
     init() {
-        super.init(nibName: nil, bundle: nil)
+        super.init(realityConfiguration: .world)
         sceneView.delegate = self
         sceneView.session.delegate = self
 
@@ -98,27 +93,6 @@ class EnvironmentalTexturingViewController: UIViewController, ARSCNViewDelegate,
 //        }
     }
 
-    /// - Tag: RunARSession
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        // Prevent the screen from dimming to avoid interrupting the AR experience.
-        UIApplication.shared.isIdleTimerDisabled = true
-
-        // Start the AR session with automatic environment texturing.
-
-        let configuration = ARWorldTrackingConfiguration()
-        configuration.planeDetection = .horizontal
-        configuration.environmentTexturing = .automatic
-        sceneView.session.run(configuration)
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        sceneView.session.pause()
-    }
-
     /**
      * Setup the object manipulation and button gestures
      */
@@ -135,10 +109,10 @@ class EnvironmentalTexturingViewController: UIViewController, ARSCNViewDelegate,
         sceneView.addGestureRecognizer(sceneTapGestureRecognizer)
         sceneView.addGestureRecognizer(scenePanGestureRecognizer)
         sceneView.addGestureRecognizer(scenePinchGestureRecognizer)
-//
-//        sceneTapGestureRecognizer.delegate = self
-//        scenePanGestureRecognizer.delegate = self
-//        scenePinchGestureRecognizer.delegate = self
+
+        sceneTapGestureRecognizer.delegate = self
+        scenePanGestureRecognizer.delegate = self
+        scenePinchGestureRecognizer.delegate = self
     }
 
     // MARK: - Session management
@@ -152,6 +126,10 @@ class EnvironmentalTexturingViewController: UIViewController, ARSCNViewDelegate,
 //        // Remove anchors and change texturing mode
 //        resetTracking(changeMode: true)
 //    }
+
+    override func resetTracking() {
+        resetTracking(changeMode: false)
+    }
 
     /// Runs the session with a new AR configuration to change modes or reset the experience.
     func resetTracking(changeMode: Bool = false) {
@@ -264,7 +242,7 @@ class EnvironmentalTexturingViewController: UIViewController, ARSCNViewDelegate,
 
         // Create an environment probe anchor with room-sized extent to act as fallback when the probe anchor of
         // an object is removed and added during translation and scaling
-        let probeAnchor = AREnvironmentProbeAnchor(name: "sceneProbe", transform: matrix_identity_float4x4, extent: float3(5))
+        let probeAnchor = AREnvironmentProbeAnchor(name: "sceneProbe", transform: matrix_identity_float4x4, extent: float3(repeating: 5))
         sceneView.session.add(anchor: probeAnchor)
         self.manualProbe?.sceneProbeAnchor = probeAnchor
     }
@@ -288,31 +266,6 @@ class EnvironmentalTexturingViewController: UIViewController, ARSCNViewDelegate,
     func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
         guard let frame = session.currentFrame else { fatalError("ARSession should have an ARFrame") }
         //updateSessionInfoLabel(for: frame, trackingState: camera.trackingState)
-    }
-
-    func session(_ session: ARSession, didFailWithError error: Error) {
-        guard error is ARError else { return }
-
-        let errorWithInfo = error as NSError
-        let messages = [
-            errorWithInfo.localizedDescription,
-            errorWithInfo.localizedFailureReason,
-            errorWithInfo.localizedRecoverySuggestion
-        ]
-
-        // Remove optional error messages.
-        let errorMessage = messages.compactMap({ $0 }).joined(separator: "\n")
-
-        DispatchQueue.main.async {
-            // Present an alert informing about the error that has occurred.
-            let alertController = UIAlertController(title: "The AR session failed.", message: errorMessage, preferredStyle: .alert)
-            let restartAction = UIAlertAction(title: "Restart Session", style: .default) { _ in
-                alertController.dismiss(animated: true, completion: nil)
-                self.resetTracking()
-            }
-            alertController.addAction(restartAction)
-            self.present(alertController, animated: true, completion: nil)
-        }
     }
 
     // MARK: ARSessionDelegate
