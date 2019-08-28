@@ -56,6 +56,8 @@ class EnvironmentalTexturingViewController: BaseARViewController {
         }
     }
 
+    var currentAngleY: Float = 0.0
+
     /// Indicates whether ARKit has provided an environment texture.
     var isEnvironmentTextureAvailable = false
 
@@ -66,12 +68,22 @@ class EnvironmentalTexturingViewController: BaseARViewController {
 
     init() {
         super.init(realityConfiguration: .world)
+
         sceneView.delegate = self
         sceneView.session.delegate = self
 
         sceneView.translatesAutoresizingMaskIntoConstraints = false
+        recordingDot.translatesAutoresizingMaskIntoConstraints = false
+
         view.addSubview(sceneView)
+        view.addSubview(recordingDot)
+
         sceneView.pinToSuperview()
+
+        recordingDot.pinToSuperviewSafeAreaTop()
+        recordingDot.pinToSuperviewLeadingWithInset(12)
+        recordingDot.widthAnchor.constraint(equalToConstant: 12).isActive = true
+        recordingDot.heightAnchor.constraint(equalToConstant: 12).isActive = true
 
         setupGestureRecognizers()
     }
@@ -128,6 +140,7 @@ class EnvironmentalTexturingViewController: BaseARViewController {
 //    }
 
     override func resetTracking() {
+        super.resetTracking()
         resetTracking(changeMode: false)
     }
 
@@ -280,24 +293,36 @@ class EnvironmentalTexturingViewController: BaseARViewController {
     @objc func didPanScene(_ gesture: UIPanGestureRecognizer) {
         guard let object = virtualObject else { return }
 
-        switch gesture.state {
-        case .changed:
-            let translation = gesture.translation(in: sceneView)
+        if gesture.numberOfTouches == 1 {
+            switch gesture.state {
+            case .changed:
+                let translation = gesture.translation(in: sceneView)
 
-            let previousPosition = lastPanTouchPosition ?? CGPoint(sceneView.projectPoint(object.position))
-            // Calculate the new touch position
-            let currentPosition = CGPoint(x: previousPosition.x + translation.x, y: previousPosition.y + translation.y)
-            if let hitTestResult = sceneView.smartHitTest(currentPosition) {
-                object.simdPosition = hitTestResult.worldTransform.translation
-                // Refresh the probe as the object keeps moving
-                manualProbe?.requiresRefresh = true
+                let previousPosition = lastPanTouchPosition ?? CGPoint(sceneView.projectPoint(object.position))
+                // Calculate the new touch position
+                let currentPosition = CGPoint(x: previousPosition.x + translation.x, y: previousPosition.y + translation.y)
+                if let hitTestResult = sceneView.smartHitTest(currentPosition) {
+                    object.simdPosition = hitTestResult.worldTransform.translation
+                    // Refresh the probe as the object keeps moving
+                    manualProbe?.requiresRefresh = true
+                }
+                lastPanTouchPosition = currentPosition
+                // reset the gesture's translation
+                gesture.setTranslation(.zero, in: sceneView)
+            default:
+                // Clear the current position tracking.
+                lastPanTouchPosition = nil
             }
-            lastPanTouchPosition = currentPosition
-            // reset the gesture's translation
-            gesture.setTranslation(.zero, in: sceneView)
-        default:
-            // Clear the current position tracking.
-            lastPanTouchPosition = nil
+        } else if gesture.numberOfTouches == 2 {
+            let translation = gesture.translation(in: gesture.view)
+            var newAngleY = (Float)(translation.x)*(Float)(Double.pi)/180.0
+
+            newAngleY += currentAngleY
+            object.eulerAngles.y = newAngleY
+
+            if gesture.state == .ended {
+                currentAngleY = newAngleY
+            }
         }
     }
 
