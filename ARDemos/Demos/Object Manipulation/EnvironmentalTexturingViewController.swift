@@ -22,7 +22,7 @@ class EnvironmentalTexturingViewController: BaseARViewController {
         var lastUpdateTime: TimeInterval = 0
     }
 
-    //    @IBOutlet weak var textureModeSelectionControl: UISegmentedControl
+    var textureModeSelectionControl: UISegmentedControl
 
     // MARK: - ARKit Configuration Properties
 
@@ -67,24 +67,23 @@ class EnvironmentalTexturingViewController: BaseARViewController {
     // MARK: - View Controller Life Cycle
 
     init() {
+        textureModeSelectionControl = UISegmentedControl(items: ["Automatic", "Manual"])
+
         super.init(realityConfiguration: .world)
+
+        textureModeSelectionControl.addTarget(self, action: #selector(changeMode(_:)), for: .touchUpInside)
 
         sceneView.delegate = self
         sceneView.session.delegate = self
 
         sceneView.translatesAutoresizingMaskIntoConstraints = false
         recordingDot.translatesAutoresizingMaskIntoConstraints = false
+        textureModeSelectionControl.translatesAutoresizingMaskIntoConstraints = false
 
         view.addSubview(sceneView)
         view.addSubview(recordingDot)
 
-        sceneView.pinToSuperview()
-
-        recordingDot.pinToSuperviewSafeAreaTop()
-        recordingDot.pinToSuperviewLeadingWithInset(12)
-        recordingDot.widthAnchor.constraint(equalToConstant: 12).isActive = true
-        recordingDot.heightAnchor.constraint(equalToConstant: 12).isActive = true
-
+        initConstraints()
         setupGestureRecognizers()
     }
 
@@ -95,14 +94,26 @@ class EnvironmentalTexturingViewController: BaseARViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-//        switch environmentTexturingMode {
-//        case .manual:
-//            textureModeSelectionControl.selectedSegmentIndex = 1
-//        case .automatic:
-//            textureModeSelectionControl.selectedSegmentIndex = 0
-//        default:
-//            fatalError("This app supports only manual and automatic environment texturing.")
-//        }
+        switch environmentTexturingMode {
+        case .manual:
+            textureModeSelectionControl.selectedSegmentIndex = 1
+        case .automatic:
+            textureModeSelectionControl.selectedSegmentIndex = 0
+        default:
+            fatalError("This app supports only manual and automatic environment texturing.")
+        }
+    }
+
+    private func initConstraints() {
+        sceneView.pinToSuperview()
+
+        recordingDot.pinToSuperviewSafeAreaTop()
+        recordingDot.pinToSuperviewLeadingWithInset(12)
+        recordingDot.widthAnchor.constraint(equalToConstant: 12).isActive = true
+        recordingDot.heightAnchor.constraint(equalToConstant: 12).isActive = true
+
+        textureModeSelectionControl.pinToSuperviewSafeAreaBottom()
+        textureModeSelectionControl.pinToSuperviewCenterX()
     }
 
     /**
@@ -129,15 +140,15 @@ class EnvironmentalTexturingViewController: BaseARViewController {
 
     // MARK: - Session management
 
-//    @IBAction func changeMode(_ sender: UISegmentedControl) {
-//        if sender.selectedSegmentIndex == 0 {
-//            environmentTexturingMode = .automatic
-//        } else {
-//            environmentTexturingMode = .manual
-//        }
-//        // Remove anchors and change texturing mode
-//        resetTracking(changeMode: true)
-//    }
+    @objc func changeMode(_ sender: UISegmentedControl) {
+        if sender.selectedSegmentIndex == 0 {
+            environmentTexturingMode = .automatic
+        } else {
+            environmentTexturingMode = .manual
+        }
+        // Remove anchors and change texturing mode
+        resetTracking(changeMode: true)
+    }
 
     override func resetTracking() {
         super.resetTracking()
