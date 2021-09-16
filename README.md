@@ -1,5 +1,4 @@
 # ARDemos
-![Apple AR Icon] (https://developer.apple.com/design/human-interface-guidelines/ios/images/ARKit_Badge_IconAndText.svg)
 
 ## Overview
 A series of demos demonstrating various applications of ARKit
@@ -28,7 +27,34 @@ A demo for learning how to use particles, animations, and more complicated gestu
 Experiment to test quickly caluclating an angle of an object in reference to a tracked face and anchoring based on that angle
 * Tap the tracked face to place 3D stickers
 
-*** Note
+### Note
 There are much better practices for managing models and AR Sessions.  The production code this eventually
 became has a totally refactored architecture.  I do not recommend using this as a reference for learning AR.
 Proprietary assets have been removed for the privacy of my former place of employment.
+
+### Links
+Some Resources I've found helpful and/or interesting while learning and developing AR Features
+
+#### ARKit
+* [ARKit Documentation](https://developer.apple.com/documentation/arkit)
+* [Introducing ARKit 3](https://developer.apple.com/videos/play/wwdc2019/604/)
+* [Explore ARKit 4](https://developer.apple.com/videos/play/wwdc2020/10611/)
+* [Explore ARKit 5](https://developer.apple.com/videos/play/wwdc2021/10073/)
+* [Building Collaborative AR Experiences](https://developer.apple.com/videos/play/wwdc2019/610/)
+
+#### Metal
+* [Modern Rendering with Metal](https://developer.apple.com/videos/play/wwdc2019/601/)
+* [Ray Tracing with Metal](https://developer.apple.com/videos/play/wwdc2019/613/)
+* [Discover ray tracing with Metal](https://developer.apple.com/videos/play/wwdc2020/10012/)
+* [Accelerate machine learning with Metal Performance Shaders Graph](https://developer.apple.com/videos/play/wwdc2021/10152/)
+* [Rendering Physically-Based ModelIO Materials](https://metalbyexample.com/modelio-materials/)
+
+
+#### Model I/O
+* [Model I/O Documentation](https://developer.apple.com/documentation/modelio)
+* [Rendering Physically-Based ModelIO Materials](https://metalbyexample.com/modelio-materials/)
+* [Model I/O - Swift, Xcode, and iOS](https://www.youtube.com/watch?v=_cdnDPzXAh4)
+
+#### Reflectins
+* [Adding Realistic Reflections to an AR Experience](https://developer.apple.com/documentation/arkit/camera_lighting_and_effects/adding_realistic_reflections_to_an_ar_experience)
+* [ARKit by Example — Part 4: Realism - Lighting & PBR](https://blog.markdaws.net/arkit-by-example-part-4-realism-lighting-pbr-b9a0bedb013e)
