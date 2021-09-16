@@ -27,11 +27,6 @@ A demo for learning how to use particles, animations, and more complicated gestu
 Experiment to test quickly caluclating an angle of an object in reference to a tracked face and anchoring based on that angle
 * Tap the tracked face to place 3D stickers
 
-### Note
-There are much better practices for managing models and AR Sessions.  The production code this eventually
-became has a totally refactored architecture.  I do not recommend using this as a reference for learning AR.
-Proprietary assets have been removed for the privacy of my former place of employment.
-
 ### Links
 Some Resources I've found helpful and/or interesting while learning and developing AR Features
 
@@ -58,3 +53,9 @@ Some Resources I've found helpful and/or interesting while learning and developi
 #### Reflectins
 * [Adding Realistic Reflections to an AR Experience](https://developer.apple.com/documentation/arkit/camera_lighting_and_effects/adding_realistic_reflections_to_an_ar_experience)
 * [ARKit by Example — Part 4: Realism - Lighting & PBR](https://blog.markdaws.net/arkit-by-example-part-4-realism-lighting-pbr-b9a0bedb013e)
+
+### Note
+There are much better practices for managing models and AR Sessions.  The production code 
+this eventually became has a totally refactored architecture.  I do not recommend using this 
+as a reference for learning AR.  Proprietary assets have been removed for the privacy of my 
+former place of employment.  As a result this will likely not run.
